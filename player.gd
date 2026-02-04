@@ -2,6 +2,7 @@ extends Spatial
 
 onready var level = get_tree().get_root().get_node("level")
 onready var headSprite = get_node("headSprite")
+onready var cameraTarget = get_node("cameraTarget")
 onready var pfftSound = get_node("PfftSound")
 onready var growSound = get_node("GrowSound")
 
@@ -40,6 +41,8 @@ func moveRight():
     should_advance_animation_frame = not should_advance_animation_frame
 
 func grow(_x, _y):
+    # TODO(jaketrower): This _x, _y should be set according to the direction that the LAST PREVIOUS BODY PART is moving.
+    # so, it will be accurate for the first growth, but not subsequent growths rn
     headSprite.updateBaseFrame(2, 0)
     var newBodySprite = headSprite.duplicate()
     self.add_child(newBodySprite)
@@ -80,6 +83,8 @@ func moveMyBodyParts(_x, _y):
 
         _x = x
         _y = y
+    cameraTarget.global_transform.origin = headSprite.global_transform.origin
+    cameraTarget.global_transform.origin.z = 6
 
 func updateBodyPartSprite(bodyPart, x, y, _x, _y, leadingBodyPartPos, oldBodyPartPos, x_frame):
     if leadingBodyPartPos.x == oldBodyPartPos.x or leadingBodyPartPos.y == oldBodyPartPos.y: 

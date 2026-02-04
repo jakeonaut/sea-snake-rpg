@@ -9,6 +9,8 @@
 [node name="player" type="Spatial"]
 script = ExtResource( 3 )
 
+[node name="cameraTarget" type="Spatial" parent="."]
+
 [node name="headSprite" type="Sprite3D" parent="."]
 pixel_size = 0.0625
 texture = ExtResource( 2 )
