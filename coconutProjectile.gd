@@ -110,6 +110,15 @@ func _process(delta):
                 for j in range(2):
                     level.spawnBubble(crab.get_node("Sprite3D").global_transform.origin, j)
                 queue_free()
+    for i in level.coralsNode.get_child_count():
+        var coral = level.coralsNode.get_child(i)
+        if didCollideWithTarget(coral):
+            activateRicochet()
+            weakRicochetSound.pitch_scale = rand_range(1.4, 1.6)
+            weakRicochetSound.play()
+            level.move_counter_at_last_game_state = level.move_counter
+            for j in range(2):
+                level.spawnBubble(coral.global_transform.origin, j)
         # if isPlayerEating(crab.get_node("Sprite3D")):
         #     owSound.pitch_scale = rand_range(0.4, 0.6)
         #     owSound.play()

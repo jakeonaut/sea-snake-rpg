@@ -6,6 +6,7 @@ var playerSheetRes = preload("res://player_sheet.png")
 var playerCoconutSheetRes = preload("res://player_sheet_coconut.png")
 var text3dRes = preload("res://3DText.tscn")
 onready var headSprite = get_node("headSprite")
+onready var parasite = get_node("parasite")
 onready var cameraTarget = get_node("cameraTarget")
 onready var pfftSound = get_node("PfftSound")
 onready var growSound = get_node("GrowSound")
@@ -34,14 +35,17 @@ func eatALemon():
     playerLight.scale += Vector3(0.5, 0.5, 0.5)
 
 func eatACoconut():
+    print("try to eat coconut?")
     var could_i_eat_the_coconut = false
     for i in range(len(myBodyParts)):
         var bodyPart = myBodyParts[i]
         if bodyPart.texture != playerCoconutSheetRes:
             bodyPart.texture = playerCoconutSheetRes
+            print("yeah i could")
             could_i_eat_the_coconut = true
             break
     if not could_i_eat_the_coconut:
+        print("no i couldnt")
         level.owSound.pitch_scale = rand_range(0.4, 0.6)
         level.owSound.play()
         level.deathOverlay.visible = false
@@ -244,6 +248,26 @@ func grow(_x, _y):
     pfftSound.play()
     for i in range(2):
         level.spawnBubble(newBodySprite.global_transform.origin, i)
+
+func doIHaveParasites():
+    for i in range(4, len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        if bodyPart.has_node("parasite") and bodyPart.get_node("parasite").visible:
+            return true
+    return false
+
+func infestWithParasites():
+    var should_infest_this_part = true
+    for i in range(4, len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        if not should_infest_this_part:
+            should_infest_this_part = true
+            continue
+        var newParasite = parasite.duplicate()
+        newParasite.visible = true
+        bodyPart.add_child(newParasite)
+        newParasite.global_transform.origin = bodyPart.global_transform.origin + Vector3(0, 0, 0.05)
+        should_infest_this_part = false
 
 func moveMyBodyParts(_x, _y):
     var x = _x

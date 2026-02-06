@@ -21,6 +21,7 @@ onready var shatterSound = get_node("ShatterSound")
 onready var spitSound = get_node("SpitSound")
 onready var sadSound = get_node("SadSound")
 onready var swooshSound = get_node("SwooshSound")
+onready var oofSound = get_node("OofSound")
 onready var crabSound = get_node("CrabSound")
 onready var coolSound = get_node("CoolSound")
 onready var applauseSound = get_node("ApplauseSound")
@@ -37,6 +38,7 @@ onready var textBoxTop = get_node("CanvasLayer/TextBoxTop")
 onready var textBoxTopText = get_node("CanvasLayer/TextBoxTop/Text")
 onready var camera = get_node("Camera")
 onready var crabsNode = get_node("Crabs")
+onready var coralsNode = get_node("Corals")
 onready var bigCrab = get_node("bigCrab")
 onready var deathOverlay = get_node("CanvasLayer/DeathOverlay")
 onready var deathOverlayText = get_node("CanvasLayer/DeathOverlay/Text")
@@ -89,10 +91,16 @@ var how_many_coconuts_ate = 0
 var how_many_lemons_ate = 0
 var adventure_camera_size = 10
 var should_snap_camera = false
+var parasite_damage_counter = 0
+var parasite_damage_count_max = 15
+var parasite_oof_counter = 0
+var parasite_oof_counter_max = 3
 
 func _ready():
     set_process(true)
 
+var lemon_failsafe_counter = 0
+var lemon_failsafe_count_max = 7
 func _process(delta):
     var has_player_moved = false
     if not deathOverlay.visible:
@@ -203,7 +211,7 @@ func _process(delta):
                     orange.global_transform.origin.y = player.headSprite.global_transform.origin.y - 3
         if move_counter > move_counter_at_last_game_state + 5:
             textBox.visible = false
-        if player.headSprite.global_transform.origin.y <= -25:
+        if player.headSprite.global_transform.origin.y <= -24:
             textBoxTop.visible = true
             crabSound.play()
             textBoxTopText.bbcode_text = "[center][color=red]we're just some crabs. don't fuck with us!!!\nwe'll only move if you give us a coconut[/color][/center]"
@@ -221,6 +229,15 @@ func _process(delta):
         updateGameCamera(delta, Vector2(0, 0), Vector2(0, -45))
         if has_player_moved:
             playerMovedEatAnOrange()
+            if has_stolen_a_coconut:
+                if player.headSprite.global_transform.origin.y <= -20:
+                    coconut1.visible = true
+                    coconut2.visible = true
+                    coconut3.visible = true
+                    coconut4.visible = true
+                    coconut5.visible = true
+                    coconut6.visible = true
+                    coconut7.visible = true
             if player.headSprite.global_transform.origin.y >= -15 and not creeped_out_coconut_merchant and not isPlayerEating(coconutMerchant):
                 move_counter_at_last_game_state = move_counter
                 textBoxTop.visible = false
@@ -257,27 +274,56 @@ func _process(delta):
         updateGameCamera(delta, Vector2(0, 0), Vector2(0, -65))
         if has_player_moved:
             playerMovedEatAnOrange()
+            if has_stolen_a_coconut:
+                if player.headSprite.global_transform.origin.y <= -20:
+                    coconut1.visible = true
+                    coconut2.visible = true
+                    coconut3.visible = true
+                    coconut4.visible = true
+                    coconut5.visible = true
+                    coconut6.visible = true
+                    coconut7.visible = true
             if move_counter > move_counter_at_last_game_state + 2:
                 textBox.visible = false
                 textBoxTop.visible = false
             if isPlayerEating(lemon):
                 player.eatALemon()
                 gameState = GameState.OCEAN_DEEP
-                should_keep_moving_forward = true
+                player.infestWithParasites()
+                for i in range(7):
+                    var coconut = [coconut1, coconut2, coconut3, coconut4, coconut5, coconut6, coconut7][i]
+                    coconut.visible = true
+                    coconut.global_transform.origin.x -= 6
+                    coconut.global_transform.origin.y -= 53
+                # should_keep_moving_forward = true
                 chompSound.pitch_scale = rand_range(0.8, 1.2)
                 chompSound.play()
                 for i in range(3):
                     spawnBubble(player.headSprite.global_transform.origin, i + 1)
                 lemon.global_transform.origin.x = player.headSprite.global_transform.origin.x + 3
                 lemon.global_transform.origin.y = randi() % 7 + LEMON_Y_OFFSET
-                while doesIntersectWithAnyBodyPart(lemon):
+                lemon_failsafe_counter = 0
+                while doesIntersectWithAnyBodyPart(lemon) and lemon_failsafe_counter < lemon_failsafe_count_max:
                     lemon.global_transform.origin.x = player.headSprite.global_transform.origin.x + 3
                     lemon.global_transform.origin.y = randi() % 7 + LEMON_Y_OFFSET
+                    lemon_failsafe_counter += 1
     elif gameState == GameState.OCEAN_DEEP:
         prevGameState = gameState
         updateGameCamera(delta, Vector2(0, 60), Vector2(-65, -65))
         if has_player_moved:
             playerMovedEatAnOrange()
+            if how_many_lemons_ate >= 3 and player.doIHaveParasites():
+                parasite_oof_counter += 1
+                if parasite_oof_counter >= parasite_oof_counter_max:
+                    parasite_oof_counter = 0
+                    oofSound.pitch_scale = rand_range(1.0, 1.4)
+                    oofSound.play()
+                    parasite_damage_counter += 1
+                    if parasite_damage_counter >= parasite_damage_count_max:
+                        parasite_damage_counter = 0
+                        death_counter += 1
+                        gameState = GameState.GAME_OVER
+                        causeOfDeathStr = "[color=#a271ff]succumbed to parasites[/color]"
             if move_counter > move_counter_at_last_game_state + 2:
                 textBox.visible = false
                 textBoxTop.visible = false
@@ -293,17 +339,24 @@ func _process(delta):
                 else:
                     lemon.global_transform.origin.x = player.headSprite.global_transform.origin.x + 3
                     lemon.global_transform.origin.y = randi() % 7 + LEMON_Y_OFFSET
-                    while doesIntersectWithAnyBodyPart(lemon):
+                    lemon_failsafe_counter = 0
+                    while (doesIntersectWithAnyBodyPart(lemon) or doesIntersectWithAnyCoral(lemon)) and lemon_failsafe_counter < lemon_failsafe_count_max:
                         lemon.global_transform.origin.x = player.headSprite.global_transform.origin.x + 3
                         lemon.global_transform.origin.y = randi() % 7 + LEMON_Y_OFFSET
+                        lemon_failsafe_counter += 1
+                    lemon_failsafe_counter = 0
+                    while doesIntersectWithAnyCoral(lemon) and lemon_failsafe_counter < lemon_failsafe_count_max:
+                        lemon.global_transform.origin.x = player.headSprite.global_transform.origin.x + 3
+                        lemon.global_transform.origin.y = randi() % 7 + LEMON_Y_OFFSET
+                        lemon_failsafe_counter += 1
 
             var headPos = player.headSprite.global_transform.origin
             var aquariumPetPos = aquariumPet.global_transform.origin
             if headPos.x > aquariumPetPos.x - 4 and headPos.x < aquariumPetPos.x + 4 and not freed_aquarium_pet:
                 move_counter_at_last_game_state = move_counter
                 if not textBoxTop.visible:
-                    if minimum_camera_x < aquariumPetPos.x - CAMERA_MIN_X_OFFSET*2:
-                        minimum_camera_x = aquariumPetPos.x - CAMERA_MIN_X_OFFSET*2
+                    if minimum_camera_x < aquariumPetPos.x - CAMERA_MIN_X_OFFSET*3:
+                        minimum_camera_x = aquariumPetPos.x - CAMERA_MIN_X_OFFSET*3
                     heySound.pitch_scale = rand_range(1.2, 1.4)
                     heySound.play()
                     textBoxTop.visible = true
@@ -339,15 +392,19 @@ func _process(delta):
                 textBox.visible = false
                 crabSound.play()
             elif prevGameState == GameState.COCONUT_CRAB_TIME:
-                textBoxTop.visible = true
                 if causeOfDeathStr == "got BIG COCONUT CRABBED" or causeOfDeathStr == "got BIG CRABBED":
+                    textBoxTop.visible = true
                     textBoxTopText.bbcode_text = "[color=red]sorry puny one,\ni am comfortable here.[/color]"
+                    crabSound.play()
                 elif causeOfDeathStr == "got coconut crabbed":
+                    textBoxTop.visible = true
                     textBoxTopText.bbcode_text = "[color=red]oh, wait, you want us to move?\n sorry, sorry.[/color]"
+                    crabSound.play()
                 elif causeOfDeathStr == "got crabbed":
+                    textBoxTop.visible = true
                     textBoxTopText.bbcode_text = "[color=red]i aint movin'\n'til i get my coconut, brudda[/color]"
+                    crabSound.play()
                 textBox.visible = false
-                crabSound.play()
             died_to_coconut_overconsumption = false
 
 
@@ -364,9 +421,13 @@ func isPlayerOutOfBounds():
 
 
 func thingsToDoRegardlessOfGameState(has_player_moved, delta):
+    var headPos = player.headSprite.global_transform.origin
+    var csgPos = player.csgCombinerPosition.global_transform.origin
+    # camera.size = camera.size + (adventure_camera_size - camera.size) * (delta*5)
+    player.csgCombinerPosition.global_transform.origin.x = csgPos.x + (headPos.x - csgPos.x) * (delta * 5)
+    player.csgCombinerPosition.global_transform.origin.y = csgPos.y + (headPos.y - csgPos.y) * (delta * 5)
+
     if has_player_moved:
-        player.csgCombinerPosition.global_transform.origin.x = player.headSprite.global_transform.origin.x
-        player.csgCombinerPosition.global_transform.origin.y = player.headSprite.global_transform.origin.y
         playerMovedBubbleSpawn()
         if isPlayerHeadCollidingWith(bigCrab.get_node("Sprite3D"), -1.5, 1, 1.5, -1):
             owSound.pitch_scale = rand_range(0.4, 0.6)
@@ -388,7 +449,7 @@ func thingsToDoRegardlessOfGameState(has_player_moved, delta):
             var crab = crabsNode.get_child(i)
             if not crab.visible:
                 continue
-            elif has_died_to_coconut_crab and crab.get_node("Sprite3D").start_frame == 8:
+            elif willCoconutCrabsRunAway() and crab.get_node("Sprite3D").start_frame == 8:
                 pass
             elif isPlayerHeadCollidingWith(crab.get_node("Sprite3D")):
                 owSound.pitch_scale = rand_range(0.4, 0.6)
@@ -404,6 +465,20 @@ func thingsToDoRegardlessOfGameState(has_player_moved, delta):
                     has_died_to_coconut_crab = true
                 else:
                     causeOfDeathStr = "got crabbed"
+        for i in coralsNode.get_child_count():
+            var coral = coralsNode.get_child(i)
+            if not coral.visible:
+                continue
+            elif isPlayerHeadCollidingWith(coral):
+                owSound.pitch_scale = rand_range(0.4, 0.6)
+                owSound.play()
+                deathOverlay.visible = false
+                deathOverlay.color.a = 0.3
+                prevTextBoxVisible = textBox.visible
+                prevTextBoxTopVisible = textBoxTop.visible
+                death_counter += 1
+                gameState = GameState.GAME_OVER
+                causeOfDeathStr = "[color=#00ffff]dead coral tell no tales[/color]"
         for i in range(7):
                 var coconut = [coconut1, coconut2, coconut3, coconut4, coconut5, coconut6, coconut7][i]
                 if isPlayerEating(coconut):
@@ -425,21 +500,12 @@ func thingsToDoRegardlessOfGameState(has_player_moved, delta):
                 textBoxText.bbcode_text = "[center]okay.. i'm gonna go...[/center]"
     if Input.is_action_just_pressed("ui_select"):
         player.spitCoconutProjectile()
-    if has_stolen_a_coconut:
-        if player.headSprite.global_transform.origin.y <= -20:
-            coconut1.visible = true
-            coconut2.visible = true
-            coconut3.visible = true
-            coconut4.visible = true
-            coconut5.visible = true
-            coconut6.visible = true
-            coconut7.visible = true
     if creeped_out_coconut_merchant and coconutMerchant.visible:
         coconutMerchant.global_transform.origin.x += (delta*4)
         coconutMerchant.global_transform.origin.y += (delta*4)
         if coconutMerchant.global_transform.origin.x >= 9:
             coconutMerchant.visible = false
-    if has_died_to_coconut_crab:
+    if willCoconutCrabsRunAway():
         for i in range(len(coconutCrabArray)):
             var coconutCrab = coconutCrabArray[i]
             if not coconutCrab.visible: continue
@@ -452,10 +518,26 @@ func thingsToDoRegardlessOfGameState(has_player_moved, delta):
                 coconutCrab.global_transform.origin.x += (delta*5)
                 if coconutCrab.global_transform.origin.x > 9:
                     coconutCrab.visible = false
- 
+
+func willCoconutCrabsRunAway():
+    if has_died_to_coconut_crab:
+        return true
+    elif len(coconutCrabArray) >= 7:
+        return true
+    elif len(coconutCrabArray) >= 6 and bigCrab.get_node("Sprite3D").start_frame == 8:
+        return true
+    return false 
+
 func playerMovedBubbleSpawn():
     random_bubble_timer = 0
-    bubbleSound.pitch_scale = rand_range(0.8, 1.2)
+    if gameState == GameState.BEGIN_ADVENTURE or gameState == GameState.CRAB_INTERLUDE:
+        bubbleSound.pitch_scale = rand_range(0.6, 1.0)
+    elif gameState == GameState.COCONUT_CRAB_TIME:
+        bubbleSound.pitch_scale = rand_range(0.5, 0.9)
+    elif gameState == GameState.OCEAN_DEEP:
+        bubbleSound.pitch_scale = rand_range(0.4, 0.8)
+    else:
+        bubbleSound.pitch_scale = rand_range(0.8, 1.2)
     bubbleSound.play()
     for i in range(2):
         spawnBubble(player.headSprite.global_transform.origin, i)
@@ -485,6 +567,16 @@ func doesIntersectWithAnyBodyPart(sprite):
         var bodyPart = player.myBodyParts[i]
         var bodyPartPos = bodyPart.global_transform.origin
         if spritePos.x == bodyPartPos.x and spritePos.y == bodyPartPos.y:
+            return true
+    return false 
+
+func doesIntersectWithAnyCoral(sprite):
+    var spritePos = sprite.global_transform.origin
+    for i in coralsNode.get_child_count():
+        var coral = coralsNode.get_child(i)
+        if not coral.visible: continue
+        var coralPos = coral.global_transform.origin
+        if spritePos.x == coralPos.x and spritePos.y == coralPos.y:
             return true
     return false 
 
