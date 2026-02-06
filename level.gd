@@ -29,8 +29,10 @@ onready var owSound = get_node("OwSound")
 onready var bigOwSound = get_node("BigOwSound")
 onready var heySound = get_node("HeySound")
 onready var errorSound = get_node("ErrorSound")
+onready var lemonSound = get_node("LemonSound")
 onready var whatsupSound = get_node("WhatsupSound")
 onready var heyUpsetSound = get_node("HeyUpsetSound")
+onready var deadParasiteSound = get_node("DeadParasiteSound")
 onready var screamSound = get_node("ScreamSound")
 onready var textBox = get_node("CanvasLayer/TextBox")
 onready var textBoxText = get_node("CanvasLayer/TextBox/Text")
@@ -40,6 +42,7 @@ onready var camera = get_node("Camera")
 onready var crabsNode = get_node("Crabs")
 onready var coralsNode = get_node("Corals")
 onready var bigCrab = get_node("bigCrab")
+onready var wolfEelHead = get_node("WolfEelHead")
 onready var deathOverlay = get_node("CanvasLayer/DeathOverlay")
 onready var deathOverlayText = get_node("CanvasLayer/DeathOverlay/Text")
 
@@ -92,11 +95,13 @@ var how_many_lemons_ate = 0
 var adventure_camera_size = 10
 var should_snap_camera = false
 var parasite_damage_counter = 0
-var parasite_damage_count_max = 15
+var parasite_damage_count_max = 10
 var parasite_oof_counter = 0
 var parasite_oof_counter_max = 3
 
 func _ready():
+    textBox.visible = true
+    textBoxText.bbcode_text = "[color=#ff8426]if you so desire:\n    * use[/color] [wave]arrow keys[/wave] [color=#ff8426]to move..[/color]"
     set_process(true)
 
 var lemon_failsafe_counter = 0
@@ -288,6 +293,8 @@ func _process(delta):
                 textBoxTop.visible = false
             if isPlayerEating(lemon):
                 player.eatALemon()
+                lemonSound.pitch_scale = rand_range(0.8, 1.0)
+                lemonSound.play()
                 gameState = GameState.OCEAN_DEEP
                 player.infestWithParasites()
                 for i in range(7):
@@ -312,18 +319,22 @@ func _process(delta):
         updateGameCamera(delta, Vector2(0, 60), Vector2(-65, -65))
         if has_player_moved:
             playerMovedEatAnOrange()
-            if how_many_lemons_ate >= 3 and player.doIHaveParasites():
+            if how_many_lemons_ate >= 2 and player.doIHaveParasites():
                 parasite_oof_counter += 1
                 if parasite_oof_counter >= parasite_oof_counter_max:
                     parasite_oof_counter = 0
                     oofSound.pitch_scale = rand_range(1.0, 1.4)
                     oofSound.play()
+                    player.get_node("AnimationPlayer").stop()
+                    player.get_node("AnimationPlayer").play("hurtByParasite")
                     parasite_damage_counter += 1
                     if parasite_damage_counter >= parasite_damage_count_max:
                         parasite_damage_counter = 0
                         death_counter += 1
                         gameState = GameState.GAME_OVER
-                        causeOfDeathStr = "[color=#a271ff]succumbed to parasites[/color]"
+                        owSound.pitch_scale = rand_range(0.4, 0.6)
+                        owSound.play()
+                        causeOfDeathStr = "[color=#a271ff]succumbed to deep-sea parasites[/color]"
             if move_counter > move_counter_at_last_game_state + 2:
                 textBox.visible = false
                 textBoxTop.visible = false
@@ -332,6 +343,8 @@ func _process(delta):
                 minimum_camera_x = player.headSprite.global_transform.origin.x - CAMERA_MIN_X_OFFSET
                 chompSound.pitch_scale = rand_range(0.8, 1.2)
                 chompSound.play()
+                lemonSound.pitch_scale = rand_range(0.8, 1.0)
+                lemonSound.play()
                 for i in range(3):
                     spawnBubble(player.headSprite.global_transform.origin, i + 1)
                 if how_many_lemons_ate >= HOW_MANY_LEMONS:
@@ -445,6 +458,19 @@ func thingsToDoRegardlessOfGameState(has_player_moved, delta):
                 has_died_to_coconut_crab = true
             else:
                 causeOfDeathStr = "got BIG CRABBED"
+        if isPlayerHeadCollidingWith(wolfEelHead, -1.5, 1, 1.5, -1) and not wolfEelHead.start_frame == 28:
+            screamSound.pitch_scale = rand_range(0.4, 0.6)
+            screamSound.play()
+            bigOwSound.pitch_scale = rand_range(0.4, 0.6)
+            bigOwSound.play()
+            deathOverlay.visible = false
+            deathOverlay.color.a = 0.3
+            prevTextBoxVisible = textBox.visible
+            prevTextBoxTopVisible = textBoxTop.visible
+            death_counter += 1
+            gameState = GameState.GAME_OVER
+            causeOfDeathStr = "[img]res://wolfeel.png[/img]"
+
         for i in crabsNode.get_child_count():
             var crab = crabsNode.get_child(i)
             if not crab.visible:
@@ -522,9 +548,9 @@ func thingsToDoRegardlessOfGameState(has_player_moved, delta):
 func willCoconutCrabsRunAway():
     if has_died_to_coconut_crab:
         return true
-    elif len(coconutCrabArray) >= 7:
+    elif len(coconutCrabArray) >= 6:
         return true
-    elif len(coconutCrabArray) >= 6 and bigCrab.get_node("Sprite3D").start_frame == 8:
+    elif len(coconutCrabArray) >= 5 and bigCrab.get_node("Sprite3D").start_frame == 8:
         return true
     return false 
 

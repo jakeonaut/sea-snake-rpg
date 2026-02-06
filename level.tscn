@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://chomp.wav" type="AudioStream" id=2]
@@ -16,7 +16,7 @@
 [ext_resource path="res://runescape_uf.ttf" type="DynamicFontData" id=14]
 [ext_resource path="res://coconut.tscn" type="PackedScene" id=15]
 [ext_resource path="res://bigCoconutMouth.wav" type="AudioStream" id=16]
-[ext_resource path="res://spit.wav" type="AudioStream" id=17]
+[ext_resource path="res://bigCoconutSpit.wav" type="AudioStream" id=17]
 [ext_resource path="res://wind.wav" type="AudioStream" id=18]
 [ext_resource path="res://coconutMerchant.gd" type="Script" id=19]
 [ext_resource path="res://heymad.wav" type="AudioStream" id=20]
@@ -35,6 +35,9 @@
 [ext_resource path="res://smallCritters.png" type="Texture" id=33]
 [ext_resource path="res://ambientFishy.gd" type="Script" id=34]
 [ext_resource path="res://oof.wav" type="AudioStream" id=35]
+[ext_resource path="res://deadparasite.wav" type="AudioStream" id=36]
+[ext_resource path="res://eb_powerup2.wav" type="AudioStream" id=37]
+[ext_resource path="res://yippee.wav" type="AudioStream" id=38]
 
 [sub_resource type="Environment" id=1]
 
@@ -266,192 +269,300 @@ tracks/16/keys = {
 "update": 0,
 "values": [ Vector3( 0, 0, 0.7 ) ]
 }
+tracks/17/type = "value"
+tracks/17/path = NodePath("ThankYouSound:pitch_scale")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.5 ]
+}
+tracks/18/type = "value"
+tracks/18/path = NodePath(".:rotation_degrees")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("Sprite3D:rotation_degrees")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/20/type = "value"
+tracks/20/path = NodePath("Sprite3D:scale")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ) ]
+}
+tracks/21/type = "value"
+tracks/21/path = NodePath("Sprite3D2:scale")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ) ]
+}
+tracks/22/type = "value"
+tracks/22/path = NodePath("Sprite3D3:scale")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ) ]
+}
+tracks/23/type = "value"
+tracks/23/path = NodePath(".:translation")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 15, -68, -1 ) ]
+}
+tracks/24/type = "value"
+tracks/24/path = NodePath("YippeeSound:playing")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
+tracks/25/type = "value"
+tracks/25/path = NodePath("SpinOutSound:playing")
+tracks/25/interp = 1
+tracks/25/loop_wrap = true
+tracks/25/imported = false
+tracks/25/enabled = true
+tracks/25/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=8]
 resource_name = "byebye"
-length = 4.0
+length = 3.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite3D2:visible")
+tracks/0/path = NodePath("Sprite3D:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
+"times": PoolRealArray( 0, 0.8, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 5.5 ), Vector3( 0, 0, 5.5 ), Vector3( 1.33333, 0.799999, 5.5 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Sprite3D3:visible")
+tracks/1/path = NodePath("Sprite3D2:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ true ]
+"values": [ false, true ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Sprite3D4:visible")
+tracks/2/path = NodePath("Sprite3D2:translation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
+"times": PoolRealArray( 0, 0.8, 1.2, 1.3, 1.4, 1.5, 1.60003, 1.70003, 1.80003, 1.90003, 2, 2.1, 2.2, 2.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 5.4 ), Vector3( 0, 0, 5.4 ), Vector3( -0.666666, 0.666668, 5.4 ), Vector3( -0.660855, 0.733086, 5.4 ), Vector3( -0.666666, 0.666668, 5.4 ), Vector3( -0.718431, 0.47348, 5.4 ), Vector3( -0.666666, 0.666668, 5.4 ), Vector3( -0.660855, 0.733086, 5.4 ), Vector3( -0.666666, 0.666668, 5.4 ), Vector3( -0.718431, 0.47348, 5.4 ), Vector3( -0.666666, 0.666668, 5.4 ), Vector3( -0.660855, 0.733086, 5.4 ), Vector3( -0.666666, 0.666668, 5.4 ), Vector3( -0.718431, 0.47348, 5.4 ) ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("Sprite3D:translation")
-tracks/3/interp = 2
+tracks/3/path = NodePath("Sprite3D3:visible")
+tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 3.1 ), Vector3( 1, 1, 5.5 ), Vector3( 2, 0, 5.5 ), Vector3( 4, -1, 5.5 ), Vector3( 6, -3, 5.5 ) ]
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Sprite3D2:translation")
-tracks/4/interp = 2
+tracks/4/path = NodePath("Sprite3D3:translation")
+tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.2, 3.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.8, 1.2, 1.3, 1.4, 1.5, 1.60003, 1.70003, 1.80003, 1.90003, 2, 2.1, 2.2, 2.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 3 ), Vector3( 0.68, 0.853, 5.44 ), Vector3( 1.687, 0.231, 5.44 ), Vector3( 3.543, -1.177, 5.44 ), Vector3( 4.859, -1.963, 5.44 ), Vector3( 5.618, -3.152, 5.44 ) ]
+"values": [ Vector3( 0, 0, 5.3 ), Vector3( 0, 0, 5.3 ), Vector3( 0, 0.666668, 5.3 ), Vector3( -0.0174308, 0.467426, 5.3 ), Vector3( 0, 0.666668, 5.3 ), Vector3( 0.0517645, 0.859848, 5.3 ), Vector3( 0, 0.666668, 5.3 ), Vector3( -0.0174308, 0.467426, 5.3 ), Vector3( 0, 0.666668, 5.3 ), Vector3( 0.0517645, 0.859848, 5.3 ), Vector3( 0, 0.666668, 5.3 ), Vector3( -0.0174308, 0.467426, 5.3 ), Vector3( 0, 0.666668, 5.3 ), Vector3( 0.0517645, 0.859848, 5.3 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("Sprite3D3:translation")
-tracks/5/interp = 2
+tracks/5/path = NodePath("Sprite3D4:translation")
+tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.2, 3.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.8, 1.2, 1.3, 1.4, 1.5, 1.60003, 1.70003, 1.80003, 1.90003, 2, 2.1, 2.2, 2.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 2.9 ), Vector3( 0.33, 0.678, 5.42 ), Vector3( 1.493, 0.467, 5.42 ), Vector3( 2.955, -0.85, 5.42 ), Vector3( 4.327, -2.12, 5.42 ), Vector3( 5.195, -2.962, 5.42 ) ]
+"values": [ Vector3( 0, 0, 5.2 ), Vector3( 0, 0, 5.2 ), Vector3( 0.666667, 0.666668, 5.2 ), Vector3( 0.684099, 0.86591, 5.2 ), Vector3( 0.666667, 0.666668, 5.2 ), Vector3( 0.614903, 0.473488, 5.2 ), Vector3( 0.666667, 0.666668, 5.2 ), Vector3( 0.684099, 0.86591, 5.2 ), Vector3( 0.666667, 0.666668, 5.2 ), Vector3( 0.614903, 0.473488, 5.2 ), Vector3( 0.666667, 0.666668, 5.2 ), Vector3( 0.684099, 0.86591, 5.2 ), Vector3( 0.666667, 0.666668, 5.2 ), Vector3( 0.614903, 0.473488, 5.2 ) ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("Sprite3D4:translation")
-tracks/6/interp = 2
+tracks/6/path = NodePath("Sprite3D4:visible")
+tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.2, 3.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector3( 0, 0, 2.7 ), Vector3( 0, 0.522, 5.4 ), Vector3( 1.264, 0.87, 5.4 ), Vector3( 2.544, -1.023, 5.4 ), Vector3( 3.879, -1.919, 5.4 ), Vector3( 4.775, -3.089, 5.4 ) ]
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath(".:scale")
+tracks/7/path = NodePath("Sprite3D5:translation")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 1.9 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 0.8, 1.2, 1.3, 1.4, 1.5, 1.60003, 1.70003, 1.80003, 1.90003, 2, 2.1, 2.2, 2.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 1, 1, 1 ) ]
+"values": [ Vector3( 0, 0, 5.1 ), Vector3( 0, 0, 5.1 ), Vector3( -1.33333, 0.666668, 5.1 ), Vector3( -1.35076, 0.467434, 5.1 ), Vector3( -1.33333, 0.666668, 5.1 ), Vector3( -1.28157, 0.859856, 5.1 ), Vector3( -1.33333, 0.666668, 5.1 ), Vector3( -1.35076, 0.467434, 5.1 ), Vector3( -1.33333, 0.666668, 5.1 ), Vector3( -1.28157, 0.859856, 5.1 ), Vector3( -1.33333, 0.666668, 5.1 ), Vector3( -1.35076, 0.467434, 5.1 ), Vector3( -1.33333, 0.666668, 5.1 ), Vector3( -1.28157, 0.859856, 5.1 ) ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("Sprite3D:frame_delay")
+tracks/8/path = NodePath("Sprite3D5:visible")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
 tracks/8/enabled = true
 tracks/8/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ 0.2 ]
+"times": PoolRealArray( 0, 0.8 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("ThankYouSound:playing")
+tracks/9/path = NodePath("Sprite3D6:visible")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
 tracks/9/enabled = true
 tracks/9/keys = {
-"times": PoolRealArray( 0, 1 ),
+"times": PoolRealArray( 0, 0.8 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ true, false ]
+"values": [ false, true ]
 }
 tracks/10/type = "value"
-tracks/10/path = NodePath("WormSound:playing")
+tracks/10/path = NodePath("Sprite3D6:translation")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/imported = false
 tracks/10/enabled = true
 tracks/10/keys = {
-"times": PoolRealArray( 0, 0.5, 0.8, 1.3, 1.6, 2.1, 2.4, 3, 3.2, 3.7 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ true, false, true, false, true, false, true, false, true, false ]
+"times": PoolRealArray( 0, 0.8, 1.2, 1.3, 1.4, 1.5, 1.60003, 1.70003, 1.80003, 1.90003, 2, 2.1, 2.2, 2.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 5 ), Vector3( 0, 0, 5 ), Vector3( -1.86666, 0.866669, 5 ), Vector3( -1.8841, 0.667427, 5 ), Vector3( -1.86666, 0.866669, 5 ), Vector3( -1.83216, 0.995457, 5 ), Vector3( -1.86666, 0.866669, 5 ), Vector3( -1.8841, 0.667427, 5 ), Vector3( -1.86666, 0.866669, 5 ), Vector3( -1.83216, 0.995457, 5 ), Vector3( -1.86666, 0.866669, 5 ), Vector3( -1.8841, 0.667427, 5 ), Vector3( -1.86666, 0.866669, 5 ), Vector3( -1.83216, 0.995457, 5 ) ]
 }
 tracks/11/type = "value"
-tracks/11/path = NodePath("Sprite3D5:translation")
-tracks/11/interp = 1
+tracks/11/path = NodePath(".:scale")
+tracks/11/interp = 2
 tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.2, 3.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0.7 ), Vector3( -0.240356, 0.33049, 5.38 ), Vector3( 0.931377, 1.02151, 5.38 ), Vector3( 2.08809, -0.630928, 5.38 ), Vector3( 3.42507, -2.04302, 5.38 ), Vector3( 4.46161, -2.8392, 5.38 ) ]
+"values": [ Vector3( 1, 1, 1 ), Vector3( 1.6, 0.9, 1 ), Vector3( 0.9, 1.6, 1 ), Vector3( 2, 2, 1 ), Vector3( 1.5, 1.5, 1 ) ]
 }
 tracks/12/type = "value"
-tracks/12/path = NodePath("Sprite3D5:visible")
+tracks/12/path = NodePath(".:translation")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/imported = false
 tracks/12/enabled = true
 tracks/12/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
+"times": PoolRealArray( 0, 1.2, 1.5, 1.7, 1.8, 1.9, 2.1, 2.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 15, -68, -1 ), Vector3( 15, -68, -1 ), Vector3( 15, -67, -1 ), Vector3( 15, -67.6, -1 ), Vector3( 15, -65.7, -1 ), Vector3( 15, -62.8, -1 ), Vector3( 15, -60, -1 ), Vector3( 15, -59, -1 ) ]
 }
 tracks/13/type = "value"
-tracks/13/path = NodePath("WormSound:volume_db")
+tracks/13/path = NodePath(".:rotation_degrees")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/imported = false
 tracks/13/enabled = true
 tracks/13/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 1.2, 1.5, 1.7, 1.8, 2, 2.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ -25.0 ]
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, 15 ), Vector3( 0, 0, 30 ), Vector3( 0, 0, -15 ), Vector3( 0, 0, -180 ), Vector3( 0, 0, -345 ) ]
 }
 tracks/14/type = "value"
-tracks/14/path = NodePath("WormSound:pitch_scale")
+tracks/14/path = NodePath("ThankYouSound:playing")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/imported = false
 tracks/14/enabled = true
 tracks/14/keys = {
-"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.2 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 1.3 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 1.0, 0.9, 0.8, 0.7, 0.6 ]
+"values": [ true, false ]
 }
 tracks/15/type = "value"
-tracks/15/path = NodePath("Sprite3D6:visible")
+tracks/15/path = NodePath("ThankYouSound:pitch_scale")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/imported = false
@@ -459,20 +570,56 @@ tracks/15/enabled = true
 tracks/15/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
+"update": 0,
+"values": [ 1.2 ]
 }
 tracks/16/type = "value"
-tracks/16/path = NodePath("Sprite3D6:translation")
+tracks/16/path = NodePath("YippeeSound:playing")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/imported = false
 tracks/16/enabled = true
 tracks/16/keys = {
-"times": PoolRealArray( 0, 0.8, 1.6, 2.4, 3.2, 3.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 1.7, 1.8, 2.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/17/type = "value"
+tracks/17/path = NodePath("WormSound:playing")
+tracks/17/interp = 1
+tracks/17/loop_wrap = true
+tracks/17/imported = false
+tracks/17/enabled = true
+tracks/17/keys = {
+"times": PoolRealArray( 0, 0.6, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/18/type = "value"
+tracks/18/path = NodePath("WormSound:pitch_scale")
+tracks/18/interp = 1
+tracks/18/loop_wrap = true
+tracks/18/imported = false
+tracks/18/enabled = true
+tracks/18/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0.7 ), Vector3( -0.480709, 0.180267, 5.36 ), Vector3( 0.660982, 1.32196, 5.36 ), Vector3( 1.60738, -0.706039, 5.36 ), Vector3( 3.03449, -1.83271, 5.36 ), Vector3( 4.08605, -3.07956, 5.36 ) ]
+"values": [ 0.5 ]
+}
+tracks/19/type = "value"
+tracks/19/path = NodePath("SpinOutSound:playing")
+tracks/19/interp = 1
+tracks/19/loop_wrap = true
+tracks/19/imported = false
+tracks/19/enabled = true
+tracks/19/keys = {
+"times": PoolRealArray( 0, 1.7, 2.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
 }
 
 [node name="level" type="Spatial"]
@@ -595,9 +742,18 @@ volume_db = -25.0
 stream = ExtResource( 2 )
 volume_db = -15.0
 
+[node name="DeadParasiteSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 36 )
+volume_db = -5.0
+
 [node name="CoolSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 26 )
 volume_db = -30.0
+pitch_scale = 0.8
+
+[node name="LemonSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 37 )
+volume_db = -25.0
 pitch_scale = 0.8
 
 [node name="ApplauseSound" type="AudioStreamPlayer" parent="."]
@@ -1128,7 +1284,7 @@ script = ExtResource( 9 )
 frame_delay = 0.2
 
 [node name="Sprite3D3" type="Sprite3D" parent="aquariumPet"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.8 )
+transform = Transform( 1, -5.96046e-08, 0, 5.96046e-08, 1, 0, 0, 0, 1, 0, 0, 0.8 )
 visible = false
 pixel_size = 0.0625
 texture = ExtResource( 10 )
@@ -1161,8 +1317,9 @@ script = ExtResource( 9 )
 frame_delay = 0.2
 
 [node name="Sprite3D6" type="Sprite3D" parent="aquariumPet"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.7 )
+transform = Transform( 0.433013, -0.25, 0, 0.25, 0.433013, 0, 0, 0, 1, 0, 0, 0.7 )
 visible = false
+flip_v = true
 pixel_size = 0.0625
 texture = ExtResource( 10 )
 hframes = 6
@@ -1180,9 +1337,17 @@ stream = ExtResource( 30 )
 volume_db = -5.0
 pitch_scale = 1.5
 
+[node name="YippeeSound" type="AudioStreamPlayer" parent="aquariumPet"]
+stream = ExtResource( 38 )
+volume_db = -5.0
+
 [node name="WormSound" type="AudioStreamPlayer" parent="aquariumPet"]
 stream = ExtResource( 32 )
 volume_db = -25.0
+
+[node name="SpinOutSound" type="AudioStreamPlayer" parent="aquariumPet"]
+stream = ExtResource( 18 )
+volume_db = -5.0
 
 [node name="Corals" type="Spatial" parent="."]
 
@@ -1250,6 +1415,30 @@ script = ExtResource( 9 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -62, 1.5 )
 
 [node name="Sprite3D" type="Sprite3D" parent="Corals/coral6"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral47" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -65, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral47"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral48" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -63, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral48"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
 pixel_size = 0.0625
 texture = ExtResource( 10 )
@@ -1334,6 +1523,402 @@ script = ExtResource( 9 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, -64, 1.5 )
 
 [node name="Sprite3D" type="Sprite3D" parent="Corals/coral13"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral14" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -67, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral14"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral15" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -65, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral15"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral16" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -63, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral16"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral17" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -61, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral17"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral18" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -62, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral18"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral19" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -62, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral19"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral20" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -62, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral20"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral21" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -64, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral21"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral22" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -65, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral22"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral23" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -66, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral23"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral24" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -68, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral24"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral25" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -68, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral25"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral38" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -68, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral38"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral45" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28, -68, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral45"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral46" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -67, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral46"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral26" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -67, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral26"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral27" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -66, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral27"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral28" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -64, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral28"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral29" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -63, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral29"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral30" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, -61, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral30"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral31" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -61, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral31"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral32" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -61, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral32"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral33" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -64, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral33"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral44" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -63, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral44"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral34" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27, -63, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral34"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral35" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28, -63, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral35"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral39" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 29, -63, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral39"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral40" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 29, -64, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral40"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral41" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 29, -65, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral41"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral42" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28, -66, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral42"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral43" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28, -62, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral43"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral36" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27, -66, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral36"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral37" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -66, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral37"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
 pixel_size = 0.0625
 texture = ExtResource( 10 )
@@ -4288,6 +4873,28 @@ texture = ExtResource( 10 )
 hframes = 6
 vframes = 6
 frame = 18
+script = ExtResource( 9 )
+
+[node name="WolfEelHead" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 28.6, -69.3163, 2 )
+flip_h = true
+opacity = 0.5
+pixel_size = 0.125
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 26
+script = ExtResource( 9 )
+
+[node name="WolfEelBody" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 30.6, -69.3163, 2 )
+flip_h = true
+opacity = 0.5
+pixel_size = 0.125
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 24
 script = ExtResource( 9 )
 
 [editable path="lemon"]

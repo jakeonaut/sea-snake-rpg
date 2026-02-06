@@ -18,9 +18,10 @@ var prevFacing = Vector2(1, 0)
 var should_advance_animation_frame = false
 var myBodyParts = []
 var prevBodyPartsStates = []
+var parasiteTexts = ["pest control!", "deloused!", "parasite... see ya later!"]
 var coolTexts = ["awesome!", "radical!", "groovey!", "cool!", "xD!", "nice!", "okay!", "alright!", "neat!"]
 var smallComboCoolTexts = ["combo?!?", "you go girl!!!", "now that's something!!!", "now we're getting somewhere!!!", "wtf?!?", "hekck yeah!!!!"]
-var bigComboCoolTexts = ["I CAN'T BELIEVE IT!!!!!", "YOU ARE A FISH MASTER!!!!!", "BRO YOU GOTTA TEACH ME HOW TO DO THAT!!!!", "CRAB MODE ACTIVATED (JK)!!!!", "WHAT IS THIS POWER?!?!?"]
+var bigComboCoolTexts = ["I CAN'T BELIEVE IT!!!!!", "YOU ARE A FISH MASTER!!!!!", "BRO YOU GOTTA TEACH ME HOW TO DO THAT!!!!", "CRAB MODE ACTIVATED!!!!", "WHAT IS THIS POWER?!?!?"]
 
 func _ready():
     myBodyParts = [headSprite]
@@ -117,7 +118,7 @@ func moveUp():
     headSprite.global_transform.origin.y += 1
     moveMyBodyParts(0, 1)
     faceUp(headSprite)
-    tryToBeCool()
+    if not tryToEatParasites(): tryToBeCool()
     should_advance_animation_frame = not should_advance_animation_frame
     return true
 func moveDown():
@@ -133,7 +134,7 @@ func moveDown():
     headSprite.global_transform.origin.y -= 1
     moveMyBodyParts(0, -1)
     faceDown(headSprite)
-    tryToBeCool()
+    if not tryToEatParasites(): tryToBeCool()
     should_advance_animation_frame = not should_advance_animation_frame
     return true
 func moveLeft():
@@ -149,7 +150,7 @@ func moveLeft():
     headSprite.global_transform.origin.x -= 1
     moveMyBodyParts(-1, 0)
     faceLeft(headSprite)
-    tryToBeCool()
+    if not tryToEatParasites(): tryToBeCool()
     should_advance_animation_frame = not should_advance_animation_frame
     return true
 func moveRight():
@@ -165,9 +166,40 @@ func moveRight():
     headSprite.global_transform.origin.x += 1
     moveMyBodyParts(1, 0)
     faceRight(headSprite)
-    tryToBeCool()
+    if not tryToEatParasites(): tryToBeCool()
     should_advance_animation_frame = not should_advance_animation_frame
     return true
+
+func tryToEatParasites():
+    var headPos = Vector2(headSprite.global_transform.origin.x, headSprite.global_transform.origin.y)
+    var do_i_have_parasites = false
+    var do_i_still_have_parasites_after_consumption = false
+    var did_i_eat_a_parasite = false
+    for i in range(1, len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        var doesThisPartHaveAParasite = bodyPart.has_node("parasite") and bodyPart.get_node("parasite").visible
+        do_i_have_parasites = true if doesThisPartHaveAParasite else do_i_have_parasites
+        var bodyPos = Vector2(bodyPart.global_transform.origin.x, bodyPart.global_transform.origin.y)
+        if doesThisPartHaveAParasite:
+            if headPos.is_equal_approx(bodyPos):
+                did_i_eat_a_parasite = true
+                bodyPart.get_node("parasite").visible = false
+            else:
+                do_i_still_have_parasites_after_consumption = true
+    if did_i_eat_a_parasite:
+        var newAwesomeText = text3dRes.instance()
+        level.add_child(newAwesomeText)
+        newAwesomeText.global_transform.origin = headSprite.global_transform.origin + Vector3(0, 0, 5.5)
+        if do_i_still_have_parasites_after_consumption:
+            newAwesomeText.get_node("Label3D").text = parasiteTexts[randi() % len(parasiteTexts)]
+            level.deadParasiteSound.pitch_scale = rand_range(0.8, 1.2)
+            level.deadParasiteSound.play()
+        else:
+            newAwesomeText.get_node("Label3D").text = "NO MORE PARASITE!!!"
+            level.applauseSound.play()
+    # could use player.doIHaveParasites(), but that would repeat the loop needlessly
+    # this logic is a little convoluted though
+    return do_i_have_parasites 
 
 func tryToBeCool():
     var headPos = Vector2(headSprite.global_transform.origin.x, headSprite.global_transform.origin.y)
@@ -181,44 +213,37 @@ func tryToBeCool():
         ):
             was_i_cool_this_time = true
             break
-    
-    # if was_i_cool_this_time:
-    #     is_cool = true
-    # else:
-    #     is_cool = false
     if was_i_cool_this_time:
         var newAwesomeText = text3dRes.instance()
         level.add_child(newAwesomeText)
         var textArrayToUse = coolTexts
-        if level.combo_counter > 0 and level.combo_counter < 5:
+        if level.combo_counter > 0 and level.combo_counter < 4:
             textArrayToUse = smallComboCoolTexts
-        elif level.combo_counter >= 5:
+        elif level.combo_counter >= 4:
             textArrayToUse = bigComboCoolTexts
 
         var textToUse = textArrayToUse[randi() % len(textArrayToUse)]
-
         level.trick_counter += 1
         level.combo_counter += 1
-
         if level.combo_counter > 1:
             textToUse = "+" + str(level.combo_counter) + " " + textToUse
-        
         var got_a_new_highscore = false
         if level.combo_counter > level.max_combo:
             level.max_combo = level.combo_counter
             if level.combo_counter > 1:
                 textToUse = textToUse + "\nnew high score!!!"
                 got_a_new_highscore = true
-
         newAwesomeText.get_node("Label3D").text = textToUse
-        newAwesomeText.global_transform.origin = headSprite.global_transform.origin + Vector3(0, 0, 4)
+        newAwesomeText.global_transform.origin = headSprite.global_transform.origin + Vector3(0, 0, 5.5)
         if got_a_new_highscore:
             level.applauseSound.play()
         else:
             level.coolSound.pitch_scale = rand_range(0.8, 1.2)
             level.coolSound.play()
     else:
-        level.combo_counter = 0
+        level.combo_counter -= 1
+        if level.combo_counter <= 0:
+            level.combo_counter = 0
 
 func maybeAdvanceBodyPartAnimationFrames():
     for i in range(len(myBodyParts)):

@@ -37,6 +37,7 @@ func _process(delta):
             level.shatterSound.play()
             level.textBoxTopText.bbcode_text = "yay!! my hero!!!\ni'll remember this ;)"
             level.freed_aquarium_pet = true
+            level.helpful_counter += 20
             yield(get_tree().create_timer(0.2), "timeout")
             level.aquariumPet.get_node("AnimationPlayer").play("byebye")
         for i in range(2):
@@ -56,6 +57,22 @@ func _process(delta):
             yield(get_tree().create_timer(0.1), "timeout")
             level.owSound.pitch_scale = rand_range(0.9, 1.1)
             level.owSound.play()
+
+    if didCollideWithTarget(level.wolfEelHead, -2, 1.5, 2, -1.5):
+        if level.wolfEelHead.start_frame == 28:
+            activateRicochet()
+            weakRicochetSound.pitch_scale = rand_range(0.8, 1.2)
+            weakRicochetSound.play()
+            for i in range(2):
+                level.spawnBubble(level.wolfEelHead.global_transform.origin, i)
+        else:
+            level.wolfEelHead.updateBaseFrame(4, 4)
+            level.coconutChompSound.pitch_scale = rand_range(0.6, 0.8)
+            level.coconutChompSound.play()
+            level.helpful_counter += 5
+            for i in range(2):
+                level.spawnBubble(level.bigCrab.get_node("Sprite3D").global_transform.origin, i)
+            queue_free()
 
     if didCollideWithTarget(level.bigCrab.get_node("Sprite3D"), -2, 1.5, 2, -1.5):
         if level.bigCrab.get_node("Sprite3D").start_frame == 8:
@@ -79,6 +96,8 @@ func _process(delta):
             level.textBoxTopText.bbcode_text = "[wave]thank you puny creature.[/wave]"
             level.helpful_counter += 5
             level.move_counter_at_last_game_state = level.move_counter
+            if level.willCoconutCrabsRunAway():
+                level.applauseSound.play()
             for i in range(2):
                 level.spawnBubble(level.bigCrab.get_node("Sprite3D").global_transform.origin, i)
             queue_free()
@@ -107,6 +126,8 @@ func _process(delta):
                 level.helpful_counter += 1
                 level.coconutCrabArray.push_back(crab.get_node("Sprite3D"))
                 level.move_counter_at_last_game_state = level.move_counter
+                if level.willCoconutCrabsRunAway():
+                    level.applauseSound.play()
                 for j in range(2):
                     level.spawnBubble(crab.get_node("Sprite3D").global_transform.origin, j)
                 queue_free()
@@ -114,6 +135,7 @@ func _process(delta):
         var coral = level.coralsNode.get_child(i)
         if didCollideWithTarget(coral):
             activateRicochet()
+            level.errorSound.play()
             weakRicochetSound.pitch_scale = rand_range(1.4, 1.6)
             weakRicochetSound.play()
             level.move_counter_at_last_game_state = level.move_counter
