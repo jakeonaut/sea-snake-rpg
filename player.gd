@@ -206,13 +206,16 @@ func processWhaleFallGlitchiness(delta):
     whale_glitch_timer += (delta*5)
     if whale_glitch_timer >= whale_glitch_time_limit:
         whale_glitch_timer = 0
-        for i in range(0, len(myBodyParts)):
+        for i in range(1, len(myBodyParts)):
+            var should_randomize = randi() % 128 - (level.has_eaten_whale_fall * 16)
+            if should_randomize > 0: continue
             var bodyPart = myBodyParts[i]
-            var rand_dir = randi() % 32 - (level.has_eaten_whale_fall * 4)
+            var rand_dir = randi() % 5
             if rand_dir == 0: faceRight(bodyPart)
             elif rand_dir == 1: faceLeft(bodyPart)
             elif rand_dir == 2: faceUp(bodyPart)
             elif rand_dir == 3: faceDown(bodyPart)
+            bodyPart.updateBaseFrame(randi() % 4, randi() % 4)
 
 func tryToBeCool():
     # don't be cool when ur kissing.

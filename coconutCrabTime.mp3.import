@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/coconutCrabTime.mp3-b073e2fc5dde095b0bf3428db183ab73.mp3str"
+
+[deps]
+
+source_file="res://coconutCrabTime.mp3"
+dest_files=[ "res://.import/coconutCrabTime.mp3-b073e2fc5dde095b0bf3428db183ab73.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

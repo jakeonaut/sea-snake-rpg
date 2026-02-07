@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/enterTheDeep.mp3-1c364a2b0ab4168ad5b8b6d998a67d78.mp3str"
+
+[deps]
+
+source_file="res://enterTheDeep.mp3"
+dest_files=[ "res://.import/enterTheDeep.mp3-1c364a2b0ab4168ad5b8b6d998a67d78.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

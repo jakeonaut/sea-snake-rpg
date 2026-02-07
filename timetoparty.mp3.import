@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/timetoparty.mp3-f23f0af01b72b8622a52a4b6699ffb36.mp3str"
+
+[deps]
+
+source_file="res://timetoparty.mp3"
+dest_files=[ "res://.import/timetoparty.mp3-f23f0af01b72b8622a52a4b6699ffb36.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

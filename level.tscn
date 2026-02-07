@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=2]
+[gd_scene load_steps=73 format=2]
 
 [ext_resource path="res://player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://chomp.wav" type="AudioStream" id=2]
@@ -23,7 +23,7 @@
 [ext_resource path="res://whatsup.wav" type="AudioStream" id=21]
 [ext_resource path="res://crab.wav" type="AudioStream" id=22]
 [ext_resource path="res://equipCoconut.wav" type="AudioStream" id=23]
-[ext_resource path="res://darkSouls.mp3" type="AudioStream" id=24]
+[ext_resource path="res://darkSouls.wav" type="AudioStream" id=24]
 [ext_resource path="res://ricochet.wav" type="AudioStream" id=25]
 [ext_resource path="res://eba_money.wav" type="AudioStream" id=26]
 [ext_resource path="res://lemon.tscn" type="PackedScene" id=27]
@@ -46,6 +46,12 @@
 [ext_resource path="res://eba_speech_man.wav" type="AudioStream" id=44]
 [ext_resource path="res://whaleFall.png" type="Texture" id=45]
 [ext_resource path="res://whaleFallFruit.png" type="Texture" id=46]
+[ext_resource path="res://eba_swimming7.wav" type="AudioStream" id=47]
+[ext_resource path="res://coconutCrabTime.mp3" type="AudioStream" id=48]
+[ext_resource path="res://pleasantSong.mp3" type="AudioStream" id=49]
+[ext_resource path="res://timetoparty.mp3" type="AudioStream" id=50]
+[ext_resource path="res://enterTheDeep.mp3" type="AudioStream" id=51]
+[ext_resource path="res://tension.mp3" type="AudioStream" id=52]
 
 [sub_resource type="Environment" id=1]
 
@@ -1015,6 +1021,26 @@ script = ExtResource( 4 )
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 1 )
 
+[node name="SillyFishSong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 49 )
+volume_db = -20.0
+
+[node name="CrabTimeSong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 48 )
+volume_db = -20.0
+
+[node name="EnterTheDeepSong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 51 )
+volume_db = -10.0
+
+[node name="TensionSong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 52 )
+volume_db = -20.0
+
+[node name="PartySong" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 50 )
+volume_db = -25.0
+
 [node name="bg" type="Sprite3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -90 )
 opacity = 0.25
@@ -1235,6 +1261,11 @@ pitch_scale = 1.2
 [node name="SpitSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 17 )
 volume_db = -13.0
+
+[node name="HeartGetSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 47 )
+volume_db = -13.0
+pitch_scale = 0.8
 
 [node name="SwooshSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 18 )

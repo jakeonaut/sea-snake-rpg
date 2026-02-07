@@ -2,6 +2,14 @@ extends Spatial
 
 onready var player = get_node("player")
 onready var player2 = get_node("player2")
+onready var sillyFishSong = get_node("SillyFishSong")
+var hasEverPlayedCrabTimeSong = false
+onready var crabTimeSong = get_node("CrabTimeSong")
+var hasEverPlayedEnterTheDeepSong = false
+var hasEverPlayedTensionSong = false
+onready var enterTheDeepSong = get_node("EnterTheDeepSong")
+onready var tensionSong = get_node("TensionSong")
+onready var partySong = get_node("PartySong")
 onready var orange = get_node("orange")
 onready var orange2 = get_node("orange2")
 onready var lemon = get_node("lemon")
@@ -136,6 +144,7 @@ var parasite_oof_counter_max = 3
 func _ready():
     textBox.visible = true
     textBoxText.bbcode_text = "[color=#ff8426]if you so desire:\n    * use[/color] [wave]arrow keys[/wave] [color=#ff8426]to move..[/color]"
+    sillyFishSong.play()
     set_process(true)
 
 var lemon_failsafe_counter = 0
@@ -415,6 +424,9 @@ func _process(delta):
             textBoxTop.visible = true
             crabSound.play()
             textBoxTopText.bbcode_text = "[center][color=red]we're just some crabs. don't fuck with us!!!\nwe'll only move if you give us a coconut[/color][/center]"
+            if not hasEverPlayedCrabTimeSong:
+                crabTimeSong.play()
+                hasEverPlayedCrabTimeSong = true
             gameState = GameState.CRAB_INTERLUDE
             coconut1.visible = true
             coconut2.visible = true
@@ -524,6 +536,7 @@ func _process(delta):
                 for i in range(5):
                     spawnBubble(player.headSprite.global_transform.origin, i + 1)
                 gameState = GameState.SACRED_WALTZ
+                tensionSong.play()
                 FINAL_NUMBER_OF_ORANGES = how_many_oranges_ate + 7
                 CAMERA_X_OFFSET = 7
                 CAMERA_Y_OFFSET = 6
@@ -682,6 +695,7 @@ func _process(delta):
             textBox.visible = prevTextBoxVisible
             if prevGameState == GameState.CRAB_INTERLUDE and not died_to_coconut_overconsumption:
                 textBoxTop.visible = true
+                move_counter_at_last_game_state = move_counter
                 if how_many_coconuts_ate > 0:
                     textBoxTopText.bbcode_text = "[color=red]i aint movin'\n'til i get my coconut, brudda[/color]"
                 else:
@@ -689,6 +703,7 @@ func _process(delta):
                 textBox.visible = false
                 crabSound.play()
             elif prevGameState == GameState.COCONUT_CRAB_TIME:
+                move_counter_at_last_game_state = move_counter
                 if causeOfDeathStr == "got BIG COCONUT CRABBED" or causeOfDeathStr == "got BIG CRABBED":
                     textBoxTop.visible = true
                     textBoxTopText.bbcode_text = "[color=red]sorry puny one,\ni am comfortable here.[/color]"
@@ -761,6 +776,7 @@ func triedToKissPlayer2(_x, _y):
                     coolSound.play()
                 if can_end_the_game:
                     gameState = GameState.END_CREDITS
+                    partySong.play()
                     deathOverlay.visible = true
                     deathOverlay.color.a = 0
                 elif kiss_combo_counter >= max_num_kisses_until_death:
@@ -1031,6 +1047,9 @@ func updateGameCamera(delta, x_bounds = null, y_bounds = null):
     var coverOfDarknessAlpha = 0
     if gameState == GameState.COCONUT_CRAB_TIME:
         var y = camera.global_transform.origin.y
+        if y < -50 and not hasEverPlayedEnterTheDeepSong:
+            enterTheDeepSong.play()
+            hasEverPlayedEnterTheDeepSong = true
         coverOfDarknessAlpha = ((-40 - y) / 20)
     elif gameState == GameState.OCEAN_DEEP:
         var x = camera.global_transform.origin.x
