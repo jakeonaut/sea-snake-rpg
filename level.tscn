@@ -711,6 +711,27 @@ opacity = 0.5
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
+[node name="bg5" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.5438, -40, -90 )
+modulate = Color( 1, 0.588235, 0.588235, 1 )
+opacity = 0.5
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg7" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.5438, -20, -90 )
+modulate = Color( 1, 0.588235, 0.588235, 1 )
+opacity = 0.5
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg8" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.5438, 0, -90 )
+modulate = Color( 1, 0.588235, 0.588235, 1 )
+opacity = 0.5
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
 [node name="bg3" type="Sprite3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, -90 )
 modulate = Color( 0.25098, 0.207843, 0.65098, 1 )
@@ -1003,6 +1024,19 @@ texture = ExtResource( 10 )
 hframes = 6
 vframes = 6
 frame = 4
+script = ExtResource( 9 )
+
+[node name="mermonkeyGunner" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55, -47, 2 )
+script = ExtResource( 19 )
+
+[node name="Sprite3D" type="Sprite3D" parent="mermonkeyGunner"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 32
 script = ExtResource( 9 )
 
 [node name="coconut" parent="." instance=ExtResource( 15 )]
@@ -1718,6 +1752,78 @@ script = ExtResource( 9 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -61, 1.5 )
 
 [node name="Sprite3D" type="Sprite3D" parent="Corals/coral17"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral90" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -61, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral90"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral91" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -62, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral91"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral92" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -63, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral92"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral93" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -65, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral93"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral94" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -66, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral94"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 16
+script = ExtResource( 9 )
+
+[node name="coral95" type="Spatial" parent="Corals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -66, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Corals/coral95"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
 pixel_size = 0.0625
 texture = ExtResource( 10 )
@@ -5547,6 +5653,20 @@ texture = ExtResource( 10 )
 hframes = 6
 vframes = 6
 frame = 24
+script = ExtResource( 9 )
+
+[node name="LiveCorals" type="Spatial" parent="."]
+
+[node name="coral" type="Spatial" parent="LiveCorals"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 52, -56, 1.5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="LiveCorals/coral"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+pixel_size = 0.0625
+texture = ExtResource( 10 )
+hframes = 6
+vframes = 6
+frame = 30
 script = ExtResource( 9 )
 
 [editable path="lemon"]

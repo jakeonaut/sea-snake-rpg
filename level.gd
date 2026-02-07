@@ -105,6 +105,7 @@ enum GameState {
     COCONUT_CRAB_TIME,
     OCEAN_DEEP,
     SACRED_WALTZ,
+    THE_ASCENT,
     # SPAWNING_GROUNDS,
     END_CREDITS,
     FINAL_SCORE,
@@ -265,7 +266,7 @@ func _process(delta):
             if triedToKissPlayer2(0, -1):
                 player.restoreBodyPartPositions()
                 has_player_moved = false
-            elif shouldPlayer2Move():
+            elif has_player_moved and shouldPlayer2Move():
                 player2.moveDown()
                 playerMovedBubbleSpawn(player2)
             playerMovedBubbleSpawn()
@@ -275,7 +276,7 @@ func _process(delta):
             if triedToKissPlayer2(0, 1):
                 player.restoreBodyPartPositions()
                 has_player_moved = false
-            elif shouldPlayer2Move():
+            elif has_player_moved and shouldPlayer2Move():
                 player2.moveUp()
                 playerMovedBubbleSpawn(player2)
             playerMovedBubbleSpawn()
@@ -284,7 +285,7 @@ func _process(delta):
             if triedToKissPlayer2(1, 0):
                 player.restoreBodyPartPositions()
                 has_player_moved = false
-            elif shouldPlayer2Move():
+            elif has_player_moved and shouldPlayer2Move():
                 player2.moveRight()
                 playerMovedBubbleSpawn(player2)
             playerMovedBubbleSpawn()
@@ -293,7 +294,7 @@ func _process(delta):
             if triedToKissPlayer2(-1, 0):
                 player.restoreBodyPartPositions()
                 has_player_moved = false
-            elif shouldPlayer2Move():
+            elif has_player_moved and shouldPlayer2Move():
                 player2.moveLeft()
                 playerMovedBubbleSpawn(player2)
             playerMovedBubbleSpawn()
@@ -643,6 +644,11 @@ func _process(delta):
                 textBoxTopText.bbcode_text = "wow!! congratulations! YOU WIN!\ni ran out of time to make more,\nsorry!"
                 textBoxText.bbcode_text = "alright, now seal the deal\nwith 3 kisses (3)!!\nthen i'll roll credits"
                 # gameState = GameState.SPAWNING_GROUNDS
+            # if not heartFruit.visible and not orange2.visible:
+            #     gameState = GameState.THE_ASCENT
+    elif gameState == GameState.THE_ASCENT:
+        prevGameState = gameState
+        updateGameCamera(delta, Vector2(65.5, 65.5), Vector2(0, -65))
     elif gameState == GameState.GAME_OVER:
         updateGameCamera(delta)
         textBoxTop.visible = false
