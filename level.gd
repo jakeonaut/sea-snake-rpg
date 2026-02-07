@@ -13,6 +13,10 @@ onready var coconut4 = get_node("coconut4")
 onready var coconut5 = get_node("coconut5")
 onready var coconut6 = get_node("coconut6")
 onready var coconut7 = get_node("coconut7")
+onready var whaleFallFruit1 = get_node("whaleFallFruit")
+onready var whaleFallFruit2 = get_node("whaleFallFruit2")
+onready var whaleFallFruit3 = get_node("whaleFallFruit3")
+onready var aquariumPet2 = get_node("aquariumPet2")
 onready var coconutMerchant = get_node("coconutMerchant")
 onready var orangeFish = get_node("orangeFish")
 onready var aquariumPet = get_node("aquariumPet")
@@ -85,6 +89,7 @@ var prevTextBoxTopVisible = false
 var died_to_coconut_overconsumption = false
 var died_to_kissing = false
 var has_died_to_coconut_crab = false
+var has_eaten_whale_fall = 0
 var coconutCrabArray = []
 
 var has_sacred_waltz_started = false
@@ -204,7 +209,7 @@ func _process(delta):
         if creditsText.visible_characters == -1:
             creditsText.visible_characters = 0
             var finalText = "[center]"
-            finalText += "[color=#847e87]fruit ate:[/color] " + str(how_many_oranges_ate + how_many_coconuts_ate + how_many_lemons_ate + how_many_heart_fruit_ate)
+            finalText += "[color=#847e87]fruit ate:[/color] " + str(how_many_oranges_ate + how_many_coconuts_ate + how_many_lemons_ate + how_many_heart_fruit_ate + has_eaten_whale_fall)
             finalText += "\n[color=#847e87]deaths:[/color] " + str(death_counter)
             finalText += "\n[color=#847e87]crabs coconutted:[/color] " + str(len(coconutCrabArray) + (1 if bigCrab.get_node("Sprite3D").start_frame == 8 else 0))
             finalText += "\n[color=#847e87]helpfulness:[/color] " + str(helpful_counter)
@@ -213,14 +218,14 @@ func _process(delta):
             finalText += "\n[color=#847e87]player 2 tricks:[/color] " + str(player2_trick_counter) + ", hiscore: " + str(player2_max_combo)
             finalText += "\n[color=#847e87]total kisses:[/color] " + str(kiss_counter) + ", hiscore: " + str(max_kiss_combo)
             if freed_aquarium_pet:
-                finalText += "\n[wave]you freed the aquarium pet ^_^[/wave]"
+                finalText += "\n[wave]you freed the [color=#f361ff]aquarium pet ^_^[/color][/wave]"
             finalText += "\n [color=#847e87]okay bye.[/color]"
             finalText += "[/center]"
             creditsText.bbcode_text = finalText
         if creditsText.visible_characters < creditsText.bbcode_text.length() - 250 and not Input.is_action_just_pressed("ui_accept"):
             increment_timer += (delta*22)
             if increment_timer >= increment_time_limit:
-                print(creditsText.visible_characters, ", ", creditsText.bbcode_text.length())
+                # print(creditsText.visible_characters, ", ", creditsText.bbcode_text.length())
                 increment_timer = 0
                 oldWomanSound.pitch_scale = rand_range(0.8, 1.2)
                 oldWomanSound.play()
@@ -318,7 +323,7 @@ func _process(delta):
             if aquariumPet.get_node("Sprite3D").start_frame == 6:
                 umSound.play()
                 aquariumPet.get_node("Sprite3D").updateBaseFrameWithStartFrame(22)
-                textBoxTopText.bbcode_text = "[center]um. don't tap the glass..[/center]"
+                textBoxText.bbcode_text = "[center]um. don't tap the glass..[/center]"
         else:
             move_counter += 1
     # okay, semi-regardless of game state...
@@ -488,8 +493,9 @@ func _process(delta):
                 gameState = GameState.OCEAN_DEEP
                 bigCrab.global_transform.origin = Vector3(37, -68, 1.5)
                 player.infestWithParasites()
-                for i in range(4):
-                    var coconut = [coconut1, coconut3, coconut5, coconut7][i]
+                var whichCoconutsToUseArray = [coconut1, coconut5, coconut7]
+                for i in range(len(whichCoconutsToUseArray)):
+                    var coconut = whichCoconutsToUseArray[i]
                     coconut.visible = true
                     coconut.global_transform.origin.x -= 6
                     coconut.global_transform.origin.y -= 53
@@ -509,6 +515,7 @@ func _process(delta):
         prevGameState = gameState
         updateGameCamera(delta, Vector2(0, 50), Vector2(-65, -65))
         if has_player_moved:
+            aquariumPet2.visible = freed_aquarium_pet
             playerMovedEatAnOrange()
             if player.headSprite.global_transform.origin.x >= SACRED_WALTZ_X_START:
                 secretCoral.visible = true
@@ -520,7 +527,7 @@ func _process(delta):
                 FINAL_NUMBER_OF_ORANGES = how_many_oranges_ate + 7
                 CAMERA_X_OFFSET = 7
                 CAMERA_Y_OFFSET = 6
-            if how_many_lemons_ate >= 2 and player.doIHaveParasites():
+            if how_many_lemons_ate >= 1 and player.doIHaveParasites():
                 parasite_oof_counter += 1
                 if parasite_oof_counter >= parasite_oof_counter_max:
                     parasite_oof_counter = 0
@@ -536,9 +543,6 @@ func _process(delta):
                         owSound.pitch_scale = rand_range(0.4, 0.6)
                         owSound.play()
                         causeOfDeathStr = "[color=#a271ff]succumbed to deep-sea parasites[/color]"
-            if move_counter > move_counter_at_last_game_state + 2:
-                textBox.visible = false
-                textBoxTop.visible = false
             if isPlayerEating(lemon):
                 player.eatALemon()
                 minimum_camera_x = player.headSprite.global_transform.origin.x - CAMERA_MIN_X_OFFSET
@@ -568,20 +572,28 @@ func _process(delta):
             var aquariumPetPos = aquariumPet.global_transform.origin
             if headPos.x > aquariumPetPos.x - 4 and headPos.x < aquariumPetPos.x + 4 and not freed_aquarium_pet:
                 move_counter_at_last_game_state = move_counter
-                if not textBoxTop.visible:
+                if not textBox.visible:
                     if minimum_camera_x < aquariumPetPos.x - CAMERA_MIN_X_OFFSET*3:
                         minimum_camera_x = aquariumPetPos.x - CAMERA_MIN_X_OFFSET*3
                     heySound.pitch_scale = rand_range(1.2, 1.4)
                     heySound.play()
-                    textBoxTop.visible = true
-                    textBoxTopText.bbcode_text = "hi!! hi!! over here!!! i'm stuck\nin this aquarium... i'm slowly dying lol!!"
+                    textBox.visible = true
+                    textBoxText.bbcode_text = "[color=#f361ff]hi!! hi!! over here!!! i'm stuck\nin this aquarium... i'm slowly dying lol!![/color]"
             elif headPos.x >= aquariumPetPos.x + 4 and headPos.x < aquariumPetPos.x + 7 and not freed_aquarium_pet:
                 move_counter_at_last_game_state = move_counter
-                if textBoxTopText.bbcode_text == "hi!! hi!! over here!!! i'm stuck\nin this aquarium... i'm slowly dying lol!!":
+                if textBoxText.bbcode_text == "[color=#f361ff]hi!! hi!! over here!!! i'm stuck\nin this aquarium... i'm slowly dying lol!![/color]":
                     sadSound.pitch_scale = rand_range(1.4, 1.6)
                     sadSound.play()
+                    textBox.visible = true
+                    textBoxText.bbcode_text = "[color=#f361ff]oh okay... bye...[/color]"
+            elif headPos.x >= 33 and headPos.x <= 47:
+                move_counter_at_last_game_state = move_counter
+                if not textBoxTop.visible:
+                    crabSound.play()
+                    textBoxTopText.bbcode_text = "[color=red]we're crabs!!\ncome try some whale fall bro!![/color]"
+                    if freed_aquarium_pet:
+                        textBoxTopText.bbcode_text += "\n[color=#f361ff]hi! i'm here too![/color]"
                     textBoxTop.visible = true
-                    textBoxTopText.bbcode_text = "oh okay... bye..."
             elif move_counter > move_counter_at_last_game_state + 3:
                 textBox.visible = false
                 textBoxTop.visible = false
@@ -660,6 +672,7 @@ func _process(delta):
         if deathOverlay.color.a > 1:
             deathOverlay.color.a = 1
         if Input.is_action_just_pressed("ui_accept"):
+            bigOwSound.stop()
             if not died_to_kissing:
                 player.restoreBodyPartPositions()
             deathOverlay.visible = false
@@ -687,6 +700,18 @@ func _process(delta):
                 elif causeOfDeathStr == "got crabbed":
                     textBoxTop.visible = true
                     textBoxTopText.bbcode_text = "[color=red]i aint movin'\n'til i get my coconut, brudda[/color]"
+                    crabSound.play()
+                textBox.visible = false
+            elif prevGameState == GameState.OCEAN_DEEP:
+                if causeOfDeathStr == "got crabbed" or causeOfDeathStr == "got coconut crabbed":
+                    move_counter_at_last_game_state = move_counter
+                    textBoxTop.visible = true
+                    textBoxTopText.bbcode_text = "[color=red]look.. just go around man.[/color]"
+                    crabSound.play()
+                elif causeOfDeathStr == "got BIG COCONUT CRABBED" or causeOfDeathStr == "got BIG CRABBED":
+                    move_counter_at_last_game_state = move_counter
+                    textBoxTop.visible = true
+                    textBoxTopText.bbcode_text = "[color=red]please, watch your step, puny one.[/color]"
                     crabSound.play()
                 textBox.visible = false
             died_to_coconut_overconsumption = false
@@ -762,6 +787,7 @@ func shouldPlayer2Move():
     return gameState == GameState.SACRED_WALTZ and player.headSprite.global_transform.origin.x >= SACRED_WALTZ_X_START
 
 func thingsToDoRegardlessOfGameState(has_player_moved, delta):
+    player.processWhaleFallGlitchiness(delta)
     var headPos = player.headSprite.global_transform.origin
     var csgPos = player.csgCombinerPosition.global_transform.origin
     # camera.size = camera.size + (adventure_camera_size - camera.size) * (delta*5)
@@ -854,6 +880,14 @@ func thingsToDoRegardlessOfGameState(has_player_moved, delta):
             if sin_counter >= 16: # and not coconutMerchant.is_stunned:
                 creeped_out_coconut_merchant = true
                 textBoxText.bbcode_text = "[center]okay.. i'm gonna go...[/center]"
+        var whaleFallFruitArr = [whaleFallFruit1, whaleFallFruit2, whaleFallFruit3]
+        for i in range(len(whaleFallFruitArr)):
+                var whaleFallFruit = whaleFallFruitArr[i]
+                if isPlayerEating(whaleFallFruit):
+                    player.eatAWhaleFallFruit()
+                    whaleFallFruit.visible = false
+                    chompSound.pitch_scale = rand_range(0.4, 0.6)
+                    chompSound.play()
     if Input.is_action_just_pressed("ui_select"):
         player.spitCoconutProjectile()
     if creeped_out_coconut_merchant and coconutMerchant.visible:
@@ -876,6 +910,9 @@ func thingsToDoRegardlessOfGameState(has_player_moved, delta):
                     coconutCrab.visible = false
 
 func willCoconutCrabsRunAway():
+    if gameState == GameState.OCEAN_DEEP or (gameState == GameState.GAME_OVER and prevGameState == GameState.OCEAN_DEEP):
+        return false
+
     if has_died_to_coconut_crab:
         return true
     elif len(coconutCrabArray) >= 6:

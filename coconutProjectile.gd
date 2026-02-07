@@ -31,11 +31,11 @@ func _process(delta):
         activateRicochet()
         if level.aquariumPet.get_node("Sprite3D").start_frame == 6 or level.aquariumPet.get_node("Sprite3D").start_frame == 22:
             level.aquariumPet.get_node("Sprite3D").updateBaseFrameWithStartFrame(10)
-            level.textBoxTopText.bbcode_text = "oh!! oh!! yes thank you!!\none more and i should be free!!!"
+            level.textBoxText.bbcode_text = "[color=#f361ff]oh!! oh!! yes thank you!!\none more and i should be free!!![/color]"
         elif level.aquariumPet.get_node("Sprite3D").start_frame == 10:
             level.aquariumPet.get_node("Sprite3D").updateBaseFrameWithStartFrame(12)
             level.shatterSound.play()
-            level.textBoxTopText.bbcode_text = "yay!! my hero!!!\ni'll remember this ;)"
+            level.textBoxText.bbcode_text = "[color=#f361ff]yay!! my hero!!!\ni'll remember this ;)[/color]"
             level.freed_aquarium_pet = true
             level.helpful_counter += 20
             yield(get_tree().create_timer(0.2), "timeout")

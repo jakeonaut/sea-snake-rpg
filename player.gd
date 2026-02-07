@@ -18,7 +18,7 @@ var prevFacing = Vector2(1, 0)
 var should_advance_animation_frame = false
 var myBodyParts = []
 var prevBodyPartsStates = []
-var parasiteTexts = ["pest control!", "deloused!", "parasite... see ya later!"]
+var parasiteTexts = ["pest control!", "deloused!", "para-sea yoU later!"]
 var coolTexts = ["awesome!", "radical!", "groovey!", "cool!", "xD!", "nice!", "okay!", "alright!", "neat!"]
 var smallComboCoolTexts = ["combo?!?", "you go girl!!!", "now that's something!!!", "now we're getting somewhere!!!", "wtf?!?", "hekck yeah!!!!"]
 var bigComboCoolTexts = ["I CAN'T BELIEVE IT!!!!!", "YOU ARE A FISH MASTER!!!!!", "BRO YOU GOTTA TEACH ME HOW TO DO THAT!!!!", "CRAB MODE ACTIVATED!!!!", "WHAT IS THIS POWER?!?!?"]
@@ -34,6 +34,11 @@ func eatAnOrange():
 func eatALemon():
     level.how_many_lemons_ate += 1
     playerLight.scale += Vector3(0.5, 0.5, 0.5)
+
+func eatAWhaleFallFruit():
+    get_node("AnimationPlayer").stop()
+    get_node("AnimationPlayer").play("ateWhaleFall")
+    level.has_eaten_whale_fall += 1
 
 func eatACoconut():
     var could_i_eat_the_coconut = false
@@ -99,7 +104,6 @@ func spitCoconutProjectile():
     level.spitSound.play()
     yield(get_tree().create_timer(0.1), "timeout")
     level.swooshSound.play()
-
 
 func moveUp(ignore_the_rules = false):
     if not ignore_the_rules and myBodyParts.size() > 1 and facing.y < 0:
@@ -192,6 +196,23 @@ func tryToEatParasites():
     # could use player.doIHaveParasites(), but that would repeat the loop needlessly
     # this logic is a little convoluted though
     return do_i_have_parasites 
+
+var whale_glitch_timer = 0
+var whale_glitch_time_limit = 3
+func processWhaleFallGlitchiness(delta):
+    if level.has_eaten_whale_fall <= 0:
+        return
+
+    whale_glitch_timer += (delta*5)
+    if whale_glitch_timer >= whale_glitch_time_limit:
+        whale_glitch_timer = 0
+        for i in range(0, len(myBodyParts)):
+            var bodyPart = myBodyParts[i]
+            var rand_dir = randi() % 32 - (level.has_eaten_whale_fall * 4)
+            if rand_dir == 0: faceRight(bodyPart)
+            elif rand_dir == 1: faceLeft(bodyPart)
+            elif rand_dir == 2: faceUp(bodyPart)
+            elif rand_dir == 3: faceDown(bodyPart)
 
 func tryToBeCool():
     # don't be cool when ur kissing.

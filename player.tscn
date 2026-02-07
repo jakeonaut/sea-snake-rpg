@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Sprite.gd" type="Script" id=1]
 [ext_resource path="res://player_sheet.png" type="Texture" id=2]
@@ -77,6 +77,33 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "ateWhaleFall"
+tracks/0/type = "value"
+tracks/0/path = NodePath("headSprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.376471, 0.376471, 0.376471, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("headSprite:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ), Vector3( 1.2, 1.2, 1 ), Vector3( 1, 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=10]
@@ -160,4 +187,5 @@ anims/flicker = SubResource( 7 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 9 )
+anims/ateWhaleFall = SubResource( 11 )
 anims/hurtByParasite = SubResource( 10 )
