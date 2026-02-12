@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/sillyfish.mp3-08901cca61bd1f1c2a52aee6029db356.mp3str"
+
+[deps]
+
+source_file="res://music/sillyfish.mp3"
+dest_files=[ "res://.import/sillyfish.mp3-08901cca61bd1f1c2a52aee6029db356.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

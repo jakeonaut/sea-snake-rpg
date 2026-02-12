@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/pleasantSong.mp3-ae8f4786d63c3b96600cc76fe0953ad0.mp3str"
+
+[deps]
+
+source_file="res://music/pleasantSong.mp3"
+dest_files=[ "res://.import/pleasantSong.mp3-ae8f4786d63c3b96600cc76fe0953ad0.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

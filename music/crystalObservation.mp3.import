@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/crystalObservation.mp3-3c70f5daec8e037da1f243fc57262303.mp3str"
+
+[deps]
+
+source_file="res://music/crystalObservation.mp3"
+dest_files=[ "res://.import/crystalObservation.mp3-3c70f5daec8e037da1f243fc57262303.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

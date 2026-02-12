@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/tension.mp3-cafd534d3999bdd3a936681d0e98dcdf.mp3str"
+
+[deps]
+
+source_file="res://music/tension.mp3"
+dest_files=[ "res://.import/tension.mp3-cafd534d3999bdd3a936681d0e98dcdf.mp3str" ]
+
+[params]
+
+loop=false
+loop_offset=0

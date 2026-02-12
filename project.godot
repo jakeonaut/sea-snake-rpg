@@ -10,9 +10,13 @@ config_version=4
 
 [application]
 
-config/name="orange ocean"
-run/main_scene="res://level.tscn"
+config/name="sea snake rpg"
+run/main_scene="res://levels/level.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+global="*res://global.tscn"
 
 [display]
 
@@ -34,6 +38,10 @@ texture={
 "compress/mode": 3,
 "flags/filter": false,
 "flags/srgb": 0
+}
+texture_3d={
+"compress/mode": 2,
+"flags/filter": false
 }
 
 [input]
