@@ -11,6 +11,7 @@ onready var partySong = get_node("Music/PartySong")
 
 onready var ewSound = get_node("Sounds/EwSound")
 onready var bubbleSound = get_node("Sounds/BubbleSound")
+onready var bubbleReverseSound = get_node("Sounds/BubbleReverseSound")
 onready var equipCoconutSound = get_node("Sounds/EquipCoconutSound")
 onready var coconutChompSound = get_node("Sounds/CoconutChompSound")
 onready var shatterSound = get_node("Sounds/ShatterSound")
@@ -77,43 +78,25 @@ var lemon_failsafe_count_max = 7
 # var move_on_my_own_timer = 0
 # var move_on_my_own_time_max = 8
 
-var move_timer = Vector2(0, 0)
-var move_time_limit = 5
+var charging_move_timer = 0
+var charging_move_time_limit = 2
 var moveInputDir = Vector2(0, 0)
-func processMoveInputTimer(_delta):
+func processMoveInputTimer(delta):
     moveInputDir = Vector2(0, 0)
-    if Input.is_action_just_pressed("ui_up"):
-        move_timer.y = 0
-        moveInputDir.y = 1
-    elif Input.is_action_just_pressed("ui_down"):
-        move_timer.y = 0
-        moveInputDir.y = -1
-    # elif Input.is_action_pressed("ui_up"):
-    #     move_timer.y += (delta*22)
-    #     if move_timer.y >= move_time_limit:
-    #         moveInputDir.y = 1
-    #         move_timer.y = 0
-    # elif Input.is_action_pressed("ui_down"):
-    #     move_timer.y += (delta*22)
-    #     if move_timer.y >= move_time_limit:
-    #         moveInputDir.y = -1
-    #         move_timer.y = 0
-    if Input.is_action_just_pressed("ui_left"):
-        move_timer.x = 0
-        moveInputDir.x = -1
-    elif Input.is_action_just_pressed("ui_right"):
-        move_timer.x = 0
-        moveInputDir.x = 1
-    # elif Input.is_action_pressed("ui_left"):
-    #     move_timer.x += (delta*22)
-    #     if move_timer.x >= move_time_limit:
-    #         moveInputDir.x = -1
-    #         move_timer.x = 0
-    # elif Input.is_action_pressed("ui_right"):
-    #     move_timer.x += (delta*22)
-    #     if move_timer.x >= move_time_limit:
-    #         moveInputDir.x = 1
-    #         move_timer.x = 0
+    if player.is_charging:
+        charging_move_timer += (delta*22)
+        if charging_move_timer >= charging_move_time_limit:
+            moveInputDir = player.facing
+            charging_move_timer = 0
+    else:
+        if Input.is_action_just_pressed("ui_up"):
+            moveInputDir.y = 1
+        elif Input.is_action_just_pressed("ui_down"):
+            moveInputDir.y = -1
+        if Input.is_action_just_pressed("ui_left"):
+            moveInputDir.x = -1
+        elif Input.is_action_just_pressed("ui_right"):
+            moveInputDir.x = 1
 
 func shouldMoveUp():
     return moveInputDir.y > 0
@@ -127,32 +110,37 @@ func shouldMoveRight():
 func _process(delta):
     var has_player_moved = false
     if not deathOverlay.visible:
-        processMoveInputTimer(delta)
-        if shouldMoveUp():
-            has_player_moved = player.moveUp()
-            playerMovedBubbleSpawn()
-        elif shouldMoveDown():
-            has_player_moved = player.moveDown()
-            playerMovedBubbleSpawn()
-        if shouldMoveLeft():
-            has_player_moved = player.moveLeft()
-            playerMovedBubbleSpawn()
-        elif shouldMoveRight():
-            has_player_moved = player.moveRight()
-            playerMovedBubbleSpawn()
-        else:
-            random_bubble_timer += (delta*22)
-            if random_bubble_timer >= random_bubble_time_limit:
-                random_bubble_timer = 0
-                random_bubble_time_limit = rand_range(10, 40)
-                spawnBubble(player.headSprite.global_transform.origin, 0)
+        if not player.is_charging and Input.is_action_just_pressed("ui_cancel"):
+            if player.restoreBodyPartPositions():
+                combo_counter -= 1
+                bubbleReverseSound.pitch_scale = rand_range(0.4, 0.8)
+                bubbleReverseSound.play()
+            else:
+                player.maybeAdvanceBodyPartAnimationFrames()
+                player.should_advance_animation_frame = not player.should_advance_animation_frame
+                errorSound.play()
+        else:   
+            processMoveInputTimer(delta)
+            if shouldMoveUp():
+                has_player_moved = player.moveUp()
+                playerMovedBubbleSpawn()
+            elif shouldMoveDown():
+                has_player_moved = player.moveDown()
+                playerMovedBubbleSpawn()
+            if shouldMoveLeft():
+                has_player_moved = player.moveLeft()
+                playerMovedBubbleSpawn()
+            elif shouldMoveRight():
+                has_player_moved = player.moveRight()
+                playerMovedBubbleSpawn()
+            else:
+                random_bubble_timer += (delta*22)
+                if random_bubble_timer >= random_bubble_time_limit:
+                    random_bubble_timer = 0
+                    random_bubble_time_limit = rand_range(10, 40)
+                    spawnBubble(player.headSprite.global_transform.origin, 0)
     if has_player_moved:
-        if isPlayerOutOfBounds(player):
-            player.restoreBodyPartPositions()
-            errorSound.play()
-            has_player_moved = false
-        else:
-            move_counter += 1
+        move_counter += 1
     # okay, semi-regardless of game state...
     if global.gameState != global.GameState.GAME_OVER:
         thingsToDoRegardlessOfGameState(has_player_moved, delta)
@@ -194,15 +182,15 @@ func isPlayerOutOfBounds(which_player = player):
     return headPos.x <= lb or headPos.x >= rb or headPos.y >= tb or headPos.y <= bb
 
 func thingsToDoRegardlessOfGameState(_has_player_moved, delta):
-    player.processWhaleFallGlitchiness(delta)
     var headPos = player.headSprite.global_transform.origin
     var csgPos = player.csgCombinerPosition.global_transform.origin
     # camera.size = camera.size + (adventure_camera_size - camera.size) * (delta*5)
     player.csgCombinerPosition.global_transform.origin.x = csgPos.x + (headPos.x - csgPos.x) * (delta * 5)
     player.csgCombinerPosition.global_transform.origin.y = csgPos.y + (headPos.y - csgPos.y) * (delta * 5)
 
-    if Input.is_action_just_pressed("ui_select"):
-        player.spitCoconutProjectile()
+    if Input.is_action_just_released("ui_select"):
+        # player.spitCoconutProjectile()
+        player.chargeAhead()
 
 func playerMovedBubbleSpawn(which_player = player):
     random_bubble_timer = 0

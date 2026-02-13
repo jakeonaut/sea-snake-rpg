@@ -1,6 +1,7 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://sceneObjects/player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://sceneObjects/rock.tscn" type="PackedScene" id=2]
 [ext_resource path="res://sounds/bubble.wav" type="AudioStream" id=3]
 [ext_resource path="res://levels/level.gd" type="Script" id=4]
 [ext_resource path="res://sceneObjects/orange.tscn" type="PackedScene" id=5]
@@ -11,6 +12,7 @@
 [ext_resource path="res://images/npc_sheet.png" type="Texture" id=10]
 [ext_resource path="res://sounds/wilhelm.wav" type="AudioStream" id=11]
 [ext_resource path="res://sounds/heyman.wav" type="AudioStream" id=12]
+[ext_resource path="res://sounds/bubbleReverse.wav" type="AudioStream" id=13]
 [ext_resource path="res://runescape_uf.ttf" type="DynamicFontData" id=14]
 [ext_resource path="res://sounds/bigCoconutMouth.wav" type="AudioStream" id=16]
 [ext_resource path="res://sounds/wind.wav" type="AudioStream" id=18]
@@ -255,6 +257,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1 )
 stream = ExtResource( 3 )
 volume_db = -25.0
 
+[node name="BubbleReverseSound" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 13 )
+volume_db = -15.0
+
 [node name="EwSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 43 )
 volume_db = -2.0
@@ -333,6 +339,7 @@ volume_db = -5.0
 
 [node name="ErrorSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 25 )
+volume_db = -5.0
 pitch_scale = 1.5
 
 [node name="UmSound" type="AudioStreamPlayer" parent="Sounds"]
@@ -2896,3 +2903,86 @@ volume_db = -20.0
 [node name="PartySong" type="AudioStreamPlayer" parent="Music"]
 stream = ExtResource( 50 )
 volume_db = -25.0
+
+[node name="Rocks" type="Spatial" parent="."]
+
+[node name="rock" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -1 )
+
+[node name="rock10" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 4, -1 )
+
+[node name="rock11" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -1 )
+
+[node name="rock12" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 3, -1 )
+
+[node name="rock13" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, -1 )
+
+[node name="rock14" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -1 )
+
+[node name="rock15" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4, -1 )
+
+[node name="rock23" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, -1 )
+
+[node name="rock24" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3, -1 )
+
+[node name="rock25" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -1 )
+
+[node name="rock16" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -1 )
+
+[node name="rock17" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -1 )
+
+[node name="rock18" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -1, -1 )
+
+[node name="rock19" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -2, -1 )
+
+[node name="rock20" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -3, -1 )
+
+[node name="rock26" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -3, -1 )
+
+[node name="rock27" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -3, -1 )
+
+[node name="rock21" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -4, -1 )
+
+[node name="rock22" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -4, -1 )
+
+[node name="rock2" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, -1 )
+
+[node name="rock3" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -1, -1 )
+
+[node name="rock4" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, -1 )
+
+[node name="rock5" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, -1 )
+
+[node name="rock6" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, -1 )
+
+[node name="rock7" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3, -1 )
+
+[node name="rock8" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, -1 )
+
+[node name="rock9" parent="Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -1 )

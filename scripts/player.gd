@@ -14,15 +14,19 @@ onready var chompSound = get_node("Sounds/ChompSound")
 onready var coolSound = get_node("Sounds/CoolSound")
 onready var spitSound = get_node("Sounds/SpitSound")
 onready var owSound = get_node("Sounds/OwSound")
-onready var applauseSound = get_node("ApplauseSound")
+onready var applauseSound = get_node("Sounds/ApplauseSound")
 onready var csgCombinerPosition = get_node("CSGCombiner")
 onready var coverOfDarkness = get_node("CSGCombiner/CSGMesh")
 onready var playerLight = get_node("CSGCombiner/PlayerLight")
+
+var MAX_UNDO_SIZE = 5
+var is_charging = false
+var should_grow = false
 var facing = Vector2(1, 0)
-var prevFacing = Vector2(1, 0)
 var should_advance_animation_frame = false
 var myBodyParts = []
-var prevBodyPartsStates = []
+var prevBodyPartsStatesStack = []
+
 var parasiteTexts = ["pest control!", "deloused!", "para-sea yoU later!"]
 var coolTexts = ["awesome!", "radical!", "groovey!", "cool!", "xD!", "nice!", "okay!", "alright!", "neat!"]
 var smallComboCoolTexts = ["combo?!?", "you go girl!!!", "now that's something!!!", "now we're getting somewhere!!!", "wtf?!?", "hekck yeah!!!!"]
@@ -31,7 +35,6 @@ var bigComboCoolTexts = ["I CAN'T BELIEVE IT!!!!!", "YOU ARE A FISH MASTER!!!!!"
 func _ready():
     myBodyParts = [headSprite]
 
-var should_grow = false
 func eatAnOrange():
     level.how_many_oranges_ate += 1
     should_grow = true
@@ -70,6 +73,9 @@ func eatACoconut():
         level.how_many_coconuts_ate += 1
     return could_i_eat_the_coconut
 
+func chargeAhead():
+    is_charging = true
+
 func spitCoconutProjectile():
     var has_coconut_in_mouth = false
     for i in range(len(myBodyParts), 0, -1):
@@ -79,8 +85,7 @@ func spitCoconutProjectile():
             has_coconut_in_mouth = true
             break
     if not has_coconut_in_mouth:
-        if level.has_stolen_a_coconut:
-            level.errorSound.play()
+        level.errorSound.play()
         return
     var newCoconutProjectile = coconutProjectileRes.instance()
     level.add_child(newCoconutProjectile)
@@ -112,123 +117,93 @@ func spitCoconutProjectile():
     yield(get_tree().create_timer(0.1), "timeout")
     level.swooshSound.play()
 
-func moveUp(ignore_the_rules = false):
-    if not ignore_the_rules and myBodyParts.size() > 1 and facing.y < 0:
+func moveUp(): return genericMove(Vector2(0, 1))
+func moveDown(): return genericMove(Vector2(0, -1))
+func moveLeft(): return genericMove(Vector2(-1, 0))
+func moveRight(): return genericMove(Vector2(1, 0))
+
+func genericMove(moveDir):
+    if myBodyParts.size() > 1 and moveDir.is_equal_approx(-facing):
         maybeAdvanceBodyPartAnimationFrames()
         should_advance_animation_frame = not should_advance_animation_frame
         level.errorSound.play()
         return false
-    if should_grow: grow(0, 1)
+    if should_grow: grow(moveDir)
     saveBodyPartPositions()
-    facing = Vector2(0, 1)
-    headSprite.global_transform.origin.y += 1
-    moveMyBodyParts(0, 1)
-    faceUp(headSprite)
+    facing = moveDir
+    headSprite.global_transform.origin.x += moveDir.x
+    headSprite.global_transform.origin.y += moveDir.y
+    moveMyBodyParts(moveDir)
+    if moveDir.x < 0: faceLeft(headSprite)
+    elif moveDir.x > 0: faceRight(headSprite)
+    elif moveDir.y > 0: faceUp(headSprite)
+    elif moveDir.y < 0: faceDown(headSprite)
     if not tryToEatParasites(): tryToBeCool()
     should_advance_animation_frame = not should_advance_animation_frame
-    return true
-func moveDown(ignore_the_rules = false):
-    if not ignore_the_rules and myBodyParts.size() > 1 and facing.y > 0:
-        maybeAdvanceBodyPartAnimationFrames()
-        should_advance_animation_frame = not should_advance_animation_frame
-        level.errorSound.play()
+    return postProcessMoveAttempt(moveDir)
+
+func postProcessMoveAttempt(_moveDir):
+    if hasCollidedWithAnything():
+        is_charging = false
         return false
-    if should_grow: grow(0, -1)
-    saveBodyPartPositions()
-    facing = Vector2(0, -1)
-    headSprite.global_transform.origin.y -= 1
-    moveMyBodyParts(0, -1)
-    faceDown(headSprite)
-    if not tryToEatParasites(): tryToBeCool()
-    should_advance_animation_frame = not should_advance_animation_frame
-    return true
-func moveLeft(ignore_the_rules = false):
-    if not ignore_the_rules and myBodyParts.size() > 1 and facing.x > 0:
-        maybeAdvanceBodyPartAnimationFrames()
-        should_advance_animation_frame = not should_advance_animation_frame
-        level.errorSound.play()
-        return false
-    if should_grow: grow(-1, 0)
-    saveBodyPartPositions()
-    facing = Vector2(-1, 0)
-    headSprite.global_transform.origin.x -= 1
-    moveMyBodyParts(-1, 0)
-    faceLeft(headSprite)
-    if not tryToEatParasites(): tryToBeCool()
-    should_advance_animation_frame = not should_advance_animation_frame
-    return true
-func moveRight(ignore_the_rules = false):
-    if not ignore_the_rules and myBodyParts.size() > 1 and facing.x < 0:
-        maybeAdvanceBodyPartAnimationFrames()
-        should_advance_animation_frame = not should_advance_animation_frame
-        level.errorSound.play()
-        return false
-    if should_grow: grow(1, 0)
-    saveBodyPartPositions()
-    facing = Vector2(1, 0)
-    headSprite.global_transform.origin.x += 1
-    moveMyBodyParts(1, 0)
-    faceRight(headSprite)
-    if not tryToEatParasites(): tryToBeCool()
-    should_advance_animation_frame = not should_advance_animation_frame
+    if len(prevBodyPartsStatesStack) > MAX_UNDO_SIZE:
+        prevBodyPartsStatesStack.pop_front()
     return true
 
-func tryToEatParasites():
-    var headPos = Vector2(headSprite.global_transform.origin.x, headSprite.global_transform.origin.y)
-    var do_i_have_parasites = false
-    var do_i_still_have_parasites_after_consumption = false
-    var did_i_eat_a_parasite = false
-    for i in range(1, len(myBodyParts)):
-        var bodyPart = myBodyParts[i]
-        var doesThisPartHaveAParasite = bodyPart.has_node("parasite") and bodyPart.get_node("parasite").visible
-        do_i_have_parasites = true if doesThisPartHaveAParasite else do_i_have_parasites
-        var bodyPos = Vector2(bodyPart.global_transform.origin.x, bodyPart.global_transform.origin.y)
-        if doesThisPartHaveAParasite:
-            if headPos.is_equal_approx(bodyPos):
-                did_i_eat_a_parasite = true
-                bodyPart.get_node("parasite").visible = false
+func hasCollidedWithAnything():
+    if level.isPlayerOutOfBounds(self):
+        self.restoreBodyPartPositions()
+        return true
+    var rocks = get_tree().get_nodes_in_group("rocksmash")
+    for i in range(len(rocks)):
+        var rock = rocks[i]
+        if isHeadOverlapping(rock):
+            self.restoreBodyPartPositions()
+            if is_charging:
+                rock.rockSmash()
             else:
-                do_i_still_have_parasites_after_consumption = true
-    if did_i_eat_a_parasite:
-        var newAwesomeText = text3dRes.instance()
-        level.add_child(newAwesomeText)
-        newAwesomeText.global_transform.origin = headSprite.global_transform.origin + Vector3(0, 0, 5.5)
-        if do_i_still_have_parasites_after_consumption:
-            newAwesomeText.get_node("Label3D").text = parasiteTexts[randi() % len(parasiteTexts)]
-            level.deadParasiteSound.pitch_scale = rand_range(0.8, 1.2)
-            level.deadParasiteSound.play()
+                level.errorSound.play()
+            return true
+    return false
+
+func isHeadOverlapping(sprite):
+    if not sprite.visible:
+        return false
+    return sprite.global_transform.origin.x == headSprite.global_transform.origin.x and sprite.global_transform.origin.y == headSprite.global_transform.origin.y
+
+func maybeAdvanceBodyPartAnimationFrames():
+    for i in range(len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        bodyPart.updateBaseFrameWithStartFrame(bodyPart.start_frame)
+        if should_advance_animation_frame:
+            bodyPart.animation_counter = bodyPart.frame_delay
+            bodyPart.animate(1)
         else:
-            newAwesomeText.get_node("Label3D").text = "NO MORE PARASITE!!!"
-            level.applauseSound.play()
-    # could use player.doIHaveParasites(), but that would repeat the loop needlessly
-    # this logic is a little convoluted though
-    return do_i_have_parasites 
+            bodyPart.animation_counter = 0
 
-var whale_glitch_timer = 0
-var whale_glitch_time_limit = 3
-func processWhaleFallGlitchiness(delta):
-    if level.has_eaten_whale_fall <= 0:
-        return
-
-    whale_glitch_timer += (delta*5)
-    if whale_glitch_timer >= whale_glitch_time_limit:
-        whale_glitch_timer = 0
-        for i in range(1, len(myBodyParts)):
-            var should_randomize = randi() % 128 - (level.has_eaten_whale_fall * 16)
-            if should_randomize > 0: continue
-            var bodyPart = myBodyParts[i]
-            var rand_dir = randi() % 5
-            if rand_dir == 0: faceRight(bodyPart)
-            elif rand_dir == 1: faceLeft(bodyPart)
-            elif rand_dir == 2: faceUp(bodyPart)
-            elif rand_dir == 3: faceDown(bodyPart)
-            bodyPart.updateBaseFrame(randi() % 4, randi() % 4)
-
+func grow(moveDir):
+    # TODO(jaketrower): This _x, _y should be set according to the direction that the LAST PREVIOUS BODY PART is moving.
+    # so, it will be accurate for the first growth, but not subsequent growths rn
+    headSprite.updateBaseFrame(2, 0)
+    var newBodySprite = headSprite.duplicate()
+    newBodySprite.name = "bodySprite"
+    self.add_child(newBodySprite)
+    newBodySprite.global_transform.origin = myBodyParts[len(myBodyParts) - 1].global_transform.origin + Vector3(-moveDir.x, -moveDir.y, -0.05)
+    newBodySprite.updateBaseFrame(0, 1)
+    newBodySprite.modulate.r = 1
+    newBodySprite.modulate.b = 1
+    newBodySprite.scale = Vector3(1, 1, 1)
+    myBodyParts.push_back(newBodySprite)
+    should_grow = false
+    # growSound.pitch_scale = rand_range(0.8, 1.2)
+    # growSound.play()
+    yield(get_tree().create_timer(0.3), "timeout")
+    pfftSound.pitch_scale = rand_range(0.8, 1.2)
+    pfftSound.play()
+    for i in range(2):
+        level.spawnBubble(newBodySprite.global_transform.origin, i)
+ 
 func tryToBeCool():
-    # don't be cool when ur kissing.
-    if level.isPlayerEating(level.player2.headSprite):
-        return
-
     var headPos = Vector2(headSprite.global_transform.origin.x, headSprite.global_transform.origin.y)
     var was_i_cool_this_time = false
     for i in range(1, len(myBodyParts)):
@@ -263,69 +238,19 @@ func tryToBeCool():
         newAwesomeText.get_node("Label3D").text = textToUse
         newAwesomeText.global_transform.origin = headSprite.global_transform.origin + Vector3(0, 0, 5.5)
         if got_a_new_highscore:
-            level.applauseSound.play()
+            applauseSound.play()
         else:
-            level.coolSound.pitch_scale = rand_range(0.8, 1.2)
-            level.coolSound.play()
+            coolSound.pitch_scale = rand_range(0.8, 1.2)
+            coolSound.play()
     else:
         level.combo_counter -= 1
         if level.combo_counter <= 0:
             level.combo_counter = 0
 
-func maybeAdvanceBodyPartAnimationFrames():
-    for i in range(len(myBodyParts)):
-        var bodyPart = myBodyParts[i]
-        bodyPart.updateBaseFrameWithStartFrame(bodyPart.start_frame)
-        if should_advance_animation_frame:
-            bodyPart.animation_counter = bodyPart.frame_delay
-            bodyPart.animate(1)
-        else:
-            bodyPart.animation_counter = 0
-
-func grow(_x, _y):
-    # TODO(jaketrower): This _x, _y should be set according to the direction that the LAST PREVIOUS BODY PART is moving.
-    # so, it will be accurate for the first growth, but not subsequent growths rn
-    headSprite.updateBaseFrame(2, 0)
-    var newBodySprite = headSprite.duplicate()
-    newBodySprite.name = "bodySprite"
-    self.add_child(newBodySprite)
-    newBodySprite.global_transform.origin = myBodyParts[len(myBodyParts) - 1].global_transform.origin + Vector3(-_x, -_y, -0.05)
-    newBodySprite.updateBaseFrame(0, 1)
-    newBodySprite.modulate.r = 1
-    newBodySprite.modulate.b = 1
-    newBodySprite.scale = Vector3(1, 1, 1)
-    myBodyParts.push_back(newBodySprite)
-    should_grow = false
-    # growSound.pitch_scale = rand_range(0.8, 1.2)
-    # growSound.play()
-    yield(get_tree().create_timer(0.3), "timeout")
-    pfftSound.pitch_scale = rand_range(0.8, 1.2)
-    pfftSound.play()
-    for i in range(2):
-        level.spawnBubble(newBodySprite.global_transform.origin, i)
-
-func doIHaveParasites():
-    for i in range(4, len(myBodyParts)):
-        var bodyPart = myBodyParts[i]
-        if bodyPart.has_node("parasite") and bodyPart.get_node("parasite").visible:
-            return true
-    return false
-
-func infestWithParasites():
-    var should_infest_this_part = true
-    for i in range(4, len(myBodyParts)):
-        var bodyPart = myBodyParts[i]
-        if not should_infest_this_part:
-            should_infest_this_part = true
-            continue
-        var newParasite = parasite.duplicate()
-        newParasite.visible = true
-        bodyPart.add_child(newParasite)
-        newParasite.global_transform.origin = bodyPart.global_transform.origin + Vector3(0, 0, 1)
-        should_infest_this_part = false
-
-func moveMyBodyParts(_x, _y):
+func moveMyBodyParts(moveDir):
+    var _x = moveDir.x
     var x = _x
+    var _y = moveDir.y
     var y = _y
     for i in range(1, len(myBodyParts)):
         var bodyPart = myBodyParts[i]
@@ -398,34 +323,41 @@ func updateBodyPartSprite(bodyPart, x, y, _x, _y, leadingBodyPartPos, oldBodyPar
         bodyPart.animation_counter = 0
 
 func saveBodyPartPositions():
-    prevFacing = facing
-    prevBodyPartsStates = []
+    var newPrevBodyPartsStates = []
     for i in range(0, len(myBodyParts)):
         var bodyPart = myBodyParts[i]
+        var bodyPartFacing = bodyPart.facing
         var bodyPartPos = bodyPart.global_transform.origin
         var bodyPartFlipH = bodyPart.flip_h
         var bodyPartFlipV = bodyPart.flip_v
         var bodyPartRotation = bodyPart.rotation_degrees
         var bodyPartStartFrame = bodyPart.start_frame
-        prevBodyPartsStates.push_back([bodyPartPos, bodyPartFlipH, bodyPartFlipV, bodyPartRotation, bodyPartStartFrame])
+        newPrevBodyPartsStates.push_back([bodyPartPos, bodyPartFacing, bodyPartFlipH, bodyPartFlipV, bodyPartRotation, bodyPartStartFrame])
+    prevBodyPartsStatesStack.push_back(newPrevBodyPartsStates)
 
 func restoreBodyPartPositions():
-    facing = prevFacing
-    for i in range(0, len(myBodyParts)):
+    if len(prevBodyPartsStatesStack) == 0:
+        return false
+
+    var prevBodyPartsStates = prevBodyPartsStatesStack.pop_back()
+    for i in range(0, len(prevBodyPartsStates)):
         var bodyPart = myBodyParts[i]
         var prevBodyPartState = prevBodyPartsStates[i]
 
         bodyPart.global_transform.origin = prevBodyPartState[0]
-        bodyPart.flip_h = prevBodyPartState[1]
-        bodyPart.flip_v = prevBodyPartState[2]
-        bodyPart.rotation_degrees = prevBodyPartState[3]
-        bodyPart.updateBaseFrameWithStartFrame(prevBodyPartState[4])
+        bodyPart.facing = prevBodyPartState[1]
+        bodyPart.flip_h = prevBodyPartState[2]
+        bodyPart.flip_v = prevBodyPartState[3]
+        bodyPart.rotation_degrees = prevBodyPartState[4]
+        bodyPart.updateBaseFrameWithStartFrame(prevBodyPartState[5])
 
         if should_advance_animation_frame:
             bodyPart.animation_counter = bodyPart.frame_delay
             bodyPart.animate(1)
         else:
             bodyPart.animation_counter = 0
+    facing = headSprite.facing
+    return true
 
 func faceUp(sprite):
     sprite.facing = Vector2(0, 1)
@@ -447,3 +379,54 @@ func faceRight(sprite):
     sprite.rotation_degrees.z = 0
     sprite.flip_v = false
     sprite.flip_h = false
+
+func tryToEatParasites():
+    var headPos = Vector2(headSprite.global_transform.origin.x, headSprite.global_transform.origin.y)
+    var do_i_have_parasites = false
+    var do_i_still_have_parasites_after_consumption = false
+    var did_i_eat_a_parasite = false
+    for i in range(1, len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        var doesThisPartHaveAParasite = bodyPart.has_node("parasite") and bodyPart.get_node("parasite").visible
+        do_i_have_parasites = true if doesThisPartHaveAParasite else do_i_have_parasites
+        var bodyPos = Vector2(bodyPart.global_transform.origin.x, bodyPart.global_transform.origin.y)
+        if doesThisPartHaveAParasite:
+            if headPos.is_equal_approx(bodyPos):
+                did_i_eat_a_parasite = true
+                bodyPart.get_node("parasite").visible = false
+            else:
+                do_i_still_have_parasites_after_consumption = true
+    if did_i_eat_a_parasite:
+        var newAwesomeText = text3dRes.instance()
+        level.add_child(newAwesomeText)
+        newAwesomeText.global_transform.origin = headSprite.global_transform.origin + Vector3(0, 0, 5.5)
+        if do_i_still_have_parasites_after_consumption:
+            newAwesomeText.get_node("Label3D").text = parasiteTexts[randi() % len(parasiteTexts)]
+            level.deadParasiteSound.pitch_scale = rand_range(0.8, 1.2)
+            level.deadParasiteSound.play()
+        else:
+            newAwesomeText.get_node("Label3D").text = "NO MORE PARASITE!!!"
+            applauseSound.play()
+    # could use player.doIHaveParasites(), but that would repeat the loop needlessly
+    # this logic is a little convoluted though
+    return do_i_have_parasites 
+
+func doIHaveParasites():
+    for i in range(4, len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        if bodyPart.has_node("parasite") and bodyPart.get_node("parasite").visible:
+            return true
+    return false
+
+func infestWithParasites():
+    var should_infest_this_part = true
+    for i in range(4, len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        if not should_infest_this_part:
+            should_infest_this_part = true
+            continue
+        var newParasite = parasite.duplicate()
+        newParasite.visible = true
+        bodyPart.add_child(newParasite)
+        newParasite.global_transform.origin = bodyPart.global_transform.origin + Vector3(0, 0, 1)
+        should_infest_this_part = false

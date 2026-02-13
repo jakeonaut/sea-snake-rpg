@@ -208,7 +208,7 @@ pitch_scale = 0.8
 
 [node name="ApplauseSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 11 )
-volume_db = -25.0
+volume_db = -28.0
 
 [node name="SpitSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 7 )

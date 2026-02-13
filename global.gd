@@ -1,3 +1,5 @@
+extends Spatial
+
 enum GameState {
   MAIN_MENU,
   PAUSE_MENU,
