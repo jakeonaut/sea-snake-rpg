@@ -7,8 +7,8 @@ var playerCoconutSheetRes = preload("res://images/player_sheet_coconut.png")
 var text3dRes = preload("res://sceneObjects/3DText.tscn")
 onready var headSprite = get_node("headSprite")
 onready var parasite = get_node("parasite")
-var facing = Vector2(1, 0)
-var prevFacing = Vector2(1, 0)
+var facing = global.DirRight
+var prevFacing = global.DirRight
 var should_advance_animation_frame = false
 var myBodyParts = []
 var prevBodyPartsStates = []
@@ -35,7 +35,7 @@ func moveUp(ignore_the_rules = false):
         return false
     if should_grow > 0: grow(0, 1)
     saveBodyPartPositions()
-    facing = Vector2(0, 1)
+    facing = global.DirUp
     headSprite.global_transform.origin.y += 1
     moveMyBodyParts(0, 1)
     faceUp(headSprite)
@@ -50,7 +50,7 @@ func moveDown(ignore_the_rules = false):
         return false
     if should_grow > 0: grow(0, -1)
     saveBodyPartPositions()
-    facing = Vector2(0, -1)
+    facing = global.DirDown
     headSprite.global_transform.origin.y -= 1
     moveMyBodyParts(0, -1)
     faceDown(headSprite)
@@ -65,7 +65,7 @@ func moveLeft(ignore_the_rules = false):
         return false
     if should_grow > 0: grow(-1, 0)
     saveBodyPartPositions()
-    facing = Vector2(-1, 0)
+    facing = global.DirLeft
     headSprite.global_transform.origin.x -= 1
     moveMyBodyParts(-1, 0)
     faceLeft(headSprite)
@@ -80,7 +80,7 @@ func moveRight(ignore_the_rules = false):
         return false
     if should_grow > 0: grow(1, 0)
     saveBodyPartPositions()
-    facing = Vector2(1, 0)
+    facing = global.DirRight
     headSprite.global_transform.origin.x += 1
     moveMyBodyParts(1, 0)
     faceRight(headSprite)
@@ -275,22 +275,22 @@ func tryToBeCool():
             level.player2_combo_counter = 0
 
 func faceUp(sprite):
-    sprite.facing = Vector2(0, 1)
+    sprite.facing = global.DirUp
     sprite.rotation_degrees.z = 90
     sprite.flip_v = false
     sprite.flip_h = false
 func faceDown(sprite):
-    sprite.facing = Vector2(0, -1)
+    sprite.facing = global.DirDown
     sprite.rotation_degrees.z = -90
     sprite.flip_v = false
     sprite.flip_h = false
 func faceLeft(sprite):
-    sprite.facing = Vector2(-1, 0)
+    sprite.facing = global.DirLeft
     sprite.rotation_degrees.z = 0
     sprite.flip_v = false
     sprite.flip_h = true
 func faceRight(sprite):
-    sprite.facing = Vector2(1, 0)
+    sprite.facing = global.DirRight
     sprite.rotation_degrees.z = 0
     sprite.flip_v = false
     sprite.flip_h = false

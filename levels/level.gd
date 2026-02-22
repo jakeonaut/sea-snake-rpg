@@ -37,6 +37,8 @@ onready var camera = get_node("Camera")
 onready var deathOverlay = get_node("CanvasLayer/DeathOverlay")
 onready var deathOverlayText = get_node("CanvasLayer/DeathOverlay/Text")
 
+var CAMERA_X_OFFSET = 6
+var CAMERA_Y_OFFSET = 5
 var minimum_camera_x = 0
 var currentCameraXBounds = Vector2(0, 0)
 var currentCameraYBounds = Vector2(0, 0)
@@ -70,7 +72,6 @@ var parasite_oof_counter_max = 3
 func _ready():
     textBox.visible = true
     textBoxText.bbcode_text = "[color=#ff8426]if you so desire:\n    * use[/color] [wave]arrow keys[/wave] [color=#ff8426]to move..[/color]"
-    sillyFishSong.play()
     set_process(true)
 
 var lemon_failsafe_counter = 0
@@ -79,24 +80,65 @@ var lemon_failsafe_count_max = 7
 # var move_on_my_own_time_max = 8
 
 var charging_move_timer = 0
-var charging_move_time_limit = 2
+var charging_move_time_limit = 1.5
 var moveInputDir = Vector2(0, 0)
+var lastPressedDirQueue = []
+var lastPressedMoveDir = global.DirRight
+# TODO(jaketrower): I feel like this should live in the player controller now
 func processMoveInputTimer(delta):
+    processLastDirPressedQueue()
     moveInputDir = Vector2(0, 0)
     if player.is_charging:
         charging_move_timer += (delta*22)
         if charging_move_timer >= charging_move_time_limit:
-            moveInputDir = player.facing
+            if len(lastPressedDirQueue) > 0:
+                moveInputDir = lastPressedDirQueue[len(lastPressedDirQueue) - 1]
+            else:
+                moveInputDir = lastPressedMoveDir
+            player.chargeForwardStep()
             charging_move_timer = 0
-    else:
-        if Input.is_action_just_pressed("ui_up"):
-            moveInputDir.y = 1
-        elif Input.is_action_just_pressed("ui_down"):
-            moveInputDir.y = -1
-        if Input.is_action_just_pressed("ui_left"):
-            moveInputDir.x = -1
-        elif Input.is_action_just_pressed("ui_right"):
-            moveInputDir.x = 1
+    elif not player.is_charging_up_charge and len(lastPressedDirQueue) > 0:
+        moveInputDir = lastPressedDirQueue.pop_back()
+
+# TODO(jaketrower): I feel like this should live in the player controller now
+func processLastDirPressedQueue():
+    var preventChargingTurnAround = (player.is_charging or player.is_charging_up_charge) and len(player.myBodyParts) > 1
+    if Input.is_action_just_pressed("ui_up"):
+        if player.is_stunned or (player.facing == global.DirDown and preventChargingTurnAround):
+            playErrorSound()
+        else:
+            lastPressedMoveDir = global.DirUp
+            if player.is_charging_up_charge: playerMovedBubbleSpawn(player)
+            lastPressedDirQueue.push_back(global.DirUp)
+    elif Input.is_action_just_pressed("ui_left"):
+        if player.is_stunned or (player.facing == global.DirRight and preventChargingTurnAround):
+            playErrorSound()
+        else:
+            lastPressedMoveDir = global.DirLeft
+            if player.is_charging_up_charge: playerMovedBubbleSpawn(player)
+            lastPressedDirQueue.push_back(global.DirLeft)
+    elif Input.is_action_just_pressed("ui_down"):
+        if player.is_stunned or (player.facing == global.DirUp and preventChargingTurnAround):
+            playErrorSound()
+        else:
+            lastPressedMoveDir = global.DirDown
+            if player.is_charging_up_charge: playerMovedBubbleSpawn(player)
+            lastPressedDirQueue.push_back(global.DirDown)
+    elif Input.is_action_just_pressed("ui_right"):
+        if player.is_stunned or (player.facing == global.DirLeft and preventChargingTurnAround):
+            playErrorSound()
+        else:
+            if player.is_charging_up_charge: playerMovedBubbleSpawn(player)
+            lastPressedMoveDir = global.DirRight
+            lastPressedDirQueue.push_back(global.DirRight)
+    if Input.is_action_just_released("ui_up"):
+        lastPressedDirQueue.remove(lastPressedDirQueue.find(global.DirUp))
+    if Input.is_action_just_released("ui_left"):
+        lastPressedDirQueue.remove(lastPressedDirQueue.find(global.DirLeft))
+    if Input.is_action_just_released("ui_down"):
+        lastPressedDirQueue.remove(lastPressedDirQueue.find(global.DirDown))
+    if Input.is_action_just_released("ui_right"):
+        lastPressedDirQueue.remove(lastPressedDirQueue.find(global.DirRight))
 
 func shouldMoveUp():
     return moveInputDir.y > 0
@@ -108,17 +150,23 @@ func shouldMoveRight():
     return moveInputDir.x > 0
 
 func _process(delta):
+    if global.gameState == global.GameState.RESTART_EGG_HATCHING_ANIMATION:
+        updateGameCamera(delta)
+        return
+
     var has_player_moved = false
     if not deathOverlay.visible:
+        # TODO(jaketrower): I feel like this should live in the player controller now
         if not player.is_charging and Input.is_action_just_pressed("ui_cancel"):
-            if player.restoreBodyPartPositions():
+            if not player.is_stunned and player.restoreBodyPartPositions(true):
                 combo_counter -= 1
                 bubbleReverseSound.pitch_scale = rand_range(0.4, 0.8)
                 bubbleReverseSound.play()
             else:
                 player.maybeAdvanceBodyPartAnimationFrames()
                 player.should_advance_animation_frame = not player.should_advance_animation_frame
-                errorSound.play()
+                playErrorSound()
+        # TODO(jaketrower): I feel like this should live in the player controller now
         else:   
             processMoveInputTimer(delta)
             if shouldMoveUp():
@@ -145,6 +193,7 @@ func _process(delta):
     if global.gameState != global.GameState.GAME_OVER:
         thingsToDoRegardlessOfGameState(has_player_moved, delta)
         
+    updateGameCamera(delta)
     if has_player_moved:
         if isPlayerEating(orange):
             player.eatAnOrange()
@@ -152,11 +201,11 @@ func _process(delta):
                 spawnBubble(player.headSprite.global_transform.origin, i + 1)    
             if how_many_oranges_ate >= 2:
                 textBox.visible = false
-            while doesIntersectWithAnyBodyPart(orange):
+            while doesIntersectWithAnyBodyPart(orange) or (orange.global_transform.origin.x == 0 and orange.global_transform.origin.y == 0):
                 orange.global_transform.origin.x = randi() % 7 - 3
                 orange.global_transform.origin.y = randi() % 7 - 3
     elif global.gameState == global.GameState.GAME_OVER:
-        updateGameCamera(delta)
+        player.processDeath(delta)
         textBoxTop.visible = false
         if not deathOverlay.visible:
             deathOverlay.visible = true
@@ -165,14 +214,21 @@ func _process(delta):
         if deathOverlay.color.a > 1:
             deathOverlay.color.a = 1
         if Input.is_action_just_pressed("ui_accept"):
-            player.restoreBodyPartPositions()
+            # player.restoreBodyPartPositions()
             deathOverlay.visible = false
             deathOverlay.color.a = 0
-            textBoxTop.visible = prevTextBoxTopVisible
-            textBox.visible = prevTextBoxVisible
+            textBoxTop.visible = false
+            textBox.visible = false
+            # global.gameState = global.GameState.NORMAL_GAMEPLAY
+            global.gameState = global.GameState.RESTART_EGG_HATCHING_ANIMATION
+            player.initiateHatchAnimation()
+            
 
-var CAMERA_X_OFFSET = 6
-var CAMERA_Y_OFFSET = 5
+func playErrorSound():
+    errorSound.pitch_scale = rand_range(0.9, 1.1)
+    errorSound.play()
+
+# TODO(jaketrower): I feel like this should live in the player controller now
 func isPlayerOutOfBounds(which_player = player):
     var lb = currentCameraXBounds.x - CAMERA_X_OFFSET
     var rb = currentCameraXBounds.y + CAMERA_X_OFFSET
@@ -181,6 +237,7 @@ func isPlayerOutOfBounds(which_player = player):
     var headPos = which_player.headSprite.global_transform.origin
     return headPos.x <= lb or headPos.x >= rb or headPos.y >= tb or headPos.y <= bb
 
+# TODO(jaketrower): I feel like this should live in the player controller now
 func thingsToDoRegardlessOfGameState(_has_player_moved, delta):
     var headPos = player.headSprite.global_transform.origin
     var csgPos = player.csgCombinerPosition.global_transform.origin
@@ -188,9 +245,14 @@ func thingsToDoRegardlessOfGameState(_has_player_moved, delta):
     player.csgCombinerPosition.global_transform.origin.x = csgPos.x + (headPos.x - csgPos.x) * (delta * 5)
     player.csgCombinerPosition.global_transform.origin.y = csgPos.y + (headPos.y - csgPos.y) * (delta * 5)
 
-    if Input.is_action_just_released("ui_select"):
+    if Input.is_action_just_pressed("ui_select"):
+        player.startChargeUp()
+    elif Input.is_action_pressed("ui_select"):
+        player.chargeUp()
+    elif Input.is_action_just_released("ui_select"):
         # player.spitCoconutProjectile()
-        player.chargeAhead()
+        player.tryChargeAhead()
+        pass
 
 func playerMovedBubbleSpawn(which_player = player):
     random_bubble_timer = 0
@@ -205,6 +267,7 @@ func playerMovedEatAnOrange():
         player.eatAnOrange()
         for i in range(3):
             spawnBubble(player.headSprite.global_transform.origin, i + 1)
+        print("bro?")
         orange.visible = false
 
 func isPlayerHeadCollidingWith(target, lb = -0.5, tb = 0.5, rb = 0.5, bb = -0.5, which_player = player):
@@ -265,14 +328,14 @@ func updateGameCamera(delta, x_bounds = null, y_bounds = null):
         camera.global_transform.origin = player.cameraTarget.global_transform.origin
     elif camera.size == size_to_use:
         camera.global_transform.origin = camera.global_transform.origin + (player.cameraTarget.global_transform.origin - camera.global_transform.origin) * (delta*2)
-        if camera.global_transform.origin.x > currentCameraXBounds.y:
-            camera.global_transform.origin.x = currentCameraXBounds.y
-        elif camera.global_transform.origin.x < currentCameraXBounds.x:
-            camera.global_transform.origin.x = currentCameraXBounds.x
-        if camera.global_transform.origin.y < currentCameraYBounds.y:
-            camera.global_transform.origin.y = currentCameraYBounds.y
-        elif camera.global_transform.origin.y > currentCameraYBounds.x:
-            camera.global_transform.origin.y = currentCameraYBounds.x
+        # if camera.global_transform.origin.x > currentCameraXBounds.y:
+        #     camera.global_transform.origin.x = currentCameraXBounds.y
+        # elif camera.global_transform.origin.x < currentCameraXBounds.x:
+        #     camera.global_transform.origin.x = currentCameraXBounds.x
+        # if camera.global_transform.origin.y < currentCameraYBounds.y:
+        #     camera.global_transform.origin.y = currentCameraYBounds.y
+        # elif camera.global_transform.origin.y > currentCameraYBounds.x:
+        #     camera.global_transform.origin.y = currentCameraYBounds.x
             
     var coverOfDarknessAlpha = 0
     var y = camera.global_transform.origin.y

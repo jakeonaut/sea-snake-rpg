@@ -6,23 +6,42 @@ var playerSheetRes = preload("res://images/player_sheet.png")
 var playerCoconutSheetRes = preload("res://images/player_sheet_coconut.png")
 var text3dRes = preload("res://sceneObjects/3DText.tscn")
 onready var headSprite = get_node("headSprite")
+onready var eggSprite = get_node("eggSprite")
 onready var parasite = get_node("parasite")
 onready var cameraTarget = get_node("cameraTarget")
+onready var aniPlayer = get_node("AnimationPlayer")
 onready var pfftSound = get_node("Sounds/PfftSound")
 onready var growSound = get_node("Sounds/GrowSound")
 onready var chompSound = get_node("Sounds/ChompSound")
 onready var coolSound = get_node("Sounds/CoolSound")
+onready var applauseSound = get_node("Sounds/ApplauseSound")
 onready var spitSound = get_node("Sounds/SpitSound")
 onready var owSound = get_node("Sounds/OwSound")
-onready var applauseSound = get_node("Sounds/ApplauseSound")
+onready var bumpSound = get_node("Sounds/BumpSound")
+onready var chargeUpSound = get_node("Sounds/ChargeUpSound")
+onready var chargeStartSound = get_node("Sounds/ChargeStartSound")
+onready var chargeReadySound = get_node("Sounds/ChargeReadySound")
+onready var chargeSlowdown = get_node("Sounds/ChargeSlowdown")
+onready var hatchedSound = get_node("Sounds/HatchedSound")
+
 onready var csgCombinerPosition = get_node("CSGCombiner")
 onready var coverOfDarkness = get_node("CSGCombiner/CSGMesh")
 onready var playerLight = get_node("CSGCombiner/PlayerLight")
 
-var MAX_UNDO_SIZE = 5
+var IDLE_FRAME_DELAY = 0.4
+var FAST_FRAME_DELAY = 0.2
+var VERY_FAST_FRAME_DELAY = 0.1
+
+var is_stunned = false
+var is_dead = false
+var MAX_UNDO_SIZE = 7
+var charge_count = 0
+var charge_count_max = 14
+var is_charge_charged = false
+var is_charging_up_charge = false
 var is_charging = false
 var should_grow = false
-var facing = Vector2(1, 0)
+var facing = global.DirRight
 var should_advance_animation_frame = false
 var myBodyParts = []
 var prevBodyPartsStatesStack = []
@@ -34,6 +53,8 @@ var bigComboCoolTexts = ["I CAN'T BELIEVE IT!!!!!", "YOU ARE A FISH MASTER!!!!!"
 
 func _ready():
     myBodyParts = [headSprite]
+    cameraTarget.global_transform.origin = headSprite.global_transform.origin
+    cameraTarget.global_transform.origin.z = 6
 
 func eatAnOrange():
     level.how_many_oranges_ate += 1
@@ -46,8 +67,8 @@ func eatALemon():
     playerLight.scale += Vector3(0.5, 0.5, 0.5)
 
 func eatAWhaleFallFruit():
-    get_node("AnimationPlayer").stop()
-    get_node("AnimationPlayer").play("ateWhaleFall")
+    aniPlayer.stop()
+    aniPlayer.play("ateWhaleFall")
     level.has_eaten_whale_fall += 1
 
 func eatACoconut():
@@ -65,16 +86,70 @@ func eatACoconut():
         level.deathOverlay.color.a = 0.3
         level.prevTextBoxVisible = level.textBox.visible
         level.prevTextBoxTopVisible = level.textBoxTop.visible
-        level.death_counter += 1
-        level.gameState = level.GameState.GAME_OVER
+        owIDied()
         level.died_to_coconut_overconsumption = true
         level.causeOfDeathStr = "ate too many coconuts"
     else:
         level.how_many_coconuts_ate += 1
     return could_i_eat_the_coconut
 
-func chargeAhead():
-    is_charging = true
+func startChargeUp():
+    is_charge_charged = false
+    is_charging_up_charge = true
+    chargeUpSound.pitch_scale = rand_range(0.7, 0.9)
+    chargeUpSound.play()
+    setSpriteAnimationSpeed(VERY_FAST_FRAME_DELAY)
+func chargeUp():
+    is_charge_charged = true
+    if len(level.lastPressedDirQueue) > 0:
+        if len(myBodyParts) > 1:
+            var newFace = level.lastPressedDirQueue[0]
+            var oldFace = headSprite.facing
+            if newFace.x < 0: faceLeft(headSprite)
+            elif newFace.x > 0: faceRight(headSprite)
+            elif newFace.y > 0: faceUp(headSprite)
+            elif newFace.y < 0: faceDown(headSprite)
+            if oldFace != newFace:
+                # i figured this out just by drawing it... idk man don't make sense to me.
+                if oldFace.y < 0 or (oldFace.x != 0 and oldFace.x == newFace.y):
+                    headSprite.updateBaseFrame(0, 5)
+                else:
+                    headSprite.updateBaseFrame(2, 5)
+                headSprite.facing = oldFace
+            else:
+                headSprite.updateBaseFrame(2, 0)
+        else:
+            var moveDir = level.lastPressedDirQueue[0]
+            if moveDir.x < 0: faceLeft(headSprite)
+            elif moveDir.x > 0: faceRight(headSprite)
+            elif moveDir.y > 0: faceUp(headSprite)
+            elif moveDir.y < 0: faceDown(headSprite)
+    # if is_charge_charged:
+    #     return
+    # elif not chargeUpSound.is_playing(): # TODO(jaketrower): Does this work when muted?
+    #     is_charge_charged = true
+        # chargeReadySound.play()
+func tryChargeAhead():
+    if is_charge_charged:
+        is_charging_up_charge = false
+        chargeStartSound.pitch_scale = rand_range(1.2, 1.6)
+        chargeStartSound.play()
+        is_charging = true
+    else:
+        chargeUpSound.stop()
+        setSpriteAnimationSpeed(IDLE_FRAME_DELAY)
+    is_charge_charged = false
+    charge_count = 0
+
+func chargeForwardStep():
+    charge_count += 1
+    if charge_count >= charge_count_max:
+        charge_count = 0
+        setSpriteAnimationSpeed(IDLE_FRAME_DELAY)
+        is_charging = false
+        level.lastPressedDirQueue = []
+        chargeSlowdown.pitch_scale = rand_range(0.6, 0.8)
+        chargeSlowdown.play()
 
 func spitCoconutProjectile():
     var has_coconut_in_mouth = false
@@ -85,29 +160,29 @@ func spitCoconutProjectile():
             has_coconut_in_mouth = true
             break
     if not has_coconut_in_mouth:
-        level.errorSound.play()
+        level.playErrorSound()
         return
     var newCoconutProjectile = coconutProjectileRes.instance()
     level.add_child(newCoconutProjectile)
     newCoconutProjectile.global_transform.origin = headSprite.global_transform.origin
     newCoconutProjectile.facing = facing
     var coconutAniPlayer = newCoconutProjectile.get_node("AnimationPlayer")
-    if facing.is_equal_approx(Vector2(1, 0)): # spit right
+    if facing == global.DirRight:
         newCoconutProjectile.global_transform.origin += Vector3(1, 0, 0)
         coconutAniPlayer.stop()
         coconutAniPlayer.clear_queue()
         coconutAniPlayer.play("tumbleRight")
-    elif facing.is_equal_approx(Vector2(-1, 0)): # spit left
+    elif facing == global.DirLeft:
         newCoconutProjectile.global_transform.origin += Vector3(-1, 0, 0)
         coconutAniPlayer.stop()
         coconutAniPlayer.clear_queue()
         coconutAniPlayer.play("tumbleLeft")
-    elif facing.is_equal_approx(Vector2(0, 1)): # spit up
+    elif facing == global.DirUp:
         newCoconutProjectile.global_transform.origin += Vector3(0, 1, 0)
         coconutAniPlayer.stop()
         coconutAniPlayer.clear_queue()
         coconutAniPlayer.play("tumbleRight")
-    elif facing.is_equal_approx(Vector2(0, -1)): # spit down
+    elif facing == global.DirDown:
         newCoconutProjectile.global_transform.origin += Vector3(0, -1, 0)
         coconutAniPlayer.stop()
         coconutAniPlayer.clear_queue()
@@ -117,22 +192,26 @@ func spitCoconutProjectile():
     yield(get_tree().create_timer(0.1), "timeout")
     level.swooshSound.play()
 
-func moveUp(): return genericMove(Vector2(0, 1))
-func moveDown(): return genericMove(Vector2(0, -1))
-func moveLeft(): return genericMove(Vector2(-1, 0))
-func moveRight(): return genericMove(Vector2(1, 0))
+func moveUp(): return genericMove(global.DirUp)
+func moveDown(): return genericMove(global.DirDown)
+func moveLeft(): return genericMove(global.DirLeft)
+func moveRight(): return genericMove(global.DirRight)
 
 func genericMove(moveDir):
     if myBodyParts.size() > 1 and moveDir.is_equal_approx(-facing):
         maybeAdvanceBodyPartAnimationFrames()
         should_advance_animation_frame = not should_advance_animation_frame
-        level.errorSound.play()
+        level.playErrorSound()
         return false
     if should_grow: grow(moveDir)
     saveBodyPartPositions()
     facing = moveDir
     headSprite.global_transform.origin.x += moveDir.x
     headSprite.global_transform.origin.y += moveDir.y
+    if myBodyParts.size() > 1:
+        headSprite.updateBaseFrame(2, 0)
+    else:
+        headSprite.updateBaseFrame(0, 0)
     moveMyBodyParts(moveDir)
     if moveDir.x < 0: faceLeft(headSprite)
     elif moveDir.x > 0: faceRight(headSprite)
@@ -144,25 +223,43 @@ func genericMove(moveDir):
 
 func postProcessMoveAttempt(_moveDir):
     if hasCollidedWithAnything():
-        is_charging = false
+        if is_charging:
+            setSpriteAnimationSpeed(IDLE_FRAME_DELAY)
+            is_charging = false
+            level.lastPressedDirQueue = []
         return false
     if len(prevBodyPartsStatesStack) > MAX_UNDO_SIZE:
         prevBodyPartsStatesStack.pop_front()
     return true
 
 func hasCollidedWithAnything():
-    if level.isPlayerOutOfBounds(self):
-        self.restoreBodyPartPositions()
-        return true
-    var rocks = get_tree().get_nodes_in_group("rocksmash")
+    # if level.isPlayerOutOfBounds(self):
+    #     self.restoreBodyPartPositions()
+    #     return true
+    var rocks = get_tree().get_nodes_in_group("rock_group")
     for i in range(len(rocks)):
         var rock = rocks[i]
         if isHeadOverlapping(rock):
             self.restoreBodyPartPositions()
             if is_charging:
+                bumpSound.pitch_scale = rand_range(0.7, 0.9)
+                bumpSound.play()
                 rock.rockSmash()
+                owIGotStunned()
+                # TODO(jaketrower): do a little screen shake mini if not disabled (steal from gdc)
             else:
-                level.errorSound.play()
+                level.playErrorSound()
+            return true
+    var crabs = get_tree().get_nodes_in_group("crab_group")
+    for i in range(len(crabs)):
+        var crab = crabs[i]
+        if isHeadOverlapping(crab):
+            restoreBodyPartPositions()
+            if is_charging:
+                bumpSound.pitch_scale = rand_range(0.7, 0.9)
+                bumpSound.play()
+                owIGotStunned()
+            owIDied()
             return true
     return false
 
@@ -170,6 +267,64 @@ func isHeadOverlapping(sprite):
     if not sprite.visible:
         return false
     return sprite.global_transform.origin.x == headSprite.global_transform.origin.x and sprite.global_transform.origin.y == headSprite.global_transform.origin.y
+
+func owIDied():
+    owSound.pitch_scale = rand_range(0.4, 0.6)
+    owSound.play()
+    global.gameState = global.GameState.GAME_OVER
+    is_dead = true
+    death_timer = 0
+    headSprite.updateBaseFrameWithStartFrame(headSprite.start_frame)
+    if headSprite.frame_coords.y >= 5:
+        headSprite.updateBaseFrame(headSprite.frame_coords.x, 6)
+    else:
+        headSprite.updateBaseFrame(headSprite.frame_coords.x, 4)
+    level.death_counter += 1
+    level.playerMovedBubbleSpawn(self)
+
+func owIGotStunned():
+    is_stunned = true
+    aniPlayer.stop()
+    aniPlayer.clear_queue()
+    aniPlayer.play("stunned")
+    headSprite.updateBaseFrameWithStartFrame(headSprite.start_frame)
+    if headSprite.frame_coords.y >= 5:
+        headSprite.updateBaseFrame(headSprite.frame_coords.x, 6)
+    else:
+        headSprite.updateBaseFrame(headSprite.frame_coords.x, 4)
+    level.playerMovedBubbleSpawn(self)
+
+func unstunned():
+    is_stunned = false
+    if not is_dead:
+        headSprite.updateBaseFrameWithStartFrame(headSprite.start_frame)
+        if headSprite.frame_coords.y >= 5:
+            headSprite.updateBaseFrame(headSprite.frame_coords.x, 5)
+        else:
+            headSprite.updateBaseFrame(headSprite.frame_coords.x, 0)
+
+
+var death_timer = 0
+var death_time_limit = 180
+func processDeath(delta):
+    death_timer += (delta*22)
+    if death_timer >= death_time_limit:
+        return
+    var has_death_animation_finished = headSprite.opacity <= 0
+    if not has_death_animation_finished:
+        for i in range(len(myBodyParts)):
+            var bodyPart = myBodyParts[i]
+            bodyPart.global_transform.origin.y += (delta*1)
+            bodyPart.max_frames = 1
+            bodyPart.opacity -= (delta*0.4)
+            if bodyPart.opacity < 0:
+                bodyPart.visible = false
+                has_death_animation_finished = true
+                if i > 0:
+                    bodyPart.queue_free()
+    if has_death_animation_finished:
+        myBodyParts = [headSprite]
+
 
 func maybeAdvanceBodyPartAnimationFrames():
     for i in range(len(myBodyParts)):
@@ -190,9 +345,11 @@ func grow(moveDir):
     self.add_child(newBodySprite)
     newBodySprite.global_transform.origin = myBodyParts[len(myBodyParts) - 1].global_transform.origin + Vector3(-moveDir.x, -moveDir.y, -0.05)
     newBodySprite.updateBaseFrame(0, 1)
+    newBodySprite.frame_delay = IDLE_FRAME_DELAY
     newBodySprite.modulate.r = 1
     newBodySprite.modulate.b = 1
     newBodySprite.scale = Vector3(1, 1, 1)
+    newBodySprite.follow_player_frame_delay = true
     myBodyParts.push_back(newBodySprite)
     should_grow = false
     # growSound.pitch_scale = rand_range(0.8, 1.2)
@@ -225,8 +382,12 @@ func tryToBeCool():
             textArrayToUse = bigComboCoolTexts
 
         var textToUse = textArrayToUse[randi() % len(textArrayToUse)]
-        level.trick_counter += 1
-        level.combo_counter += 1
+        if is_charging:
+            level.trick_counter += 3
+            level.combo_counter += 3
+        else:
+            level.trick_counter += 1
+            level.combo_counter += 1
         if level.combo_counter > 1:
             textToUse = "+" + str(level.combo_counter) + " " + textToUse
         var got_a_new_highscore = false
@@ -276,6 +437,42 @@ func moveMyBodyParts(moveDir):
         _y = y
     cameraTarget.global_transform.origin = headSprite.global_transform.origin
     cameraTarget.global_transform.origin.z = 6
+
+func spawnEggBubble():
+    level.random_bubble_timer = 0
+    level.bubbleSound.pitch_scale = rand_range(0.2, 0.4)
+    level.bubbleSound.play()
+    var how_many = 1
+    for i in range(how_many):
+        level.spawnBubble(eggSprite.global_transform.origin + (Vector3(eggSprite.offset.x, eggSprite.offset.y, 0) * eggSprite.pixel_size), i)
+
+func initiateHatchAnimation():
+    headSprite.global_transform.origin.x = 0
+    headSprite.global_transform.origin.y = 0
+    cameraTarget.global_transform.origin = headSprite.global_transform.origin
+    cameraTarget.global_transform.origin.z = 6
+    eggSprite.global_transform.origin.x = 0
+    eggSprite.global_transform.origin.y = 0
+    for i in range(1, len(myBodyParts)):
+        var bodyPart = myBodyParts[i]
+        bodyPart.queue_free()
+    myBodyParts = [headSprite]
+    headSprite.updateBaseFrame(0, 0)
+    headSprite.max_frames = 2
+    facing = global.DirRight
+    faceRight(headSprite)
+    is_dead = false
+    aniPlayer.stop()
+    aniPlayer.clear_queue()
+    aniPlayer.play("eggFloatDown")
+    aniPlayer.queue("growFromEgg")
+
+func finishHatchAnimation():
+    headSprite.updateBaseFrame(0, 0)
+    headSprite.max_frames = 2
+    hatchedSound.pitch_scale = rand_range(0.6, 0.9)
+    hatchedSound.play()
+    global.gameState = global.GameState.NORMAL_GAMEPLAY
 
 func updateBodyPartSprite(bodyPart, x, y, _x, _y, leadingBodyPartPos, oldBodyPartPos, x_frame):
     if leadingBodyPartPos.x == oldBodyPartPos.x or leadingBodyPartPos.y == oldBodyPartPos.y: 
@@ -335,50 +532,72 @@ func saveBodyPartPositions():
         newPrevBodyPartsStates.push_back([bodyPartPos, bodyPartFacing, bodyPartFlipH, bodyPartFlipV, bodyPartRotation, bodyPartStartFrame])
     prevBodyPartsStatesStack.push_back(newPrevBodyPartsStates)
 
-func restoreBodyPartPositions():
+func restoreBodyPartPositions(is_manual_reverse = false):
     if len(prevBodyPartsStatesStack) == 0:
         return false
-
     var prevBodyPartsStates = prevBodyPartsStatesStack.pop_back()
     for i in range(0, len(prevBodyPartsStates)):
         var bodyPart = myBodyParts[i]
         var prevBodyPartState = prevBodyPartsStates[i]
-
         bodyPart.global_transform.origin = prevBodyPartState[0]
-        bodyPart.facing = prevBodyPartState[1]
-        bodyPart.flip_h = prevBodyPartState[2]
-        bodyPart.flip_v = prevBodyPartState[3]
-        bodyPart.rotation_degrees = prevBodyPartState[4]
-        bodyPart.updateBaseFrameWithStartFrame(prevBodyPartState[5])
-
+        if i == 0:
+            if len(prevBodyPartsStates) > 1:
+                if is_manual_reverse:
+                    bodyPart.facing = prevBodyPartState[1]
+                    bodyPart.flip_h = prevBodyPartState[2]
+                    bodyPart.flip_v = prevBodyPartState[3]
+                    bodyPart.rotation_degrees = prevBodyPartState[4]
+                    bodyPart.updateBaseFrame(2, 0)
+                else:
+                    var oldFace = prevBodyPartState[1]
+                    var newFace = headSprite.facing
+                    if oldFace != newFace:
+                        headSprite.updateBaseFrameWithStartFrame(prevBodyPartState[5])
+                        # i figured this out just by drawing it... idk man don't make sense to me.
+                        if oldFace.y < 0 or (oldFace.x != 0 and oldFace.x == newFace.y):
+                            headSprite.updateBaseFrame(0, 5)
+                        else:
+                            headSprite.updateBaseFrame(2, 5)
+                    headSprite.facing = oldFace
+        else:
+            bodyPart.facing = prevBodyPartState[1]
+            bodyPart.flip_h = prevBodyPartState[2]
+            bodyPart.flip_v = prevBodyPartState[3]
+            bodyPart.rotation_degrees = prevBodyPartState[4]
+            bodyPart.updateBaseFrameWithStartFrame(prevBodyPartState[5])
         if should_advance_animation_frame:
             bodyPart.animation_counter = bodyPart.frame_delay
             bodyPart.animate(1)
         else:
             bodyPart.animation_counter = 0
     facing = headSprite.facing
+    cameraTarget.global_transform.origin = headSprite.global_transform.origin
+    cameraTarget.global_transform.origin.z = 6
     return true
 
 func faceUp(sprite):
-    sprite.facing = Vector2(0, 1)
+    sprite.facing = global.DirUp
     sprite.rotation_degrees.z = 90
     sprite.flip_v = false
     sprite.flip_h = false
 func faceDown(sprite):
-    sprite.facing = Vector2(0, -1)
+    sprite.facing = global.DirDown
     sprite.rotation_degrees.z = -90
     sprite.flip_v = false
     sprite.flip_h = false
 func faceLeft(sprite):
-    sprite.facing = Vector2(-1, 0)
+    sprite.facing = global.DirLeft
     sprite.rotation_degrees.z = 0
     sprite.flip_v = false
     sprite.flip_h = true
 func faceRight(sprite):
-    sprite.facing = Vector2(1, 0)
+    sprite.facing = global.DirRight
     sprite.rotation_degrees.z = 0
     sprite.flip_v = false
     sprite.flip_h = false
+
+func setSpriteAnimationSpeed(frameDelay):
+    headSprite.frame_delay = frameDelay
 
 func tryToEatParasites():
     var headPos = Vector2(headSprite.global_transform.origin.x, headSprite.global_transform.origin.y)

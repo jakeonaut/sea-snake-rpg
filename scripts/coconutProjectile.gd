@@ -6,7 +6,7 @@ onready var clonkSound = get_node("ClonkSound")
 onready var weakRicochetSound = get_node("WeakRicochetSound")
 onready var mySprite = get_node("Sprite3D")
 
-var facing = Vector2(1, 0)
+var facing = global.DirRight
 var facingAcc = Vector2(0, 0)
 var opacity = 1
 var is_ricocheting = false
@@ -135,7 +135,7 @@ func _process(delta):
         var coral = level.coralsNode.get_child(i)
         if didCollideWithTarget(coral):
             activateRicochet()
-            level.errorSound.play()
+            level.playErrorSound()
             weakRicochetSound.pitch_scale = rand_range(1.4, 1.6)
             weakRicochetSound.play()
             level.move_counter_at_last_game_state = level.move_counter

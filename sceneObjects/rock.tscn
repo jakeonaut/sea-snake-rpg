@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/rock.gd" type="Script" id=1]
 [ext_resource path="res://images/environment_sheet.png" type="Texture" id=2]
-[ext_resource path="res://sounds/miniquake.wav" type="AudioStream" id=3]
+[ext_resource path="res://sounds/eb_impact2.wav" type="AudioStream" id=3]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -29,18 +29,6 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ true ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Miniquake:playing")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ false ]
 }
 
 [sub_resource type="Animation" id=2]
@@ -71,7 +59,7 @@ tracks/1/keys = {
 "values": [ true, false ]
 }
 
-[node name="rock" type="Sprite3D" groups=["rocksmash"]]
+[node name="rock" type="Sprite3D" groups=["rock_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 pixel_size = 0.0625
 texture = ExtResource( 2 )
@@ -85,6 +73,6 @@ should_animate = false
 anims/RESET = SubResource( 1 )
 anims/breakUp = SubResource( 2 )
 
-[node name="Miniquake" type="AudioStreamPlayer" parent="."]
+[node name="MiniquakeSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
-volume_db = -15.0
+volume_db = -25.0

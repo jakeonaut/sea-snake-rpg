@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/eb_powerdown2.wav-a43958a19994c9d1ae7beeb85e63d092.sample"
+
+[deps]
+
+source_file="res://sounds/eb_powerdown2.wav"
+dest_files=[ "res://.import/eb_powerdown2.wav-a43958a19994c9d1ae7beeb85e63d092.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

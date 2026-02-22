@@ -1,5 +1,6 @@
 extends Sprite3D
 
+onready var level = get_tree().get_root().get_node("level")
 var animation_counter = 0
 export var frame_delay = 0.4
 var original_frame_delay = 0
@@ -11,8 +12,9 @@ export var max_frames = 2
 
 var has_finished_animation = false
 var repeat_animation = true
+var follow_player_frame_delay = false
 
-var facing = Vector2(1, 0)
+var facing = global.DirRight
 var is_rotating = false
 export var should_fizzle_out = false
 var should_soft_fizzle_out = false
@@ -102,6 +104,8 @@ func animate(delta):
         return
 
     animation_counter += delta
+    if follow_player_frame_delay:
+        frame_delay = level.player.headSprite.frame_delay
     if animation_counter >= frame_delay:
         animation_counter = 0
         var frame = get_frame()
