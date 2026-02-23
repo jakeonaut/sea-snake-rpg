@@ -124,7 +124,7 @@ func grow(_x, _y):
     level.player.pfftSound.pitch_scale = rand_range(0.8, 1.2)
     level.player.pfftSound.play()
     for i in range(2):
-        level.spawnBubble(newBodySprite.global_transform.origin, i)
+        level._spawnBubble(newBodySprite.global_transform.origin, i)
     how_many_times_did_i_grow += 1
 
 func moveMyBodyParts(_x, _y):

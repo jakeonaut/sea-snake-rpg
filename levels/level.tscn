@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=2]
+[gd_scene load_steps=48 format=2]
 
 [ext_resource path="res://sceneObjects/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://sceneObjects/rock.tscn" type="PackedScene" id=2]
@@ -14,11 +14,13 @@
 [ext_resource path="res://sounds/heyman.wav" type="AudioStream" id=12]
 [ext_resource path="res://sounds/bubbleReverse.wav" type="AudioStream" id=13]
 [ext_resource path="res://runescape_uf.ttf" type="DynamicFontData" id=14]
+[ext_resource path="res://sceneObjects/npcFish.tscn" type="PackedScene" id=15]
 [ext_resource path="res://sounds/bigCoconutMouth.wav" type="AudioStream" id=16]
+[ext_resource path="res://eventScripts/grandmaFishEvent.gd" type="Script" id=17]
 [ext_resource path="res://sounds/wind.wav" type="AudioStream" id=18]
+[ext_resource path="res://sceneObjects/whale.tscn" type="PackedScene" id=19]
 [ext_resource path="res://sounds/heymad.wav" type="AudioStream" id=20]
 [ext_resource path="res://sounds/whatsup.wav" type="AudioStream" id=21]
-[ext_resource path="res://sounds/crab.wav" type="AudioStream" id=22]
 [ext_resource path="res://sounds/equipCoconut.wav" type="AudioStream" id=23]
 [ext_resource path="res://sounds/darkSouls.wav" type="AudioStream" id=24]
 [ext_resource path="res://sounds/ricochet.wav" type="AudioStream" id=25]
@@ -316,10 +318,6 @@ stream = ExtResource( 21 )
 volume_db = -15.0
 pitch_scale = 1.2
 
-[node name="CrabSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 22 )
-volume_db = -8.0
-
 [node name="ShatterSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 31 )
 volume_db = -32.0
@@ -554,7 +552,17 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, -1 )
 [node name="rock9" parent="Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -1 )
 
+[node name="grandmaFish" parent="." instance=ExtResource( 15 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, -5, 0 )
+bbcode_text = "[wave]now what are you doin here sonny?[/wave]"
+stunned_text = "[wave]that's quite enough now dearie..[/wave]"
+
+[node name="event" type="Node" parent="grandmaFish"]
+script = ExtResource( 17 )
+
 [node name="Crab" type="Spatial" parent="."]
 
 [node name="crab" parent="Crab" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, -1 )
+
+[node name="whale" parent="." instance=ExtResource( 19 )]

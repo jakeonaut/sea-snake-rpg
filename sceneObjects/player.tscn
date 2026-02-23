@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scripts/Sprite.gd" type="Script" id=1]
 [ext_resource path="res://images/player_sheet.png" type="Texture" id=2]
@@ -17,6 +17,8 @@
 [ext_resource path="res://sounds/worm.wav" type="AudioStream" id=15]
 [ext_resource path="res://sounds/drown.wav" type="AudioStream" id=16]
 [ext_resource path="res://sounds/eb_powerup3.wav" type="AudioStream" id=17]
+[ext_resource path="res://scripts/playerMover.gd" type="Script" id=18]
+[ext_resource path="res://sounds/77 Skids.wav" type="AudioStream" id=19]
 
 [sub_resource type="QuadMesh" id=1]
 
@@ -305,6 +307,30 @@ tracks/19/keys = {
 "update": 0,
 "values": [ false ]
 }
+tracks/20/type = "value"
+tracks/20/path = NodePath("headSprite:should_animate")
+tracks/20/interp = 1
+tracks/20/loop_wrap = true
+tracks/20/imported = false
+tracks/20/enabled = true
+tracks/20/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+tracks/21/type = "value"
+tracks/21/path = NodePath("headSprite:pixel_size")
+tracks/21/interp = 1
+tracks/21/loop_wrap = true
+tracks/21/imported = false
+tracks/21/enabled = true
+tracks/21/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0625 ]
+}
 
 [sub_resource type="Animation" id=11]
 resource_name = "ateWhaleFall"
@@ -510,7 +536,7 @@ tracks/11/keys = {
 
 [sub_resource type="Animation" id=12]
 resource_name = "growFromEgg"
-length = 0.6
+length = 0.5
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("headSprite:visible")
@@ -519,7 +545,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.3 ),
+"times": PoolRealArray( 0, 0.1, 0.2 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ false, false, true ]
@@ -531,7 +557,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.2, 0.5 ),
+"times": PoolRealArray( 0, 0.1, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
 "values": [ true, true, false ]
@@ -543,7 +569,7 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.1, 0.4, 0.45 ),
+"times": PoolRealArray( 0, 0.1, 0.3, 0.35 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector3( 1, 1, 1 ), Vector3( 0.9, 0.9, 1 ), Vector3( 1.75, 1.75, 1 ), Vector3( 1.3, 1.3, 1 ) ]
@@ -555,7 +581,7 @@ tracks/3/loop_wrap = true
 tracks/3/imported = false
 tracks/3/enabled = true
 tracks/3/keys = {
-"times": PoolRealArray( 0, 0.2 ),
+"times": PoolRealArray( 0, 0.1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ) ]
@@ -567,7 +593,7 @@ tracks/4/loop_wrap = true
 tracks/4/imported = false
 tracks/4/enabled = true
 tracks/4/keys = {
-"times": PoolRealArray( 0.3, 0.45, 0.55, 0.6 ),
+"times": PoolRealArray( 0.2, 0.35, 0.45, 0.5 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0.75, 0.75, 1 ), Vector3( 0.9, 0.9, 1 ), Vector3( 1.3, 1.3, 1 ), Vector3( 1, 1, 1 ) ]
@@ -579,7 +605,7 @@ tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.2, 0.3, 0.5 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ 1.0, 1.0, 1.0, 0.0 ]
@@ -591,10 +617,10 @@ tracks/6/loop_wrap = true
 tracks/6/imported = false
 tracks/6/enabled = true
 tracks/6/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 0.423529, 0.662745, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 0.423529, 0.662745, 1, 1 ) ]
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 0.423529, 0.662745, 1, 1 ) ]
 }
 tracks/7/type = "value"
 tracks/7/path = NodePath("headSprite:opacity")
@@ -603,7 +629,7 @@ tracks/7/loop_wrap = true
 tracks/7/imported = false
 tracks/7/enabled = true
 tracks/7/keys = {
-"times": PoolRealArray( 0, 0.2, 0.3, 0.5 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ 1.0, 1.0, 0.0, 1.0 ]
@@ -651,7 +677,7 @@ tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"times": PoolRealArray( 0.4 ),
+"times": PoolRealArray( 0.25 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ 0 ]
@@ -663,7 +689,7 @@ tracks/12/loop_wrap = true
 tracks/12/imported = false
 tracks/12/enabled = true
 tracks/12/keys = {
-"times": PoolRealArray( 0.4, 0.6 ),
+"times": PoolRealArray( 0.25, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ 0.2, 0.4 ]
@@ -675,7 +701,7 @@ tracks/13/loop_wrap = true
 tracks/13/imported = false
 tracks/13/enabled = true
 tracks/13/keys = {
-"times": PoolRealArray( 0.1, 0.3, 0.35, 0.4, 0.45 ),
+"times": PoolRealArray( 0.1, 0.2, 0.25, 0.3, 0.35 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "values": [ {
 "args": [  ],
@@ -701,10 +727,34 @@ tracks/14/loop_wrap = true
 tracks/14/imported = false
 tracks/14/enabled = true
 tracks/14/keys = {
-"times": PoolRealArray( 0, 0.05, 0.1, 0.25, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.05, 0.15, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 7, 8, 8, 6, 7 ]
+"values": [ 8, 8, 6, 7 ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("headSprite:should_animate")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0.25 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("headSprite:pixel_size")
+tracks/16/interp = 2
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 0.25, 0.3, 0.4, 0.45 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.1, 0.08, 0.0625, 0.0625 ]
 }
 
 [sub_resource type="Animation" id=10]
@@ -769,6 +819,7 @@ tracks/1/keys = {
 script = ExtResource( 3 )
 
 [node name="cameraTarget" type="Spatial" parent="."]
+script = ExtResource( 18 )
 
 [node name="headSprite" type="Sprite3D" parent="."]
 pixel_size = 0.0625
@@ -862,7 +913,7 @@ pitch_scale = 0.5
 
 [node name="BumpSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 12 )
-volume_db = -18.0
+volume_db = -22.0
 pitch_scale = 0.8
 
 [node name="ChargeUpSound" type="AudioStreamPlayer" parent="Sounds"]
@@ -884,6 +935,11 @@ pitch_scale = 1.4
 stream = ExtResource( 16 )
 volume_db = -20.0
 pitch_scale = 0.6
+
+[node name="SkidStopSound" type="AudioStreamPlayer" parent="Sounds"]
+stream = ExtResource( 19 )
+volume_db = -25.0
+pitch_scale = 1.5
 
 [node name="DriftWaveSound" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource( 14 )

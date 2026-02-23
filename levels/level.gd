@@ -46,8 +46,6 @@ var sin_counter = 0
 var helpful_counter = 0
 var bubbleRes = preload("res://sceneObjects/bubble.tscn")
 var heartBubbleRes = preload("res://sceneObjects/heartBubble.tscn")
-var random_bubble_timer = 0
-var random_bubble_time_limit = 10
 var death_counter = 0
 var move_counter = 0
 var combo_counter = 0
@@ -79,126 +77,21 @@ var lemon_failsafe_count_max = 7
 # var move_on_my_own_timer = 0
 # var move_on_my_own_time_max = 8
 
-var charging_move_timer = 0
-var charging_move_time_limit = 1.5
-var moveInputDir = Vector2(0, 0)
-var lastPressedDirQueue = []
-var lastPressedMoveDir = global.DirRight
-# TODO(jaketrower): I feel like this should live in the player controller now
-func processMoveInputTimer(delta):
-    processLastDirPressedQueue()
-    moveInputDir = Vector2(0, 0)
-    if player.is_charging:
-        charging_move_timer += (delta*22)
-        if charging_move_timer >= charging_move_time_limit:
-            if len(lastPressedDirQueue) > 0:
-                moveInputDir = lastPressedDirQueue[len(lastPressedDirQueue) - 1]
-            else:
-                moveInputDir = lastPressedMoveDir
-            player.chargeForwardStep()
-            charging_move_timer = 0
-    elif not player.is_charging_up_charge and len(lastPressedDirQueue) > 0:
-        moveInputDir = lastPressedDirQueue.pop_back()
-
-# TODO(jaketrower): I feel like this should live in the player controller now
-func processLastDirPressedQueue():
-    var preventChargingTurnAround = (player.is_charging or player.is_charging_up_charge) and len(player.myBodyParts) > 1
-    if Input.is_action_just_pressed("ui_up"):
-        if player.is_stunned or (player.facing == global.DirDown and preventChargingTurnAround):
-            playErrorSound()
-        else:
-            lastPressedMoveDir = global.DirUp
-            if player.is_charging_up_charge: playerMovedBubbleSpawn(player)
-            lastPressedDirQueue.push_back(global.DirUp)
-    elif Input.is_action_just_pressed("ui_left"):
-        if player.is_stunned or (player.facing == global.DirRight and preventChargingTurnAround):
-            playErrorSound()
-        else:
-            lastPressedMoveDir = global.DirLeft
-            if player.is_charging_up_charge: playerMovedBubbleSpawn(player)
-            lastPressedDirQueue.push_back(global.DirLeft)
-    elif Input.is_action_just_pressed("ui_down"):
-        if player.is_stunned or (player.facing == global.DirUp and preventChargingTurnAround):
-            playErrorSound()
-        else:
-            lastPressedMoveDir = global.DirDown
-            if player.is_charging_up_charge: playerMovedBubbleSpawn(player)
-            lastPressedDirQueue.push_back(global.DirDown)
-    elif Input.is_action_just_pressed("ui_right"):
-        if player.is_stunned or (player.facing == global.DirLeft and preventChargingTurnAround):
-            playErrorSound()
-        else:
-            if player.is_charging_up_charge: playerMovedBubbleSpawn(player)
-            lastPressedMoveDir = global.DirRight
-            lastPressedDirQueue.push_back(global.DirRight)
-    if Input.is_action_just_released("ui_up"):
-        lastPressedDirQueue.remove(lastPressedDirQueue.find(global.DirUp))
-    if Input.is_action_just_released("ui_left"):
-        lastPressedDirQueue.remove(lastPressedDirQueue.find(global.DirLeft))
-    if Input.is_action_just_released("ui_down"):
-        lastPressedDirQueue.remove(lastPressedDirQueue.find(global.DirDown))
-    if Input.is_action_just_released("ui_right"):
-        lastPressedDirQueue.remove(lastPressedDirQueue.find(global.DirRight))
-
-func shouldMoveUp():
-    return moveInputDir.y > 0
-func shouldMoveDown():
-    return moveInputDir.y < 0
-func shouldMoveLeft():
-    return moveInputDir.x < 0
-func shouldMoveRight():
-    return moveInputDir.x > 0
-
 func _process(delta):
     if global.gameState == global.GameState.RESTART_EGG_HATCHING_ANIMATION:
         updateGameCamera(delta)
         return
-
     var has_player_moved = false
-    if not deathOverlay.visible:
-        # TODO(jaketrower): I feel like this should live in the player controller now
-        if not player.is_charging and Input.is_action_just_pressed("ui_cancel"):
-            if not player.is_stunned and player.restoreBodyPartPositions(true):
-                combo_counter -= 1
-                bubbleReverseSound.pitch_scale = rand_range(0.4, 0.8)
-                bubbleReverseSound.play()
-            else:
-                player.maybeAdvanceBodyPartAnimationFrames()
-                player.should_advance_animation_frame = not player.should_advance_animation_frame
-                playErrorSound()
-        # TODO(jaketrower): I feel like this should live in the player controller now
-        else:   
-            processMoveInputTimer(delta)
-            if shouldMoveUp():
-                has_player_moved = player.moveUp()
-                playerMovedBubbleSpawn()
-            elif shouldMoveDown():
-                has_player_moved = player.moveDown()
-                playerMovedBubbleSpawn()
-            if shouldMoveLeft():
-                has_player_moved = player.moveLeft()
-                playerMovedBubbleSpawn()
-            elif shouldMoveRight():
-                has_player_moved = player.moveRight()
-                playerMovedBubbleSpawn()
-            else:
-                random_bubble_timer += (delta*22)
-                if random_bubble_timer >= random_bubble_time_limit:
-                    random_bubble_timer = 0
-                    random_bubble_time_limit = rand_range(10, 40)
-                    spawnBubble(player.headSprite.global_transform.origin, 0)
-    if has_player_moved:
-        move_counter += 1
-    # okay, semi-regardless of game state...
     if global.gameState != global.GameState.GAME_OVER:
-        thingsToDoRegardlessOfGameState(has_player_moved, delta)
-        
+        has_player_moved = player.playerMover.processMain(delta)
     updateGameCamera(delta)
     if has_player_moved:
+        move_counter += 1
+        processNpcInteractions()
         if isPlayerEating(orange):
             player.eatAnOrange()
             for i in range(3):
-                spawnBubble(player.headSprite.global_transform.origin, i + 1)    
+                _spawnBubble(player.headSprite.global_transform.origin, i + 1)    
             if how_many_oranges_ate >= 2:
                 textBox.visible = false
             while doesIntersectWithAnyBodyPart(orange) or (orange.global_transform.origin.x == 0 and orange.global_transform.origin.y == 0):
@@ -219,56 +112,61 @@ func _process(delta):
             deathOverlay.color.a = 0
             textBoxTop.visible = false
             textBox.visible = false
+            if last_speaker != null: last_speaker.get_ref().stopTalking()
             # global.gameState = global.GameState.NORMAL_GAMEPLAY
             global.gameState = global.GameState.RESTART_EGG_HATCHING_ANIMATION
             player.initiateHatchAnimation()
-            
 
+var initiation_npc_dist = 4
+var byebye_npc_dist = 5
+var last_speaker = null
+func processNpcInteractions():
+    var npcs = self.get_tree().get_nodes_in_group("npc_group")
+    var nearest_npc = null
+    var nearest_dist = 999
+    for i in range(len(npcs)):
+        var npc = npcs[i]
+        var dist = player.headSprite.global_transform.origin.distance_to(npc.global_transform.origin)
+        if dist < nearest_dist and ((dist <= initiation_npc_dist and npc.bbcode_text != "") or (last_speaker != null and npc == last_speaker.get_ref())):
+            nearest_npc = npc
+            nearest_dist = dist
+    if nearest_npc != null:
+        if not nearest_npc.is_talking:
+            if last_speaker != null and last_speaker.get_ref() != null:
+                last_speaker.get_ref().stopTalking(true) # (did_someone_else_start_talking)
+            self.textBoxText.bbcode_text = nearest_npc.startTalking()
+            self.textBox.visible = true
+            last_speaker = weakref(nearest_npc)
+        elif last_speaker != null and last_speaker.get_ref() != null and last_speaker.get_ref() == nearest_npc:
+            if nearest_dist > byebye_npc_dist:
+                self.textBox.visible = false
+                last_speaker.get_ref().stopTalking()
+                last_speaker = null
+            else:
+                nearest_npc.keepTalking()
+        
+
+            
 func playErrorSound():
     errorSound.pitch_scale = rand_range(0.9, 1.1)
     errorSound.play()
 
-# TODO(jaketrower): I feel like this should live in the player controller now
-func isPlayerOutOfBounds(which_player = player):
-    var lb = currentCameraXBounds.x - CAMERA_X_OFFSET
-    var rb = currentCameraXBounds.y + CAMERA_X_OFFSET
-    var tb = currentCameraYBounds.x + CAMERA_Y_OFFSET
-    var bb = currentCameraYBounds.y - CAMERA_Y_OFFSET
-    var headPos = which_player.headSprite.global_transform.origin
-    return headPos.x <= lb or headPos.x >= rb or headPos.y >= tb or headPos.y <= bb
-
-# TODO(jaketrower): I feel like this should live in the player controller now
-func thingsToDoRegardlessOfGameState(_has_player_moved, delta):
-    var headPos = player.headSprite.global_transform.origin
-    var csgPos = player.csgCombinerPosition.global_transform.origin
-    # camera.size = camera.size + (adventure_camera_size - camera.size) * (delta*5)
-    player.csgCombinerPosition.global_transform.origin.x = csgPos.x + (headPos.x - csgPos.x) * (delta * 5)
-    player.csgCombinerPosition.global_transform.origin.y = csgPos.y + (headPos.y - csgPos.y) * (delta * 5)
-
-    if Input.is_action_just_pressed("ui_select"):
-        player.startChargeUp()
-    elif Input.is_action_pressed("ui_select"):
-        player.chargeUp()
-    elif Input.is_action_just_released("ui_select"):
-        # player.spitCoconutProjectile()
-        player.tryChargeAhead()
-        pass
-
-func playerMovedBubbleSpawn(which_player = player):
-    random_bubble_timer = 0
+func spawnBubbles(pos, how_many = 1):
     bubbleSound.pitch_scale = rand_range(0.4, 0.8)
     bubbleSound.play()
-    var how_many = 2
     for i in range(how_many):
-        spawnBubble(which_player.headSprite.global_transform.origin, i)
+        _spawnBubble(pos, i)
 
-func playerMovedEatAnOrange():
-    if isPlayerEating(orange):
-        player.eatAnOrange()
-        for i in range(3):
-            spawnBubble(player.headSprite.global_transform.origin, i + 1)
-        print("bro?")
-        orange.visible = false
+func _spawnBubble(pos, time_to_yield = 0, which_bubble_res = bubbleRes):
+    if time_to_yield > 0:
+        yield(get_tree().create_timer(0.1*time_to_yield), "timeout")
+    var newBubble = which_bubble_res.instance()
+    self.add_child(newBubble)
+    newBubble.global_transform.origin = pos
+    newBubble.global_transform.origin.y += rand_range(0.3, 0.8)
+    newBubble.global_transform.origin.x += rand_range(-0.5, 0.5)
+    if randi() % 2 <= 1:
+        newBubble.which_x = -1
 
 func isPlayerHeadCollidingWith(target, lb = -0.5, tb = 0.5, rb = 0.5, bb = -0.5, which_player = player):
     var pos = which_player.headSprite.global_transform.origin
@@ -304,17 +202,6 @@ func faceLeft(sprite):
 func faceRight(sprite):
     sprite.rotation_degrees.z = 0
     sprite.flip_h = false
-
-func spawnBubble(pos, time_to_yield = 0, which_bubble_res = bubbleRes):
-    if time_to_yield > 0:
-        yield(get_tree().create_timer(0.1*time_to_yield), "timeout")
-    var newBubble = which_bubble_res.instance()
-    self.add_child(newBubble)
-    newBubble.global_transform.origin = pos
-    newBubble.global_transform.origin.y += rand_range(0.3, 0.8)
-    newBubble.global_transform.origin.x += rand_range(-0.5, 0.5)
-    if randi() % 2 <= 1:
-        newBubble.which_x = -1
 
 func updateGameCamera(delta, x_bounds = null, y_bounds = null):
     if x_bounds != null: currentCameraXBounds = x_bounds

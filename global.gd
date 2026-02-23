@@ -12,3 +12,7 @@ var DirUp = Vector2(0, 1)
 var DirLeft = Vector2(-1, 0)
 var DirDown = Vector2(0, -1)
 var DirRight = Vector2(1, 0)
+
+var IDLE_FRAME_DELAY = 0.4
+var FAST_FRAME_DELAY = 0.2
+var VERY_FAST_FRAME_DELAY = 0.1
