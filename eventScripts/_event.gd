@@ -1,6 +1,6 @@
 extends Node
 
-onready var level = get_tree().get_root().get_node("level")
+onready var level = get_tree().get_root().get_node("Game/Viewport/level")
 onready var myParent = get_node("..")
 
 # TODO(): Override me!!

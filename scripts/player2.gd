@@ -1,6 +1,6 @@
 extends Spatial
 
-onready var level = get_tree().get_root().get_node("level")
+onready var level = get_tree().get_root().get_node("Game/Viewport/level")
 var coconutProjectileRes = preload("res://sceneObjects/coconutProjectile.tscn")
 var playerSheetRes = preload("res://images/player_sheet.png")
 var playerCoconutSheetRes = preload("res://images/player_sheet_coconut.png")

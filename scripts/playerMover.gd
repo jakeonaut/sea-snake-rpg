@@ -1,6 +1,6 @@
 extends Spatial
 
-onready var level = get_tree().get_root().get_node("level")
+onready var level = get_tree().get_root().get_node("Game/Viewport/level")
 onready var myParent = get_node("..")
 onready var headSprite = get_node("../headSprite")
 
@@ -175,8 +175,8 @@ func genericMove(moveDir):
     should_advance_animation_frame = not should_advance_animation_frame
     return postProcessMoveAttempt(moveDir)
 
-func postProcessMoveAttempt(_moveDir):
-    if hasCollidedWithAnything():
+func postProcessMoveAttempt(moveDir):
+    if hasCollidedWithAnything(moveDir):
         if myParent.is_charging:
             setSpriteAnimationSpeed(global.IDLE_FRAME_DELAY)
             myParent.chargeStartSound.stop()
@@ -191,13 +191,30 @@ func postProcessMoveAttempt(_moveDir):
     return true
 
 # ====================== MOVEMENT HELPER FUNCS =======================
-func hasCollidedWithAnything():
+func tryEnterDoor(door):
+    if door.partnerDoor != null:
+        myParent.headSprite.global_transform.origin.x = door.partnerDoor.global_transform.origin.x
+        myParent.headSprite.global_transform.origin.y = door.partnerDoor.global_transform.origin.y
+        return true
+    return false
+
+func hasCollidedWithAnything(moveDir):
+    var doors = level.get_tree().get_nodes_in_group("door_group")
+    for i in range(len(doors)):
+        var door = doors[i]
+        if myParent.isHeadOverlapping(door):
+            if tryEnterDoor(door):
+                moveMyBodyParts(moveDir)
+                myParent.is_charging = false
+                level.immediatelySnapGameCamera()
+                return false # we don't actually "collide" with it but... we SHOULD pause...
+
     var crabs = level.get_tree().get_nodes_in_group("crab_group")
     for i in range(len(crabs)):
         var crab = crabs[i]
         if myParent.isHeadOverlapping(crab):
             restoreBodyPartPositions()
-            myParent.owIDied()
+            myParent.owIGotHurt()
             crab.killSound.pitch_scale = rand_range(0.8, 1.2)
             crab.killSound.play()
             if myParent.is_charging:

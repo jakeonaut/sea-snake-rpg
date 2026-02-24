@@ -5,7 +5,7 @@ var target_pos = null
 onready var mySprite = get_node("Sprite3D")
 export var is_jelly = false
 
-onready var level = get_tree().get_root().get_node("level")
+onready var level = get_tree().get_root().get_node("Game/Viewport/level")
 
 var is_swimmin_away = false
 

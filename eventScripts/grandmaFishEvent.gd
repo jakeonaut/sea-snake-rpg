@@ -1,5 +1,8 @@
 extends "res://eventScripts/_event.gd"
 
+onready var coolSound = get_node("CoolSound")
+onready var rockingChair = get_node("../fishSprite/rockingChair")
+
 var initial_trick_counter = 0
 func startTrying():
     initial_trick_counter = level.trick_counter
@@ -13,6 +16,9 @@ func keepTrying():
         level.textBoxText.bbcode_text = "[wave]ah, very cool dearie.\nhm.. let me try![/wave]"
 
         yield(get_tree().create_timer(0.5), "timeout")
+        rockingChair.get_node("AnimationPlayer").stop()
+        rockingChair.get_node("AnimationPlayer").clear_queue()
+        rockingChair.get_node("AnimationPlayer").play("RESET")
         myParent.mySprite.frame_delay = global.FAST_FRAME_DELAY
 
         yield(get_tree().create_timer(0.5), "timeout")
@@ -20,6 +26,7 @@ func keepTrying():
         level.bubbleReverseSound.play()
         level._spawnBubble(myParent.global_transform.origin)
         level.faceUp(myParent.mySprite)
+        myParent.global_transform.origin.y += 1
         myParent.mySprite.frame_delay = global.IDLE_FRAME_DELAY
 
         yield(get_tree().create_timer(0.5), "timeout")
@@ -43,6 +50,9 @@ func keepTrying():
         myParent.mySprite.frame_delay = global.IDLE_FRAME_DELAY
         myParent.playTalkSound(0.6, 0.8)
         initial_trick_counter = level.trick_counter
+        var is_lame = true
+        level.createNewAwesomeText("back pain!!", myParent.global_transform.origin, is_lame)
+        coolSound.play()
         is_in_pain = true
         myParent.bbcode_text = "[shake]oouk.. my back..[/shake]"
         level.textBoxText.bbcode_text = myParent.bbcode_text

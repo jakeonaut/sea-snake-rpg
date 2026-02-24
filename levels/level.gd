@@ -1,7 +1,10 @@
 extends Spatial
 
+var text3dRes = preload("res://sceneObjects/3DText.tscn")
+
 onready var player = get_node("player")
 onready var orange = get_node("orange")
+onready var camera = get_node("Camera")
 
 onready var sillyFishSong = get_node("Music/SillyFishSong")
 onready var crabTimeSong = get_node("Music/CrabTimeSong")
@@ -29,13 +32,15 @@ onready var whatsupSound = get_node("Sounds/WhatsupSound")
 onready var heyUpsetSound = get_node("Sounds/HeyUpsetSound")
 onready var deadParasiteSound = get_node("Sounds/DeadParasiteSound")
 onready var screamSound = get_node("Sounds/ScreamSound")
-onready var textBox = get_node("CanvasLayer/TextBox")
-onready var textBoxText = get_node("CanvasLayer/TextBox/Text")
-onready var textBoxTop = get_node("CanvasLayer/TextBoxTop")
-onready var textBoxTopText = get_node("CanvasLayer/TextBoxTop/Text")
-onready var camera = get_node("Camera")
-onready var deathOverlay = get_node("CanvasLayer/DeathOverlay")
-onready var deathOverlayText = get_node("CanvasLayer/DeathOverlay/Text")
+
+onready var textBox = get_tree().get_root().get_node("Game/CanvasLayer/TextBox")
+onready var textBoxText = get_tree().get_root().get_node("Game/CanvasLayer/TextBox/Text")
+onready var textBoxTop = get_tree().get_root().get_node("Game/CanvasLayer/TextBoxTop")
+onready var textBoxTopText = get_tree().get_root().get_node("Game/CanvasLayer/TextBoxTop/Text")
+onready var statsBox = get_tree().get_root().get_node("Game/CanvasLayer/StatsBox")
+onready var statsBoxText = get_tree().get_root().get_node("Game/CanvasLayer/StatsBox/Text")
+onready var deathOverlay = get_tree().get_root().get_node("Game/CanvasLayer/DeathOverlay")
+onready var deathOverlayText = get_tree().get_root().get_node("Game/CanvasLayer/DeathOverlay/Text")
 
 var CAMERA_X_OFFSET = 6
 var CAMERA_Y_OFFSET = 5
@@ -70,6 +75,7 @@ var parasite_oof_counter_max = 3
 func _ready():
     textBox.visible = true
     textBoxText.bbcode_text = "[color=#ff8426]if you so desire:\n    * use[/color] [wave]arrow keys[/wave] [color=#ff8426]to move..[/color]"
+    statsBox.visible = false
     set_process(true)
 
 var lemon_failsafe_counter = 0
@@ -117,6 +123,7 @@ func _process(delta):
             global.gameState = global.GameState.RESTART_EGG_HATCHING_ANIMATION
             player.initiateHatchAnimation()
 
+var charging_initiation_npc_dist = 2
 var initiation_npc_dist = 4
 var byebye_npc_dist = 5
 var last_speaker = null
@@ -127,7 +134,13 @@ func processNpcInteractions():
     for i in range(len(npcs)):
         var npc = npcs[i]
         var dist = player.headSprite.global_transform.origin.distance_to(npc.global_transform.origin)
-        if dist < nearest_dist and ((dist <= initiation_npc_dist and npc.bbcode_text != "") or (last_speaker != null and npc == last_speaker.get_ref())):
+        if dist < nearest_dist and (
+            ((
+                (not player.is_charging and dist <= initiation_npc_dist)
+                or (player.is_charging and dist <= charging_initiation_npc_dist)
+            ) and npc.bbcode_text != "")
+            or (last_speaker != null and npc == last_speaker.get_ref())
+        ):
             nearest_npc = npc
             nearest_dist = dist
     if nearest_npc != null:
@@ -203,6 +216,9 @@ func faceRight(sprite):
     sprite.rotation_degrees.z = 0
     sprite.flip_h = false
 
+func immediatelySnapGameCamera():
+    camera.global_transform.origin = player.cameraTarget.global_transform.origin
+
 func updateGameCamera(delta, x_bounds = null, y_bounds = null):
     if x_bounds != null: currentCameraXBounds = x_bounds
     if y_bounds != null: currentCameraYBounds = y_bounds
@@ -231,3 +247,9 @@ func updateGameCamera(delta, x_bounds = null, y_bounds = null):
     if coverOfDarknessAlpha < 0: coverOfDarknessAlpha = 0
     if coverOfDarknessAlpha > 1: coverOfDarknessAlpha = 1
     player.coverOfDarkness.material.albedo_color.a = coverOfDarknessAlpha
+
+func createNewAwesomeText(textToUse, pos, is_lame = false):
+    var newAwesomeText = text3dRes.instance()
+    self.add_child(newAwesomeText)
+    newAwesomeText.setText(textToUse, is_lame)
+    newAwesomeText.global_transform.origin = pos

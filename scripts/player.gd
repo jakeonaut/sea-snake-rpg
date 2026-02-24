@@ -1,10 +1,14 @@
 extends Spatial
 
-onready var level = get_tree().get_root().get_node("level")
+onready var level = get_tree().get_root().get_node("Game/Viewport/level")
 var coconutProjectileRes = preload("res://sceneObjects/coconutProjectile.tscn")
 var playerSheetRes = preload("res://images/player_sheet.png")
 var playerCoconutSheetRes = preload("res://images/player_sheet_coconut.png")
-var text3dRes = preload("res://sceneObjects/3DText.tscn")
+
+var hp_stat = 3
+var total_hp_stat = 3
+
+var textPosOffset = Vector3(0, 0, 5.5)
 
 onready var headSprite = get_node("headSprite")
 onready var eggSprite = get_node("eggSprite")
@@ -131,6 +135,22 @@ func isHeadOverlapping(sprite):
         return false
     return sprite.global_transform.origin.x == headSprite.global_transform.origin.x and sprite.global_transform.origin.y == headSprite.global_transform.origin.y
 
+func owIGotHurt():
+    hp_stat -= 1
+    level.statsBox.visible = true
+    level.statsBoxText.bbcode_text = "HP: " + str(hp_stat) + "/" + str(total_hp_stat)
+    var ratio = total_hp_stat - hp_stat
+    level.statsBox.rect_scale = Vector2(1.0 + ratio / 2.0, 1.0 + ratio / 2.0)
+    if hp_stat <= 0:
+        var is_lame = true
+        level.createNewAwesomeText("u died...", headSprite.global_transform.origin + textPosOffset, is_lame)
+        owIDied()
+    else:
+        owIGotStunned()
+        owSound.pitch_scale = rand_range(0.7, 1.1)
+        owSound.play()
+        level.createNewAwesomeText("-1 HP", headSprite.global_transform.origin + textPosOffset)
+
 func owIDied():
     owSound.pitch_scale = rand_range(0.4, 0.6)
     owSound.play()
@@ -216,13 +236,19 @@ func initiateHatchAnimation():
     aniPlayer.clear_queue()
     aniPlayer.play("eggFloatDown")
     aniPlayer.queue("growFromEgg")
+    level.statsBox.visible = false
 
 func finishHatchAnimation():
+    facing = global.DirRight
     headSprite.updateBaseFrame(0, 0)
     headSprite.max_frames = 2
     hatchedSound.pitch_scale = rand_range(0.6, 0.9)
     hatchedSound.play()
     global.gameState = global.GameState.NORMAL_GAMEPLAY
+    hp_stat = total_hp_stat
+    level.statsBox.visible = true
+    level.statsBoxText.bbcode_text = "HP: " + str(hp_stat) + "/" + str(total_hp_stat)
+    level.statsBox.rect_scale = Vector2(1, 1)
 
 func tryToBeCool():
     var headPos = Vector2(headSprite.global_transform.origin.x, headSprite.global_transform.origin.y)
@@ -237,8 +263,6 @@ func tryToBeCool():
             was_i_cool_this_time = true
             break
     if was_i_cool_this_time:
-        var newAwesomeText = text3dRes.instance()
-        level.add_child(newAwesomeText)
         var textArrayToUse = coolTexts
         if level.combo_counter > 0 and level.combo_counter < 4:
             textArrayToUse = smallComboCoolTexts
@@ -259,8 +283,7 @@ func tryToBeCool():
             if level.combo_counter > 1:
                 textToUse = textToUse + "\nnew high score!!!"
                 got_a_new_highscore = true
-        newAwesomeText.get_node("Label3D").text = textToUse
-        newAwesomeText.global_transform.origin = headSprite.global_transform.origin + Vector3(0, 0, 5.5)
+        level.createNewAwesomeText(textToUse, headSprite.global_transform.origin + textPosOffset)
         if got_a_new_highscore:
             applauseSound.play()
         else:
@@ -288,15 +311,13 @@ func tryToEatParasites():
             else:
                 do_i_still_have_parasites_after_consumption = true
     if did_i_eat_a_parasite:
-        var newAwesomeText = text3dRes.instance()
-        level.add_child(newAwesomeText)
-        newAwesomeText.global_transform.origin = headSprite.global_transform.origin + Vector3(0, 0, 5.5)
+        var newTextPos = headSprite.global_transform.origin + textPosOffset
         if do_i_still_have_parasites_after_consumption:
-            newAwesomeText.get_node("Label3D").text = parasiteTexts[randi() % len(parasiteTexts)]
+            level.createNewAwesomeText(parasiteTexts[randi() % len(parasiteTexts)], newTextPos)
             level.deadParasiteSound.pitch_scale = rand_range(0.8, 1.2)
             level.deadParasiteSound.play()
         else:
-            newAwesomeText.get_node("Label3D").text = "NO MORE PARASITE!!!"
+            level.createNewAwesomeText("NO MORE PARASITE!!!", newTextPos)
             applauseSound.play()
     # could use player.doIHaveParasites(), but that would repeat the loop needlessly
     # this logic is a little convoluted though

@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=2]
+[gd_scene load_steps=72 format=2]
 
 [ext_resource path="res://sceneObjects/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://sceneObjects/rock.tscn" type="PackedScene" id=2]
@@ -14,25 +14,37 @@
 [ext_resource path="res://sounds/heyman.wav" type="AudioStream" id=12]
 [ext_resource path="res://sounds/bubbleReverse.wav" type="AudioStream" id=13]
 [ext_resource path="res://runescape_uf.ttf" type="DynamicFontData" id=14]
-[ext_resource path="res://sceneObjects/npcFish.tscn" type="PackedScene" id=15]
+[ext_resource path="res://images/npc_sheet_bigger.png" type="Texture" id=15]
 [ext_resource path="res://sounds/bigCoconutMouth.wav" type="AudioStream" id=16]
 [ext_resource path="res://eventScripts/grandmaFishEvent.gd" type="Script" id=17]
 [ext_resource path="res://sounds/wind.wav" type="AudioStream" id=18]
 [ext_resource path="res://sceneObjects/whale.tscn" type="PackedScene" id=19]
 [ext_resource path="res://sounds/heymad.wav" type="AudioStream" id=20]
 [ext_resource path="res://sounds/whatsup.wav" type="AudioStream" id=21]
+[ext_resource path="res://sounds/eba_money.wav" type="AudioStream" id=22]
 [ext_resource path="res://sounds/equipCoconut.wav" type="AudioStream" id=23]
 [ext_resource path="res://sounds/darkSouls.wav" type="AudioStream" id=24]
 [ext_resource path="res://sounds/ricochet.wav" type="AudioStream" id=25]
+[ext_resource path="res://sceneObjects/hardestRock.tscn" type="PackedScene" id=26]
+[ext_resource path="res://images/orange.png" type="Texture" id=27]
+[ext_resource path="res://sceneObjects/door.tscn" type="PackedScene" id=28]
 [ext_resource path="res://sounds/sadSound.wav" type="AudioStream" id=29]
+[ext_resource path="res://images/big_environment_sheet.png" type="Texture" id=30]
 [ext_resource path="res://sounds/eb_glass.wav" type="AudioStream" id=31]
+[ext_resource path="res://scripts/npcFish.gd" type="Script" id=32]
+[ext_resource path="res://scripts/Sprite.gd" type="Script" id=33]
+[ext_resource path="res://sounds/land_granny.wav" type="AudioStream" id=34]
 [ext_resource path="res://sounds/oof.wav" type="AudioStream" id=35]
 [ext_resource path="res://sounds/deadparasite.wav" type="AudioStream" id=36]
 [ext_resource path="res://sounds/eb_powerup2.wav" type="AudioStream" id=37]
+[ext_resource path="res://images/blubberWall.png" type="Texture" id=38]
+[ext_resource path="res://images/blubberWallSolid.png" type="Texture" id=39]
+[ext_resource path="res://wiggle.gdshader" type="Shader" id=40]
 [ext_resource path="res://sounds/um.wav" type="AudioStream" id=41]
 [ext_resource path="res://sounds/kiss.wav" type="AudioStream" id=42]
 [ext_resource path="res://sounds/ew.wav" type="AudioStream" id=43]
 [ext_resource path="res://sounds/eba_speech_man.wav" type="AudioStream" id=44]
+[ext_resource path="res://wobble.gdshader" type="Shader" id=45]
 [ext_resource path="res://sounds/eba_swimming7.wav" type="AudioStream" id=47]
 [ext_resource path="res://music/coconutCrabTime.mp3" type="AudioStream" id=48]
 [ext_resource path="res://music/pleasantSong.mp3" type="AudioStream" id=49]
@@ -41,6 +53,154 @@
 [ext_resource path="res://music/tension.mp3" type="AudioStream" id=52]
 
 [sub_resource type="Environment" id=1]
+
+[sub_resource type="ShaderMaterial" id=25]
+shader = ExtResource( 45 )
+shader_param/albedo = Color( 1, 1, 1, 0.141176 )
+shader_param/amplitude = 0.005
+shader_param/frequency = 10.0
+shader_param/speed = 2.0
+shader_param/amplitude_vertical = 0.0
+shader_param/frequency_vertical = 0.0
+shader_param/speed_vertical = 0.0
+shader_param/scroll_direction = Vector2( 0, 0 )
+shader_param/scrolling_speed = 0.08
+shader_param/texture_albedo = ExtResource( 8 )
+
+[sub_resource type="Animation" id=26]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("..:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, -1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("..:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=27]
+resource_name = "rocking"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("..:translation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, -1 ), Vector3( -0.200001, 0, -1 ), Vector3( 0, 0, -1 ), Vector3( 0.200001, 0.1, -1 ), Vector3( 0, 0, -1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("..:rotation_degrees")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 10 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, -15 ), Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=16]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=20]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("blubberWalls:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=21]
+resource_name = "digest"
+length = 1.8
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("blubberWalls:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 0.8, 1.2, 1.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1, 1, 1 ), Vector3( 1.02, 0.98, 1 ), Vector3( 1, 1, 1 ), Vector3( 0.98, 1.02, 1 ), Vector3( 1, 1, 1 ) ]
+}
+
+[sub_resource type="ViewportTexture" id=22]
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="ShaderMaterial" id=24]
+shader = ExtResource( 40 )
+shader_param/screen_height = 512.0
+shader_param/amplitude = 0.01
+shader_param/frequency = 10.0
+shader_param/speed = 0.5
+shader_param/amplitude_vertical = 0.0
+shader_param/frequency_vertical = 0.0
+shader_param/speed_vertical = 0.0
+shader_param/scroll_direction = Vector2( 0, 0 )
+shader_param/scrolling_speed = 0.08
 
 [sub_resource type="CanvasItemMaterial" id=4]
 blend_mode = 3
@@ -54,6 +214,21 @@ font_data = ExtResource( 7 )
 
 [sub_resource type="Theme" id=3]
 default_font = SubResource( 2 )
+
+[sub_resource type="CanvasItemMaterial" id=15]
+blend_mode = 1
+light_mode = 1
+
+[sub_resource type="DynamicFont" id=13]
+size = 22
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+extra_spacing_bottom = -4
+extra_spacing_space = -1
+font_data = ExtResource( 7 )
+
+[sub_resource type="Theme" id=14]
+default_font = SubResource( 13 )
 
 [sub_resource type="DynamicFont" id=5]
 size = 48
@@ -73,11 +248,1037 @@ font_data = ExtResource( 7 )
 [sub_resource type="Theme" id=12]
 default_font = SubResource( 11 )
 
-[node name="level" type="Spatial"]
+[node name="Game" type="Spatial"]
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 640, 512 )
+
+[node name="level" type="Spatial" parent="Viewport"]
 script = ExtResource( 4 )
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Viewport/level"]
 environment = SubResource( 1 )
+
+[node name="player" parent="Viewport/level" instance=ExtResource( 1 )]
+
+[node name="Camera" type="Camera" parent="Viewport/level"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6 )
+projection = 1
+current = true
+size = 8.0
+
+[node name="orange" parent="Viewport/level" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1 )
+
+[node name="Sounds" type="Spatial" parent="Viewport/level"]
+
+[node name="BubbleSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 3 )
+volume_db = -25.0
+
+[node name="BubbleReverseSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 13 )
+volume_db = -15.0
+
+[node name="EwSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 43 )
+volume_db = -2.0
+pitch_scale = 1.5
+
+[node name="DeadParasiteSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 36 )
+volume_db = -5.0
+
+[node name="LemonSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 37 )
+volume_db = -32.0
+pitch_scale = 0.8
+
+[node name="OldWomanSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 44 )
+volume_db = -40.0
+
+[node name="OofSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 35 )
+volume_db = -5.0
+pitch_scale = 1.2
+
+[node name="SadSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 29 )
+volume_db = -5.0
+pitch_scale = 1.2
+
+[node name="HeartGetSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 47 )
+volume_db = -13.0
+pitch_scale = 0.8
+
+[node name="SwooshSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 18 )
+volume_db = -18.0
+
+[node name="CoconutChompSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 16 )
+volume_db = -10.0
+
+[node name="HeySound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 12 )
+volume_db = -15.0
+
+[node name="HeyUpsetSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 20 )
+volume_db = -15.0
+pitch_scale = 1.5
+
+[node name="WhatsupSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 21 )
+volume_db = -15.0
+pitch_scale = 1.2
+
+[node name="ShatterSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 31 )
+volume_db = -32.0
+pitch_scale = 0.8
+
+[node name="EquipCoconutSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 23 )
+volume_db = -5.0
+
+[node name="ScreamSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 11 )
+volume_db = -18.0
+
+[node name="BigOwSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 24 )
+volume_db = -5.0
+
+[node name="ErrorSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 25 )
+volume_db = -8.0
+pitch_scale = 1.5
+
+[node name="UmSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 41 )
+volume_db = -15.0
+pitch_scale = 1.5
+
+[node name="KissSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 42 )
+volume_db = -5.0
+
+[node name="Music" type="Spatial" parent="Viewport/level"]
+
+[node name="SillyFishSong" type="AudioStreamPlayer" parent="Viewport/level/Music"]
+stream = ExtResource( 49 )
+volume_db = -20.0
+
+[node name="CrabTimeSong" type="AudioStreamPlayer" parent="Viewport/level/Music"]
+stream = ExtResource( 48 )
+volume_db = -20.0
+
+[node name="EnterTheDeepSong" type="AudioStreamPlayer" parent="Viewport/level/Music"]
+stream = ExtResource( 51 )
+volume_db = -10.0
+
+[node name="TensionSong" type="AudioStreamPlayer" parent="Viewport/level/Music"]
+stream = ExtResource( 52 )
+volume_db = -20.0
+
+[node name="PartySong" type="AudioStreamPlayer" parent="Viewport/level/Music"]
+stream = ExtResource( 50 )
+volume_db = -25.0
+
+[node name="doors" type="Spatial" parent="Viewport/level"]
+
+[node name="door_overworldToBlowhole" parent="Viewport/level/doors" instance=ExtResource( 28 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -11, 2 )
+partnerDoorId = NodePath("../door_blowholeToOverworld")
+
+[node name="door_blowholeToOverworld" parent="Viewport/level/doors" instance=ExtResource( 28 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -56, 9, 2 )
+partnerDoorId = NodePath("../door_overworldToBlowhole")
+
+[node name="level_overworld" type="Spatial" parent="Viewport/level"]
+
+[node name="Backgrounds" type="Spatial" parent="Viewport/level/level_overworld"]
+
+[node name="bg" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -90 )
+material_override = SubResource( 25 )
+opacity = 0.25
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg9" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds/bg"]
+opacity = 0.13
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg3" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, -90 )
+modulate = Color( 0.25098, 0.207843, 0.65098, 1 )
+opacity = 0.36
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg10" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -20, -90 )
+modulate = Color( 0.25098, 0.207843, 0.65098, 1 )
+opacity = 0.36
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg4" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -40, -90 )
+modulate = Color( 0.266667, 0.266667, 0.313726, 1 )
+opacity = 0.75
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg11" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -40, -90 )
+modulate = Color( 0.266667, 0.266667, 0.313726, 1 )
+opacity = 0.75
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg12" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, -90 )
+opacity = 0.25
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg13" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -20, -90 )
+modulate = Color( 0.25098, 0.207843, 0.65098, 1 )
+opacity = 0.36
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg14" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -40, -90 )
+modulate = Color( 0.266667, 0.266667, 0.313726, 1 )
+opacity = 0.75
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg6" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 1, 19.557, -60, -90 )
+modulate = Color( 0.188235, 0.188235, 0.286275, 1 )
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg2" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 60.5438, -60, -90 )
+modulate = Color( 1, 0.588235, 0.588235, 1 )
+opacity = 0.5
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg5" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 60.5438, -40, -90 )
+modulate = Color( 1, 0.588235, 0.588235, 1 )
+opacity = 0.5
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg7" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 60.5438, -20, -90 )
+modulate = Color( 1, 0.588235, 0.588235, 1 )
+opacity = 0.5
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="bg8" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 60.5438, 0, -90 )
+modulate = Color( 1, 0.588235, 0.588235, 1 )
+opacity = 0.5
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="whale" parent="Viewport/level/level_overworld" instance=ExtResource( 19 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, -21, 1 )
+
+[node name="blowholeRock" parent="Viewport/level/level_overworld/whale" instance=ExtResource( 2 )]
+transform = Transform( 1.5, 0, 0, 0, 1, 0, 0, 0, 1, -9, 11, 0 )
+
+[node name="Crabs" type="Spatial" parent="Viewport/level/level_overworld"]
+
+[node name="crab" parent="Viewport/level/level_overworld/Crabs" instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, -1 )
+
+[node name="Kelp" type="Spatial" parent="Viewport/level/level_overworld"]
+
+[node name="kelp" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -70, 0 )
+
+[node name="kelp2" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.503055, -70.4609, 0 )
+
+[node name="kelp21" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -70, 0 )
+
+[node name="kelp22" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.496945, -70.4609, 0 )
+
+[node name="kelp23" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -70, 0 )
+
+[node name="kelp24" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.49694, -70.4609, 0 )
+
+[node name="kelp3" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -70, 0 )
+
+[node name="kelp4" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.50306, -70.4609, 0 )
+
+[node name="kelp5" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -70, 0 )
+
+[node name="kelp6" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.50306, -70.4609, 0 )
+
+[node name="kelp7" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -70, 0 )
+
+[node name="kelp8" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.50306, -70.4609, 0 )
+
+[node name="kelp9" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -70, 0 )
+
+[node name="kelp10" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.50306, -70.4609, 0 )
+
+[node name="kelp11" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -70, 0 )
+
+[node name="kelp12" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.50306, -70.4609, 0 )
+
+[node name="kelp13" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -70, 0 )
+
+[node name="kelp14" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.50306, -70.4609, 0 )
+
+[node name="kelp15" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -70, 0 )
+
+[node name="kelp16" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.50306, -70.4609, 0 )
+
+[node name="kelp17" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -70, 0 )
+
+[node name="kelp18" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.50306, -70.4609, 0 )
+
+[node name="kelp19" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -70, 0 )
+
+[node name="kelp20" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.50306, -70.4609, 0 )
+
+[node name="Rocks" type="Spatial" parent="Viewport/level/level_overworld"]
+
+[node name="rock" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -1 )
+
+[node name="rock10" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 4, -1 )
+
+[node name="rock11" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -1 )
+
+[node name="rock12" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -1 )
+
+[node name="rock13" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, -1 )
+
+[node name="rock14" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -1 )
+
+[node name="rock15" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4, -1 )
+
+[node name="rock23" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, -1 )
+
+[node name="rock24" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3, -1 )
+
+[node name="rock29" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2, -1 )
+
+[node name="rock30" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -1, -1 )
+
+[node name="rock31" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -1, -1 )
+
+[node name="rock32" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -1 )
+
+[node name="rock33" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -4, -1 )
+
+[node name="rock34" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -2, -1 )
+
+[node name="rock35" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -1, -1 )
+
+[node name="rock25" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -1 )
+
+[node name="rock16" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -1 )
+
+[node name="rock28" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -1 )
+
+[node name="rock17" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -1 )
+
+[node name="rock18" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -1, -1 )
+
+[node name="rock19" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -2, -1 )
+
+[node name="rock20" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -3, -1 )
+
+[node name="rock26" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -3, -1 )
+
+[node name="rock27" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -3, -1 )
+
+[node name="rock21" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -4, -1 )
+
+[node name="rock2" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, -1 )
+
+[node name="rock3" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -1, -1 )
+
+[node name="rock4" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, -1 )
+
+[node name="rock5" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, -1 )
+
+[node name="rock6" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, -1 )
+
+[node name="rock7" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3, -1 )
+
+[node name="rock8" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, -1 )
+
+[node name="rock9" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -1 )
+
+[node name="HardestRocks" type="Spatial" parent="Viewport/level/level_overworld"]
+
+[node name="hardestRock" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0 )
+
+[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock" index="0"]
+frame = 7
+
+[node name="level_insideWhale" type="Spatial" parent="Viewport/level"]
+
+[node name="bg15" type="Sprite3D" parent="Viewport/level/level_insideWhale"]
+transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1, -56, 0, -90 )
+modulate = Color( 0.701961, 0.0313726, 0.0313726, 1 )
+opacity = 0.38
+pixel_size = 0.04
+texture = ExtResource( 6 )
+
+[node name="HardestRocks" type="Spatial" parent="Viewport/level/level_insideWhale"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0 )
+
+[node name="hardestRock21" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -57, 4, 0 )
+
+[node name="hardestRock26" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -58, 4, 0 )
+
+[node name="hardestRock27" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -59, 4, 0 )
+
+[node name="hardestRock28" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -60, 4, 0 )
+
+[node name="hardestRock29" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -61, 4, 0 )
+
+[node name="hardestRock30" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 4, 0 )
+
+[node name="hardestRock31" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -63, 4, 0 )
+
+[node name="hardestRock134" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -63, 5, 0 )
+
+[node name="hardestRock135" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 5, 0 )
+
+[node name="hardestRock136" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 5, 0 )
+
+[node name="hardestRock32" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 4, 0 )
+
+[node name="hardestRock33" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 4, 0 )
+
+[node name="hardestRock34" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, 4, 0 )
+
+[node name="hardestRock36" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, 3, 0 )
+
+[node name="hardestRock37" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, 2, 0 )
+
+[node name="hardestRock38" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, 1, 0 )
+
+[node name="hardestRock39" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, 0, 0 )
+
+[node name="hardestRock40" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -1, 0 )
+
+[node name="hardestRock41" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -2, 0 )
+
+[node name="hardestRock42" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -3, 0 )
+
+[node name="hardestRock43" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -4, 0 )
+
+[node name="hardestRock98" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -67, -4, 0 )
+
+[node name="hardestRock99" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -67, -7, 0 )
+
+[node name="hardestRock100" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -67, -6, 0 )
+
+[node name="hardestRock101" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -67, -5, 0 )
+
+[node name="hardestRock102" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -4, 0 )
+
+[node name="hardestRock103" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -7, 0 )
+
+[node name="hardestRock104" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -64, -7, 0 )
+
+[node name="hardestRock105" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -64, -4, 0 )
+
+[node name="hardestRock106" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -3, 0 )
+
+[node name="hardestRock107" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -2, 0 )
+
+[node name="hardestRock119" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -63, 2, 0 )
+
+[node name="hardestRock120" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -61, -2, 0 )
+
+[node name="hardestRock121" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -10, 0 )
+
+[node name="hardestRock122" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -56, -12, 0 )
+
+[node name="hardestRock123" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -54, -1, 0 )
+
+[node name="hardestRock108" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -1, 0 )
+
+[node name="hardestRock109" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 0, 0 )
+
+[node name="hardestRock110" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 1, 0 )
+
+[node name="hardestRock111" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 2, 0 )
+
+[node name="hardestRock112" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, 3, 0 )
+
+[node name="hardestRock113" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -8, 0 )
+
+[node name="hardestRock114" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -9, 0 )
+
+[node name="hardestRock115" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -10, 0 )
+
+[node name="hardestRock116" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -11, 0 )
+
+[node name="hardestRock117" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -12, 0 )
+
+[node name="hardestRock118" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -13, 0 )
+
+[node name="hardestRock44" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -7, 0 )
+
+[node name="hardestRock45" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -8, 0 )
+
+[node name="hardestRock46" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -9, 0 )
+
+[node name="hardestRock47" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -10, 0 )
+
+[node name="hardestRock48" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -11, 0 )
+
+[node name="hardestRock49" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -12, 0 )
+
+[node name="hardestRock50" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -13, 0 )
+
+[node name="hardestRock51" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -66, -14, 0 )
+
+[node name="hardestRock52" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -65, -14, 0 )
+
+[node name="hardestRock53" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -64, -14, 0 )
+
+[node name="hardestRock54" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -63, -14, 0 )
+
+[node name="hardestRock55" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, -14, 0 )
+
+[node name="hardestRock56" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -61, -14, 0 )
+
+[node name="hardestRock57" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -60, -14, 0 )
+
+[node name="hardestRock137" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -60, -15, 0 )
+
+[node name="hardestRock138" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -61, -15, 0 )
+
+[node name="hardestRock139" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -59, -15, 0 )
+
+[node name="hardestRock140" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -58, -15, 0 )
+
+[node name="hardestRock141" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -57, -15, 0 )
+
+[node name="hardestRock142" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -56, -15, 0 )
+
+[node name="hardestRock143" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55, -15, 0 )
+
+[node name="hardestRock144" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -54, -15, 0 )
+
+[node name="hardestRock145" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -53, -15, 0 )
+
+[node name="hardestRock146" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52, -15, 0 )
+
+[node name="hardestRock147" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -51, -15, 0 )
+
+[node name="hardestRock148" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50, -15, 0 )
+
+[node name="hardestRock149" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -49, -15, 0 )
+
+[node name="hardestRock150" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48, -15, 0 )
+
+[node name="hardestRock151" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -47, -15, 0 )
+
+[node name="hardestRock58" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -59, -14, 0 )
+
+[node name="hardestRock59" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -58, -14, 0 )
+
+[node name="hardestRock60" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -57, -14, 0 )
+
+[node name="hardestRock61" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -56, -14, 0 )
+
+[node name="hardestRock62" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55, -14, 0 )
+
+[node name="hardestRock63" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -54, -14, 0 )
+
+[node name="hardestRock64" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -53, -14, 0 )
+
+[node name="hardestRock65" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52, -14, 0 )
+
+[node name="hardestRock66" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -51, -14, 0 )
+
+[node name="hardestRock67" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50, -14, 0 )
+
+[node name="hardestRock68" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -49, -14, 0 )
+
+[node name="hardestRock69" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48, -14, 0 )
+
+[node name="hardestRock70" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -47, -14, 0 )
+
+[node name="hardestRock71" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -14, 0 )
+
+[node name="hardestRock72" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -13, 0 )
+
+[node name="hardestRock73" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -12, 0 )
+
+[node name="hardestRock74" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -11, 0 )
+
+[node name="hardestRock75" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -10, 0 )
+
+[node name="hardestRock76" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -9, 0 )
+
+[node name="hardestRock77" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -8, 0 )
+
+[node name="hardestRock78" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -7, 0 )
+
+[node name="hardestRock79" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -6, 0 )
+
+[node name="hardestRock80" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -5, 0 )
+
+[node name="hardestRock81" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -4, 0 )
+
+[node name="hardestRock82" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -3, 0 )
+
+[node name="hardestRock83" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -2, 0 )
+
+[node name="hardestRock84" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, -1, 0 )
+
+[node name="hardestRock85" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 0, 0 )
+
+[node name="hardestRock86" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 1, 0 )
+
+[node name="hardestRock87" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 2, 0 )
+
+[node name="hardestRock88" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 3, 0 )
+
+[node name="hardestRock89" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -46, 4, 0 )
+
+[node name="hardestRock90" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -47, 4, 0 )
+
+[node name="hardestRock91" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 4, 0 )
+
+[node name="hardestRock92" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -49, 4, 0 )
+
+[node name="hardestRock93" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 4, 0 )
+
+[node name="hardestRock94" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -51, 4, 0 )
+
+[node name="hardestRock95" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 4, 0 )
+
+[node name="hardestRock96" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -53, 4, 0 )
+
+[node name="hardestRock97" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -54, 4, 0 )
+
+[node name="hardestRock126" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -54, 5, 0 )
+
+[node name="hardestRock127" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -53, 5, 0 )
+
+[node name="hardestRock128" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -52, 5, 0 )
+
+[node name="hardestRock129" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -51, 5, 0 )
+
+[node name="hardestRock130" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 5, 0 )
+
+[node name="hardestRock131" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -49, 5, 0 )
+
+[node name="hardestRock132" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 5, 0 )
+
+[node name="hardestRock133" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -47, 5, 0 )
+
+[node name="hardestRock35" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -67, 4, 0 )
+
+[node name="hardestRock22" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 4, 0 )
+
+[node name="hardestRock23" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 5, 0 )
+
+[node name="hardestRock24" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -57, 5, 0 )
+
+[node name="hardestRock25" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -56, 7, 0 )
+
+[node name="hardestRock124" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -57, 6, 0 )
+
+[node name="hardestRock125" parent="Viewport/level/level_insideWhale/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -55, 6, 0 )
+
+[node name="grandmaFish" type="Spatial" parent="Viewport/level/level_insideWhale" groups=["npc_group"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -54, -2, 0 )
+script = ExtResource( 32 )
+bbcode_text = "[wave]now what are you doin here sonny?[/wave]"
+stunned_text = "[wave]that's quite enough now dearie..[/wave]"
+
+[node name="fishSprite" type="Sprite3D" parent="Viewport/level/level_insideWhale/grandmaFish"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+pixel_size = 0.0625
+texture = ExtResource( 15 )
+hframes = 8
+vframes = 4
+script = ExtResource( 33 )
+
+[node name="rockingChair" type="Spatial" parent="Viewport/level/level_insideWhale/grandmaFish/fishSprite"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -49.8, -4.4, -3 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Viewport/level/level_insideWhale/grandmaFish/fishSprite/rockingChair"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 4, 2.5 )
+pixel_size = 0.0625
+texture = ExtResource( 30 )
+hframes = 4
+vframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Viewport/level/level_insideWhale/grandmaFish/fishSprite/rockingChair"]
+autoplay = "rocking"
+anims/RESET = SubResource( 26 )
+anims/rocking = SubResource( 27 )
+
+[node name="talkSound" type="AudioStreamPlayer" parent="Viewport/level/level_insideWhale/grandmaFish"]
+stream = ExtResource( 34 )
+volume_db = -8.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Viewport/level/level_insideWhale/grandmaFish"]
+anims/RESET = SubResource( 16 )
+anims/stunned = SubResource( 17 )
+
+[node name="event" type="Node" parent="Viewport/level/level_insideWhale/grandmaFish"]
+script = ExtResource( 17 )
+
+[node name="CoolSound" type="AudioStreamPlayer" parent="Viewport/level/level_insideWhale/grandmaFish/event"]
+stream = ExtResource( 22 )
+volume_db = -30.0
+pitch_scale = 0.3
+
+[node name="blubberWalls" type="Spatial" parent="Viewport/level/level_insideWhale"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -56, -1, 0 )
+
+[node name="blubberWallSprite" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWalls"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 11, 0 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 38 )
+
+[node name="blubberWallSprite4" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWalls"]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -11, -12, 0 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 38 )
+
+[node name="blubberWallSprite5" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWalls"]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -11, 11, 3 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 38 )
+
+[node name="blubberWallSprite6" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWalls"]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -12, 1, 2 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 38 )
+
+[node name="blubberWallSprite2" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWalls"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 11, 0 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 38 )
+
+[node name="blubberWallSprite7" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWalls"]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 11, -1, 0 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 38 )
+
+[node name="blubberWallSprite8" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWalls"]
+transform = Transform( -1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 0, 0, 1, 0, -11, 1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 38 )
+
+[node name="blubberWallSprite3" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWalls"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 12, 1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 38 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Viewport/level/level_insideWhale"]
+autoplay = "digest"
+anims/RESET = SubResource( 20 )
+anims/digest = SubResource( 21 )
+
+[node name="blubberWallSolid" type="Spatial" parent="Viewport/level/level_insideWhale"]
+
+[node name="blubberWallSprite" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWallSolid"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -62, 14, -1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 39 )
+
+[node name="blubberWallSprite2" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWallSolid"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -45, 14, 0 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 39 )
+
+[node name="blubberWallSprite3" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWallSolid"]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -42, 4, -1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 39 )
+
+[node name="blubberWallSprite4" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWallSolid"]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -42, -10, -1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 39 )
+
+[node name="blubberWallSprite9" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWallSolid"]
+transform = Transform( -1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 0, 0, 1, -61, -15, -1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 39 )
+
+[node name="blubberWallSprite10" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWallSolid"]
+transform = Transform( -1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 0, 0, 1, -51, -14, -1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 39 )
+
+[node name="blubberWallSprite11" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWallSolid"]
+transform = Transform( -1, -8.74228e-08, 0, 8.74228e-08, -1, 0, 0, 0, 1, -51, -17, -1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 39 )
+
+[node name="blubberWallSprite7" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWallSolid"]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -38, -10, -1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 39 )
+
+[node name="blubberWallSprite8" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWallSolid"]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -38, 6, -1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 39 )
+
+[node name="blubberWallSprite5" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWallSolid"]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -71, -10, -1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 39 )
+
+[node name="blubberWallSprite6" type="Sprite3D" parent="Viewport/level/level_insideWhale/blubberWallSolid"]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -71, 6, -1 )
+offset = Vector2( 1, 0 )
+pixel_size = 0.0625
+texture = ExtResource( 39 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = SubResource( 22 )
+flip_v = true
+
+[node name="WiggleShaderRect" type="ColorRect" parent="."]
+visible = false
+material = SubResource( 24 )
+margin_right = 640.0
+margin_bottom = 512.0
+rect_pivot_offset = Vector2( 320, 256 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -126,6 +1327,28 @@ bbcode_text = "if you so desire:
 tab_size = 2
 text = "if you so desire: 
     * use arrow keys to move.."
+
+[node name="StatsBox" type="TextureRect" parent="CanvasLayer"]
+material = SubResource( 15 )
+margin_left = 530.0
+margin_top = 8.0
+margin_right = 635.0
+margin_bottom = 47.0
+rect_pivot_offset = Vector2( 105, 0 )
+texture = ExtResource( 27 )
+expand = true
+
+[node name="Text" type="RichTextLabel" parent="CanvasLayer/StatsBox"]
+margin_left = 7.0
+margin_top = -1.0
+margin_right = 97.0
+margin_bottom = 106.0
+rect_clip_content = false
+theme = SubResource( 14 )
+bbcode_enabled = true
+bbcode_text = "HP: 3/3"
+tab_size = 2
+text = "HP: 3/3"
 
 [node name="DeathOverlay" type="ColorRect" parent="CanvasLayer"]
 visible = false
@@ -186,383 +1409,4 @@ ME!!!!!
 
 bye bye"
 
-[node name="Backgrounds" type="Spatial" parent="."]
-
-[node name="bg" type="Sprite3D" parent="Backgrounds"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -90 )
-opacity = 0.25
-pixel_size = 0.04
-texture = ExtResource( 6 )
-
-[node name="bg2" type="Sprite3D" parent="Backgrounds"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.5438, -60, -90 )
-modulate = Color( 1, 0.588235, 0.588235, 1 )
-opacity = 0.5
-pixel_size = 0.04
-texture = ExtResource( 6 )
-
-[node name="bg5" type="Sprite3D" parent="Backgrounds"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.5438, -40, -90 )
-modulate = Color( 1, 0.588235, 0.588235, 1 )
-opacity = 0.5
-pixel_size = 0.04
-texture = ExtResource( 6 )
-
-[node name="bg7" type="Sprite3D" parent="Backgrounds"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.5438, -20, -90 )
-modulate = Color( 1, 0.588235, 0.588235, 1 )
-opacity = 0.5
-pixel_size = 0.04
-texture = ExtResource( 6 )
-
-[node name="bg8" type="Sprite3D" parent="Backgrounds"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 61.5438, 0, -90 )
-modulate = Color( 1, 0.588235, 0.588235, 1 )
-opacity = 0.5
-pixel_size = 0.04
-texture = ExtResource( 6 )
-
-[node name="bg3" type="Sprite3D" parent="Backgrounds"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, -90 )
-modulate = Color( 0.25098, 0.207843, 0.65098, 1 )
-opacity = 0.36
-pixel_size = 0.04
-texture = ExtResource( 6 )
-
-[node name="bg4" type="Sprite3D" parent="Backgrounds"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -40, -90 )
-modulate = Color( 0.266667, 0.266667, 0.313726, 1 )
-opacity = 0.75
-pixel_size = 0.04
-texture = ExtResource( 6 )
-
-[node name="bg6" type="Sprite3D" parent="Backgrounds"]
-transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 1, 20.557, -60, -90 )
-modulate = Color( 0.188235, 0.188235, 0.286275, 1 )
-pixel_size = 0.04
-texture = ExtResource( 6 )
-
-[node name="player" parent="." instance=ExtResource( 1 )]
-
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 6 )
-projection = 1
-current = true
-size = 8.0
-
-[node name="orange" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1 )
-
-[node name="Sounds" type="Spatial" parent="."]
-
-[node name="BubbleSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 3 )
-volume_db = -25.0
-
-[node name="BubbleReverseSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 13 )
-volume_db = -15.0
-
-[node name="EwSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 43 )
-volume_db = -2.0
-pitch_scale = 1.5
-
-[node name="DeadParasiteSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 36 )
-volume_db = -5.0
-
-[node name="LemonSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 37 )
-volume_db = -32.0
-pitch_scale = 0.8
-
-[node name="OldWomanSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 44 )
-volume_db = -40.0
-
-[node name="OofSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 35 )
-volume_db = -5.0
-pitch_scale = 1.2
-
-[node name="SadSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 29 )
-volume_db = -5.0
-pitch_scale = 1.2
-
-[node name="HeartGetSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 47 )
-volume_db = -13.0
-pitch_scale = 0.8
-
-[node name="SwooshSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 18 )
-volume_db = -18.0
-
-[node name="CoconutChompSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 16 )
-volume_db = -10.0
-
-[node name="HeySound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 12 )
-volume_db = -15.0
-
-[node name="HeyUpsetSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 20 )
-volume_db = -15.0
-pitch_scale = 1.5
-
-[node name="WhatsupSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 21 )
-volume_db = -15.0
-pitch_scale = 1.2
-
-[node name="ShatterSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 31 )
-volume_db = -32.0
-pitch_scale = 0.8
-
-[node name="EquipCoconutSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 23 )
-volume_db = -5.0
-
-[node name="ScreamSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 11 )
-volume_db = -18.0
-
-[node name="BigOwSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 24 )
-volume_db = -5.0
-
-[node name="ErrorSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 25 )
-volume_db = -8.0
-pitch_scale = 1.5
-
-[node name="UmSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 41 )
-volume_db = -15.0
-pitch_scale = 1.5
-
-[node name="KissSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 42 )
-volume_db = -5.0
-
-[node name="Kelp" type="Spatial" parent="."]
-
-[node name="kelp" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -70, 0 )
-
-[node name="kelp2" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.503055, -70.4609, 0 )
-
-[node name="kelp21" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -70, 0 )
-
-[node name="kelp22" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.496945, -70.4609, 0 )
-
-[node name="kelp23" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -70, 0 )
-
-[node name="kelp24" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.49694, -70.4609, 0 )
-
-[node name="kelp3" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -70, 0 )
-
-[node name="kelp4" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.50306, -70.4609, 0 )
-
-[node name="kelp5" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -70, 0 )
-
-[node name="kelp6" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.50306, -70.4609, 0 )
-
-[node name="kelp7" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -70, 0 )
-
-[node name="kelp8" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.50306, -70.4609, 0 )
-
-[node name="kelp9" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -70, 0 )
-
-[node name="kelp10" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.50306, -70.4609, 0 )
-
-[node name="kelp11" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -70, 0 )
-
-[node name="kelp12" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.50306, -70.4609, 0 )
-
-[node name="kelp13" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -70, 0 )
-
-[node name="kelp14" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.50306, -70.4609, 0 )
-
-[node name="kelp15" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -70, 0 )
-
-[node name="kelp16" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.50306, -70.4609, 0 )
-
-[node name="kelp17" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -70, 0 )
-
-[node name="kelp18" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.50306, -70.4609, 0 )
-
-[node name="kelp19" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -70, 0 )
-
-[node name="kelp20" parent="Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.50306, -70.4609, 0 )
-
-[node name="Music" type="Spatial" parent="."]
-
-[node name="SillyFishSong" type="AudioStreamPlayer" parent="Music"]
-stream = ExtResource( 49 )
-volume_db = -20.0
-
-[node name="CrabTimeSong" type="AudioStreamPlayer" parent="Music"]
-stream = ExtResource( 48 )
-volume_db = -20.0
-
-[node name="EnterTheDeepSong" type="AudioStreamPlayer" parent="Music"]
-stream = ExtResource( 51 )
-volume_db = -10.0
-
-[node name="TensionSong" type="AudioStreamPlayer" parent="Music"]
-stream = ExtResource( 52 )
-volume_db = -20.0
-
-[node name="PartySong" type="AudioStreamPlayer" parent="Music"]
-stream = ExtResource( 50 )
-volume_db = -25.0
-
-[node name="Rocks" type="Spatial" parent="."]
-
-[node name="rock" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -1 )
-
-[node name="rock10" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 4, -1 )
-
-[node name="rock11" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -1 )
-
-[node name="rock12" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -1 )
-
-[node name="rock13" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, -1 )
-
-[node name="rock14" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -1 )
-
-[node name="rock15" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4, -1 )
-
-[node name="rock23" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, -1 )
-
-[node name="rock24" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3, -1 )
-
-[node name="rock29" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2, -1 )
-
-[node name="rock30" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -1, -1 )
-
-[node name="rock31" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -1, -1 )
-
-[node name="rock32" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -1 )
-
-[node name="rock33" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -4, -1 )
-
-[node name="rock34" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -2, -1 )
-
-[node name="rock35" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -1, -1 )
-
-[node name="rock25" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -1 )
-
-[node name="rock16" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -1 )
-
-[node name="rock28" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -1 )
-
-[node name="rock17" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -1 )
-
-[node name="rock18" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -1, -1 )
-
-[node name="rock19" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -2, -1 )
-
-[node name="rock20" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -3, -1 )
-
-[node name="rock26" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -3, -1 )
-
-[node name="rock27" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -3, -1 )
-
-[node name="rock21" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -4, -1 )
-
-[node name="rock22" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -4, -1 )
-
-[node name="rock2" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, -1 )
-
-[node name="rock3" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -1, -1 )
-
-[node name="rock4" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, -1 )
-
-[node name="rock5" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, -1 )
-
-[node name="rock6" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, -1 )
-
-[node name="rock7" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3, -1 )
-
-[node name="rock8" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, -1 )
-
-[node name="rock9" parent="Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -1 )
-
-[node name="grandmaFish" parent="." instance=ExtResource( 15 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, -5, 0 )
-bbcode_text = "[wave]now what are you doin here sonny?[/wave]"
-stunned_text = "[wave]that's quite enough now dearie..[/wave]"
-
-[node name="event" type="Node" parent="grandmaFish"]
-script = ExtResource( 17 )
-
-[node name="Crab" type="Spatial" parent="."]
-
-[node name="crab" parent="Crab" instance=ExtResource( 10 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, -1 )
-
-[node name="whale" parent="." instance=ExtResource( 19 )]
+[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock"]

@@ -1,6 +1,6 @@
 extends Spatial
 
-onready var level = get_tree().get_root().get_node("level")
+onready var level = get_tree().get_root().get_node("Game/Viewport/level")
 onready var aniPlayer = get_node("AnimationPlayer")
 onready var clonkSound = get_node("ClonkSound")
 onready var weakRicochetSound = get_node("WeakRicochetSound")

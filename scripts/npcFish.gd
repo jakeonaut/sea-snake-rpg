@@ -1,6 +1,6 @@
 extends Spatial
 
-onready var level = get_tree().get_root().get_node("level")
+onready var level = get_tree().get_root().get_node("Game/Viewport/level")
 
 export(String, MULTILINE) var bbcode_text = ""
 export(String, MULTILINE) var stunned_text = ""

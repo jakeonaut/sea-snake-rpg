@@ -1,6 +1,6 @@
 extends Sprite3D
 
-onready var level = get_tree().get_root().get_node("level")
+onready var level = get_tree().get_root().get_node("Game/Viewport/level")
 var animation_counter = 0
 export var frame_delay = 0.4
 var original_frame_delay = 0
