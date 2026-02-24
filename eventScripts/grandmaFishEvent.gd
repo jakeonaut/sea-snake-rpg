@@ -16,9 +16,13 @@ func keepTrying():
         level.textBoxText.bbcode_text = "[wave]ah, very cool dearie.\nhm.. let me try![/wave]"
 
         yield(get_tree().create_timer(0.5), "timeout")
+        myParent.mySprite.remove_child(rockingChair)
+        level.add_child(rockingChair)
         rockingChair.get_node("AnimationPlayer").stop()
         rockingChair.get_node("AnimationPlayer").clear_queue()
         rockingChair.get_node("AnimationPlayer").play("RESET")
+        rockingChair.global_transform.origin.x = -13.491
+        rockingChair.global_transform.origin.y = -18.74
         myParent.mySprite.frame_delay = global.FAST_FRAME_DELAY
 
         yield(get_tree().create_timer(0.5), "timeout")

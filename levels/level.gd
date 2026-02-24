@@ -230,7 +230,7 @@ func updateGameCamera(delta, x_bounds = null, y_bounds = null):
     if should_snap_camera:
         camera.global_transform.origin = player.cameraTarget.global_transform.origin
     elif camera.size == size_to_use:
-        camera.global_transform.origin = camera.global_transform.origin + (player.cameraTarget.global_transform.origin - camera.global_transform.origin) * (delta*2)
+        camera.global_transform.origin = camera.global_transform.origin + (player.cameraTarget.global_transform.origin - camera.global_transform.origin) * (delta*5)
         # if camera.global_transform.origin.x > currentCameraXBounds.y:
         #     camera.global_transform.origin.x = currentCameraXBounds.y
         # elif camera.global_transform.origin.x < currentCameraXBounds.x:

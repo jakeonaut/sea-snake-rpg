@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://scripts/Sprite.gd" type="Script" id=1]
 [ext_resource path="res://images/player_sheet.png" type="Texture" id=2]
@@ -20,6 +20,8 @@
 [ext_resource path="res://scripts/playerMover.gd" type="Script" id=18]
 [ext_resource path="res://sounds/77 Skids.wav" type="AudioStream" id=19]
 [ext_resource path="res://images/base_palette.png" type="Texture" id=20]
+[ext_resource path="res://images/egg_palette.png" type="Texture" id=21]
+[ext_resource path="res://wobbleSprite.gdshader" type="Shader" id=22]
 
 [sub_resource type="Shader" id=15]
 code = "shader_type spatial;
@@ -278,6 +280,42 @@ shader_param/y_div = 0.0
 shader_param/texture_albedo = ExtResource( 2 )
 shader_param/base_palette = ExtResource( 20 )
 shader_param/target_palette = ExtResource( 20 )
+
+[sub_resource type="ShaderMaterial" id=17]
+shader = ExtResource( 22 )
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/opacity = 1.0
+shader_param/outline_color = null
+shader_param/outline_width = 1.0
+shader_param/shake_power = 0.03
+shader_param/shake_block_size = 30.5
+shader_param/shake_color_rate = 0.01
+shader_param/no_palette_swap = false
+shader_param/enable_remove_skin_tone = false
+shader_param/enable_dither = false
+shader_param/enable_no_transparency = false
+shader_param/enable_black_unknown = false
+shader_param/palettesize = 16
+shader_param/resolution_scale = 1
+shader_param/offset = 0
+shader_param/black_offset = 0
+shader_param/enable_glitch = false
+shader_param/enable_color_glitch = true
+shader_param/disable_glitch_dither = false
+shader_param/enable_palette_cycle = false
+shader_param/palette_cycle_speed = 10.0
+shader_param/enable_glitch_3d = false
+shader_param/shake_power_3d = 0.5
+shader_param/shake_rate = 0.5
+shader_param/shake_speed = 5.0
+shader_param/shake_block_size_3d = 30.5
+shader_param/shake_color_rate_3d = 0.5
+shader_param/normal_offset = 0.0
+shader_param/time_influence = 0.0
+shader_param/y_div = 0.0
+shader_param/texture_albedo = ExtResource( 6 )
+shader_param/base_palette = ExtResource( 20 )
+shader_param/target_palette = ExtResource( 21 )
 
 [sub_resource type="QuadMesh" id=1]
 
@@ -1090,6 +1128,7 @@ script = ExtResource( 1 )
 
 [node name="eggSprite" type="Sprite3D" parent="."]
 visible = false
+material_override = SubResource( 17 )
 offset = Vector2( 0, 80 )
 pixel_size = 0.0625
 texture = ExtResource( 6 )
