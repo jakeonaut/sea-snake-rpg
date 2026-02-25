@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://scripts/Sprite.gd" type="Script" id=1]
 [ext_resource path="res://images/player_sheet.png" type="Texture" id=2]
@@ -19,9 +19,10 @@
 [ext_resource path="res://sounds/eb_powerup3.wav" type="AudioStream" id=17]
 [ext_resource path="res://scripts/playerMover.gd" type="Script" id=18]
 [ext_resource path="res://sounds/77 Skids.wav" type="AudioStream" id=19]
-[ext_resource path="res://images/base_palette.png" type="Texture" id=20]
-[ext_resource path="res://images/egg_palette.png" type="Texture" id=21]
+[ext_resource path="res://palettes/base_palette.png" type="Texture" id=20]
+[ext_resource path="res://palettes/egg_palette.png" type="Texture" id=21]
 [ext_resource path="res://wobbleSprite.gdshader" type="Shader" id=22]
+[ext_resource path="res://sounds/eba_waves4.wav" type="AudioStream" id=23]
 
 [sub_resource type="Shader" id=15]
 code = "shader_type spatial;
@@ -628,6 +629,42 @@ tracks/21/keys = {
 "update": 0,
 "values": [ 0.0625 ]
 }
+tracks/22/type = "value"
+tracks/22/path = NodePath("headSprite:material_override:shader_param/normal_offset")
+tracks/22/interp = 1
+tracks/22/loop_wrap = true
+tracks/22/imported = false
+tracks/22/enabled = true
+tracks/22/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/23/type = "value"
+tracks/23/path = NodePath("headSprite:material_override:shader_param/time_influence")
+tracks/23/interp = 1
+tracks/23/loop_wrap = true
+tracks/23/imported = false
+tracks/23/enabled = true
+tracks/23/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/24/type = "value"
+tracks/24/path = NodePath("headSprite:material_override:shader_param/y_div")
+tracks/24/interp = 1
+tracks/24/loop_wrap = true
+tracks/24/imported = false
+tracks/24/enabled = true
+tracks/24/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
 
 [sub_resource type="Animation" id=11]
 resource_name = "ateWhaleFall"
@@ -1111,6 +1148,109 @@ tracks/1/keys = {
 "update": 1,
 "values": [ Vector2( 0, 0 ), Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("headSprite:material_override:shader_param/normal_offset")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("headSprite:material_override:shader_param/time_influence")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("headSprite:material_override:shader_param/y_div")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=18]
+resource_name = "waterfallStunned"
+length = 0.6
+step = 0.05
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "unstunned"
+} ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("headSprite:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("headSprite:material_override:shader_param/normal_offset")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0.2, 0.02, 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("headSprite:material_override:shader_param/time_influence")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 7.143, 17.391, 0.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("headSprite:material_override:shader_param/y_div")
+tracks/4/interp = 2
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 10.0, 10.0, 0.0 ]
+}
 
 [node name="player" type="Spatial"]
 script = ExtResource( 3 )
@@ -1177,6 +1317,7 @@ anims/eggFloatDown = SubResource( 14 )
 anims/growFromEgg = SubResource( 12 )
 anims/hurtByParasite = SubResource( 10 )
 anims/stunned = SubResource( 13 )
+anims/waterfallStunned = SubResource( 18 )
 
 [node name="Sounds" type="Spatial" parent="."]
 
@@ -1241,8 +1382,8 @@ volume_db = -25.0
 pitch_scale = 1.5
 
 [node name="DriftWaveSound" type="AudioStreamPlayer" parent="Sounds"]
-stream = ExtResource( 14 )
-volume_db = -15.0
+stream = ExtResource( 23 )
+volume_db = -18.0
 pitch_scale = 0.5
 
 [node name="HatchedSound" type="AudioStreamPlayer" parent="Sounds"]

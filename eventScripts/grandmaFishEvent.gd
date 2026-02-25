@@ -21,8 +21,7 @@ func keepTrying():
         rockingChair.get_node("AnimationPlayer").stop()
         rockingChair.get_node("AnimationPlayer").clear_queue()
         rockingChair.get_node("AnimationPlayer").play("RESET")
-        rockingChair.global_transform.origin.x = -13.491
-        rockingChair.global_transform.origin.y = -18.74
+        rockingChair.global_transform.origin = myParent.mySprite.global_transform.origin
         myParent.mySprite.frame_delay = global.FAST_FRAME_DELAY
 
         yield(get_tree().create_timer(0.5), "timeout")

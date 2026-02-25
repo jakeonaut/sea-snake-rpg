@@ -5,8 +5,8 @@
 [ext_resource path="res://sounds/crab.wav" type="AudioStream" id=3]
 [ext_resource path="res://scripts/npcFish.gd" type="Script" id=4]
 [ext_resource path="res://sounds/snippers.wav" type="AudioStream" id=5]
-[ext_resource path="res://images/base_palette.png" type="Texture" id=6]
-[ext_resource path="res://images/crab_palette.png" type="Texture" id=7]
+[ext_resource path="res://palettes/base_palette.png" type="Texture" id=6]
+[ext_resource path="res://palettes/crab_palette.png" type="Texture" id=7]
 [ext_resource path="res://wobbleSprite.gdshader" type="Shader" id=8]
 
 [sub_resource type="ShaderMaterial" id=16]

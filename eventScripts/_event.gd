@@ -13,3 +13,11 @@ func keepTrying():
 # TODO(): Override me!!
 func stopTrying(_did_someone_else_start_talking):
   pass
+
+# TODO(): Override me!!
+func collideWith(was_charging = false):
+  pass
+
+# TODO(): Override me!!
+func getHitWithCoconut(_coconutDir):
+  pass

@@ -1,4 +1,4 @@
-[gd_scene load_steps=157 format=2]
+[gd_scene load_steps=225 format=2]
 
 [ext_resource path="res://sceneObjects/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://sceneObjects/rock.tscn" type="PackedScene" id=2]
@@ -53,12 +53,150 @@
 [ext_resource path="res://music/enterTheDeep.mp3" type="AudioStream" id=51]
 [ext_resource path="res://music/tension.mp3" type="AudioStream" id=52]
 [ext_resource path="res://images/whaleGutsEdge.png" type="Texture" id=53]
-[ext_resource path="res://images/rock_palette.png" type="Texture" id=54]
-[ext_resource path="res://wobbleSprite.gdshader" type="Shader" id=55]
-[ext_resource path="res://images/base_palette.png" type="Texture" id=56]
-[ext_resource path="res://images/smallCritters.png" type="Texture" id=57]
+[ext_resource path="res://sceneObjects/npcFish.tscn" type="PackedScene" id=54]
+[ext_resource path="res://sceneObjects/rockFruit.tscn" type="PackedScene" id=55]
+[ext_resource path="res://scripts/waterfallSource.gd" type="Script" id=56]
+[ext_resource path="res://sceneObjects/shark.tscn" type="PackedScene" id=57]
+[ext_resource path="res://sceneObjects/waterfallCurrent.tscn" type="PackedScene" id=58]
+[ext_resource path="res://images/whaleBrain.png" type="Texture" id=59]
+[ext_resource path="res://eventScripts/whaleBrainEvent.gd" type="Script" id=60]
+[ext_resource path="res://sounds/eb_bubble2.wav" type="AudioStream" id=61]
+[ext_resource path="res://sounds/eba_swimming.wav" type="AudioStream" id=62]
+[ext_resource path="res://wobbleSprite.gdshader" type="Shader" id=63]
+[ext_resource path="res://eventScripts/cuttleFishEvent.gd" type="Script" id=64]
+[ext_resource path="res://sounds/Octopus.wav" type="AudioStream" id=65]
+[ext_resource path="res://palettes/base_palette.png" type="Texture" id=66]
+[ext_resource path="res://palettes/crab_palette.png" type="Texture" id=67]
+[ext_resource path="res://palettes/rock_palette.png" type="Texture" id=68]
+[ext_resource path="res://palettes/egg_palette.png" type="Texture" id=69]
+[ext_resource path="res://palettes/orange_palette.png" type="Texture" id=70]
+[ext_resource path="res://sceneObjects/coconut.tscn" type="PackedScene" id=71]
 
 [sub_resource type="Environment" id=1]
+
+[sub_resource type="ShaderMaterial" id=162]
+shader = ExtResource( 63 )
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/opacity = 1.0
+shader_param/outline_color = null
+shader_param/outline_width = 1.0
+shader_param/shake_power = 0.03
+shader_param/shake_block_size = 30.5
+shader_param/shake_color_rate = 0.01
+shader_param/no_palette_swap = false
+shader_param/enable_remove_skin_tone = false
+shader_param/enable_dither = false
+shader_param/enable_no_transparency = false
+shader_param/enable_black_unknown = false
+shader_param/palettesize = 16
+shader_param/resolution_scale = 1
+shader_param/offset = 0
+shader_param/black_offset = 0
+shader_param/enable_glitch = false
+shader_param/enable_color_glitch = true
+shader_param/disable_glitch_dither = false
+shader_param/enable_palette_cycle = false
+shader_param/palette_cycle_speed = 10.0
+shader_param/enable_glitch_3d = false
+shader_param/shake_power_3d = 0.5
+shader_param/shake_rate = 0.5
+shader_param/shake_speed = 5.0
+shader_param/shake_block_size_3d = 30.5
+shader_param/shake_color_rate_3d = 0.5
+shader_param/normal_offset = 0.0
+shader_param/time_influence = 0.0
+shader_param/y_div = 0.0
+shader_param/texture_albedo = ExtResource( 15 )
+shader_param/base_palette = ExtResource( 66 )
+shader_param/target_palette = ExtResource( 68 )
+
+[sub_resource type="Animation" id=163]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:material_override:shader_param/target_palette")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ ExtResource( 68 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("fishSprite:frame_delay")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1.6 ]
+}
+
+[sub_resource type="Animation" id=164]
+resource_name = "paletteCycle"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:material_override:shader_param/target_palette")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 66 ), ExtResource( 67 ), ExtResource( 69 ), ExtResource( 70 ), ExtResource( 68 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("fishSprite:frame_delay")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0.4, 1.6 ]
+}
+
+[sub_resource type="Animation" id=110]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=111]
+resource_name = "stunned"
+length = 0.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 0 ), Vector2( 0, 1 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=26]
 length = 0.001
@@ -148,18 +286,18 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="ShaderMaterial" id=25]
+[sub_resource type="ShaderMaterial" id=109]
 shader = ExtResource( 45 )
 shader_param/albedo = Color( 1, 1, 1, 0.141176 )
-shader_param/amplitude = 0.005
-shader_param/frequency = 10.0
-shader_param/speed = 2.0
+shader_param/amplitude = 0.004
+shader_param/frequency = 20.0
+shader_param/speed = 1.0
 shader_param/amplitude_vertical = 0.0
 shader_param/frequency_vertical = 0.0
 shader_param/speed_vertical = 0.0
 shader_param/scroll_direction = Vector2( 0, 0 )
 shader_param/scrolling_speed = 0.08
-shader_param/texture_albedo = ExtResource( 8 )
+shader_param/texture_albedo = ExtResource( 6 )
 
 [sub_resource type="Animation" id=28]
 length = 0.001
@@ -897,6 +1035,806 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
 }
 
+[sub_resource type="Animation" id=112]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=113]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=114]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=115]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=116]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=117]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=118]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=119]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=120]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=121]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=122]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=123]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=124]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=125]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=126]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=127]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=128]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=129]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=130]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=131]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=132]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=133]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=134]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=135]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=136]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=137]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=138]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=139]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=140]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=141]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=142]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=143]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=144]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=145]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=146]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=147]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=148]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=149]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=150]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=151]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=152]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=153]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=154]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=155]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=156]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=157]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=158]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=159]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=160]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=161]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
 [sub_resource type="Animation" id=95]
 length = 0.001
 tracks/0/type = "value"
@@ -1441,42 +2379,6 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="ShaderMaterial" id=76]
-shader = ExtResource( 55 )
-shader_param/albedo = Color( 1, 1, 1, 1 )
-shader_param/opacity = 1.0
-shader_param/outline_color = null
-shader_param/outline_width = 1.0
-shader_param/shake_power = 0.03
-shader_param/shake_block_size = 30.5
-shader_param/shake_color_rate = 0.01
-shader_param/no_palette_swap = false
-shader_param/enable_remove_skin_tone = false
-shader_param/enable_dither = false
-shader_param/enable_no_transparency = false
-shader_param/enable_black_unknown = false
-shader_param/palettesize = 16
-shader_param/resolution_scale = 1
-shader_param/offset = 0
-shader_param/black_offset = 0
-shader_param/enable_glitch = false
-shader_param/enable_color_glitch = true
-shader_param/disable_glitch_dither = false
-shader_param/enable_palette_cycle = false
-shader_param/palette_cycle_speed = 10.0
-shader_param/enable_glitch_3d = false
-shader_param/shake_power_3d = 0.5
-shader_param/shake_rate = 0.5
-shader_param/shake_speed = 5.0
-shader_param/shake_block_size_3d = 30.5
-shader_param/shake_color_rate_3d = 0.5
-shader_param/normal_offset = 0.0
-shader_param/time_influence = 0.0
-shader_param/y_div = 0.0
-shader_param/texture_albedo = ExtResource( 57 )
-shader_param/base_palette = ExtResource( 56 )
-shader_param/target_palette = ExtResource( 54 )
-
 [sub_resource type="ViewportTexture" id=22]
 viewport_path = NodePath("Viewport")
 
@@ -1557,8 +2459,13 @@ projection = 1
 current = true
 size = 8.0
 
-[node name="orange" parent="Viewport/level" instance=ExtResource( 5 )]
+[node name="fruits" type="Spatial" parent="Viewport/level"]
+
+[node name="orange" parent="Viewport/level/fruits" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1 )
+
+[node name="coconut" parent="Viewport/level/fruits" instance=ExtResource( 71 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0 )
 
 [node name="Sounds" type="Spatial" parent="Viewport/level"]
 
@@ -1656,6 +2563,10 @@ pitch_scale = 1.5
 stream = ExtResource( 42 )
 volume_db = -5.0
 
+[node name="WaterfallStartSound" type="AudioStreamPlayer" parent="Viewport/level/Sounds"]
+stream = ExtResource( 61 )
+volume_db = -20.0
+
 [node name="Music" type="Spatial" parent="Viewport/level"]
 
 [node name="SillyFishSong" type="AudioStreamPlayer" parent="Viewport/level/Music"]
@@ -1678,59 +2589,120 @@ volume_db = -20.0
 stream = ExtResource( 50 )
 volume_db = -25.0
 
-[node name="grandmaFish" type="Spatial" parent="Viewport/level" groups=["npc_group"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 36, -14, 1 )
-script = ExtResource( 32 )
-bbcode_text = "[wave]now what are you doin here sonny?[/wave]"
-stunned_text = "[wave]that's quite enough now dearie..[/wave]"
+[node name="Crabs" type="Spatial" parent="Viewport/level"]
 
-[node name="fishSprite" type="Sprite3D" parent="Viewport/level/grandmaFish"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+[node name="crab" parent="Viewport/level/Crabs" instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, -1 )
+
+[node name="NPCs" type="Spatial" parent="Viewport/level"]
+
+[node name="eacSeaTurtle" parent="Viewport/level/NPCs" instance=ExtResource( 54 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 2, 0 )
+bbcode_text = "[wave]ride the waAave bro.. the EAC[/wave]"
+stunned_text = "you cannot hurt me.
+my shell is strong."
+
+[node name="fishSprite" parent="Viewport/level/NPCs/eacSeaTurtle" index="0"]
+frame = 2
+
+[node name="talkSound" parent="Viewport/level/NPCs/eacSeaTurtle" index="1"]
+stream = ExtResource( 62 )
+volume_db = -15.0
+
+[node name="cuttleFish" parent="Viewport/level/NPCs" instance=ExtResource( 54 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -3, 0 )
+
+[node name="fishSprite" parent="Viewport/level/NPCs/cuttleFish" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0999999, -1 )
+material_override = SubResource( 162 )
+frame = 8
+frame_delay = 1.6
+
+[node name="coconutMaskSprite" type="Sprite3D" parent="Viewport/level/NPCs/cuttleFish"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0999999, 0 )
+visible = false
 pixel_size = 0.0625
 texture = ExtResource( 15 )
 hframes = 8
 vframes = 4
+frame = 10
 script = ExtResource( 33 )
+frame_delay = 1.6
 
-[node name="rockingChair" type="Spatial" parent="Viewport/level/grandmaFish/fishSprite"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -49.8, -4.4, -3 )
+[node name="talkSound" parent="Viewport/level/NPCs/cuttleFish" index="2"]
+stream = ExtResource( 65 )
+volume_db = -15.0
 
-[node name="Sprite3D" type="Sprite3D" parent="Viewport/level/grandmaFish/fishSprite/rockingChair"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 4, 2.5 )
-pixel_size = 0.0625
-texture = ExtResource( 30 )
-hframes = 4
-vframes = 4
+[node name="PaletteAnimationPlayer" type="AnimationPlayer" parent="Viewport/level/NPCs/cuttleFish"]
+anims/RESET = SubResource( 163 )
+anims/paletteCycle = SubResource( 164 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Viewport/level/grandmaFish/fishSprite/rockingChair"]
-autoplay = "rocking"
-anims/RESET = SubResource( 26 )
-anims/rocking = SubResource( 27 )
+[node name="event" type="Node" parent="Viewport/level/NPCs/cuttleFish"]
+script = ExtResource( 64 )
 
-[node name="talkSound" type="AudioStreamPlayer" parent="Viewport/level/grandmaFish"]
-stream = ExtResource( 34 )
-volume_db = -8.0
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Viewport/level/grandmaFish"]
-anims/RESET = SubResource( 16 )
-anims/stunned = SubResource( 17 )
-
-[node name="event" type="Node" parent="Viewport/level/grandmaFish"]
-script = ExtResource( 17 )
-
-[node name="CoolSound" type="AudioStreamPlayer" parent="Viewport/level/grandmaFish/event"]
-stream = ExtResource( 22 )
-volume_db = -30.0
-pitch_scale = 0.3
+[node name="sharkFish" parent="Viewport/level" instance=ExtResource( 57 )]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, 7, -15, 0 )
 
 [node name="whale" type="Spatial" parent="Viewport/level"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, -14, 1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, -32, 1 )
 script = ExtResource( 39 )
 
 [node name="whaleSprite" type="Sprite3D" parent="Viewport/level/whale"]
 offset = Vector2( 1, 0 )
 pixel_size = 0.0625
 texture = ExtResource( 38 )
+
+[node name="whaleBrain" type="Sprite3D" parent="Viewport/level/whale"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.2, 3, -0.1 )
+pixel_size = 0.0625
+texture = ExtResource( 59 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Viewport/level/whale/whaleBrain"]
+anims/RESET = SubResource( 110 )
+anims/stunned = SubResource( 111 )
+
+[node name="boundary" type="Sprite3D" parent="Viewport/level/whale/whaleBrain" groups=["solid_group"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, -1, 1 )
+offset = Vector2( 1, 0 )
+opacity = 0.0
+pixel_size = 0.0625
+texture = ExtResource( 28 )
+hframes = 8
+vframes = 16
+frame = 8
+
+[node name="boundary2" type="Sprite3D" parent="Viewport/level/whale/whaleBrain" groups=["solid_group"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0, 1 )
+offset = Vector2( 1, 0 )
+opacity = 0.0
+pixel_size = 0.0625
+texture = ExtResource( 28 )
+hframes = 8
+vframes = 16
+frame = 8
+
+[node name="boundary3" type="Sprite3D" parent="Viewport/level/whale/whaleBrain" groups=["solid_group"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 1, 1 )
+offset = Vector2( 1, 0 )
+opacity = 0.0
+pixel_size = 0.0625
+texture = ExtResource( 28 )
+hframes = 8
+vframes = 16
+frame = 8
+
+[node name="boundary4" type="Sprite3D" parent="Viewport/level/whale/whaleBrain" groups=["solid_group"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 2, 1 )
+offset = Vector2( 1, 0 )
+opacity = 0.0
+pixel_size = 0.0625
+texture = ExtResource( 28 )
+hframes = 8
+vframes = 16
+frame = 8
+
+[node name="event" type="Node" parent="Viewport/level/whale/whaleBrain"]
+script = ExtResource( 60 )
 
 [node name="whaleGutsSprite" type="Sprite3D" parent="Viewport/level/whale"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5 )
@@ -1750,7 +2722,12 @@ offset = Vector2( 1, 0 )
 pixel_size = 0.0625
 texture = ExtResource( 46 )
 
-[node name="hideSkin" type="Sprite3D" parent="Viewport/level/whale"]
+[node name="rockFruit" parent="Viewport/level/whale" instance=ExtResource( 55 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, -1, -2 )
+
+[node name="spriteTriggers" type="Spatial" parent="Viewport/level/whale"]
+
+[node name="hideSkin" type="Sprite3D" parent="Viewport/level/whale/spriteTriggers"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, -3, 3 )
 opacity = 0.0
 pixel_size = 0.0625
@@ -1759,7 +2736,7 @@ hframes = 8
 vframes = 16
 frame = 2
 
-[node name="hideSkin2" type="Sprite3D" parent="Viewport/level/whale"]
+[node name="hideSkin2" type="Sprite3D" parent="Viewport/level/whale/spriteTriggers"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, -2, 3 )
 opacity = 0.0
 pixel_size = 0.0625
@@ -1768,7 +2745,7 @@ hframes = 8
 vframes = 16
 frame = 2
 
-[node name="hideSkin3" type="Sprite3D" parent="Viewport/level/whale"]
+[node name="hideSkin3" type="Sprite3D" parent="Viewport/level/whale/spriteTriggers"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, -1, 3 )
 opacity = 0.0
 pixel_size = 0.0625
@@ -1777,7 +2754,7 @@ hframes = 8
 vframes = 16
 frame = 2
 
-[node name="hideSkin4" type="Sprite3D" parent="Viewport/level/whale"]
+[node name="hideSkin4" type="Sprite3D" parent="Viewport/level/whale/spriteTriggers"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 10, 3 )
 opacity = 0.0
 pixel_size = 0.0625
@@ -1786,7 +2763,7 @@ hframes = 8
 vframes = 16
 frame = 2
 
-[node name="showSkin" type="Sprite3D" parent="Viewport/level/whale"]
+[node name="showSkin" type="Sprite3D" parent="Viewport/level/whale/spriteTriggers"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -3, 3 )
 opacity = 0.0
 pixel_size = 0.0625
@@ -1795,7 +2772,7 @@ hframes = 8
 vframes = 16
 frame = 2
 
-[node name="showSkin2" type="Sprite3D" parent="Viewport/level/whale"]
+[node name="showSkin2" type="Sprite3D" parent="Viewport/level/whale/spriteTriggers"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -2, 3 )
 opacity = 0.0
 pixel_size = 0.0625
@@ -1804,7 +2781,7 @@ hframes = 8
 vframes = 16
 frame = 2
 
-[node name="showSkin3" type="Sprite3D" parent="Viewport/level/whale"]
+[node name="showSkin3" type="Sprite3D" parent="Viewport/level/whale/spriteTriggers"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -1, 3 )
 opacity = 0.0
 pixel_size = 0.0625
@@ -1813,7 +2790,7 @@ hframes = 8
 vframes = 16
 frame = 2
 
-[node name="showSkin4" type="Sprite3D" parent="Viewport/level/whale"]
+[node name="showSkin4" type="Sprite3D" parent="Viewport/level/whale/spriteTriggers"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 11, 3 )
 opacity = 0.0
 pixel_size = 0.0625
@@ -1822,7 +2799,210 @@ hframes = 8
 vframes = 16
 frame = 2
 
-[node name="boundary" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="grandmaFish" type="Spatial" parent="Viewport/level/whale" groups=["npc_group"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 )
+script = ExtResource( 32 )
+bbcode_text = "[wave]now what are you doin here sonny?[/wave]"
+stunned_text = "[wave]that's quite enough now dearie..[/wave]"
+
+[node name="fishSprite" type="Sprite3D" parent="Viewport/level/whale/grandmaFish"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+pixel_size = 0.0625
+texture = ExtResource( 15 )
+hframes = 8
+vframes = 4
+script = ExtResource( 33 )
+
+[node name="rockingChair" type="Spatial" parent="Viewport/level/whale/grandmaFish/fishSprite"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -49.8, -4.4, -3 )
+
+[node name="Sprite3D" type="Sprite3D" parent="Viewport/level/whale/grandmaFish/fishSprite/rockingChair"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 4, 2.5 )
+pixel_size = 0.0625
+texture = ExtResource( 30 )
+hframes = 4
+vframes = 4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Viewport/level/whale/grandmaFish/fishSprite/rockingChair"]
+autoplay = "rocking"
+anims/RESET = SubResource( 26 )
+anims/rocking = SubResource( 27 )
+
+[node name="talkSound" type="AudioStreamPlayer" parent="Viewport/level/whale/grandmaFish"]
+stream = ExtResource( 34 )
+volume_db = -8.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Viewport/level/whale/grandmaFish"]
+anims/RESET = SubResource( 16 )
+anims/stunned = SubResource( 17 )
+
+[node name="event" type="Node" parent="Viewport/level/whale/grandmaFish"]
+script = ExtResource( 17 )
+
+[node name="CoolSound" type="AudioStreamPlayer" parent="Viewport/level/whale/grandmaFish/event"]
+stream = ExtResource( 22 )
+volume_db = -30.0
+pitch_scale = 0.3
+
+[node name="waterfallSource2" type="Spatial" parent="Viewport/level/whale"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 10, -1.5 )
+script = ExtResource( 56 )
+
+[node name="waterfallCurrent" parent="Viewport/level/whale/waterfallSource2" instance=ExtResource( 58 )]
+flip_v = true
+
+[node name="waterfallCurrent2" parent="Viewport/level/whale/waterfallSource2" instance=ExtResource( 58 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+flip_v = true
+
+[node name="waterfallCurrent3" parent="Viewport/level/whale/waterfallSource2" instance=ExtResource( 58 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0 )
+flip_v = true
+
+[node name="waterfallCurrent7" parent="Viewport/level/whale/waterfallSource2" instance=ExtResource( 58 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
+flip_v = true
+
+[node name="waterfallCurrent4" parent="Viewport/level/whale/waterfallSource2" instance=ExtResource( 58 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0 )
+flip_v = true
+
+[node name="waterfallCurrent5" parent="Viewport/level/whale/waterfallSource2" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1, 4, 0 )
+flip_h = true
+flip_v = true
+
+[node name="waterfallCurrent6" parent="Viewport/level/whale/waterfallSource2" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 1, 4, 0 )
+flip_v = true
+
+[node name="waterfallCurrent8" parent="Viewport/level/whale/waterfallSource2" instance=ExtResource( 58 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, 0 )
+
+[node name="waterfallCurrent9" parent="Viewport/level/whale/waterfallSource2" instance=ExtResource( 58 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, 0 )
+
+[node name="blowholeRock" parent="Viewport/level/whale" instance=ExtResource( 2 )]
+transform = Transform( 1.5, 0, 0, 0, 1, 0, 0, 0, 1, -9, 11, 0 )
+
+[node name="waterfallSource3" type="Spatial" parent="Viewport/level/whale"]
+
+[node name="waterfallCurrent14" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -22, -2, -2 )
+
+[node name="waterfallCurrent21" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -21, -2, -2 )
+
+[node name="waterfallCurrent22" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -20, -2, -2 )
+
+[node name="waterfallCurrent15" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -19, -2, -2 )
+
+[node name="waterfallCurrent23" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -18, -2, -2 )
+
+[node name="waterfallCurrent24" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -17, -2, -2 )
+
+[node name="waterfallCurrent25" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -16, -2, -2 )
+
+[node name="waterfallCurrent26" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -15, -2, -2 )
+
+[node name="waterfallCurrent27" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -14, -2, -2 )
+
+[node name="waterfallCurrent28" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -13, -2, -1 )
+
+[node name="waterfallCurrent16" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -27, -2, -2 )
+
+[node name="waterfallCurrent17" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -26, -2, -2 )
+
+[node name="waterfallCurrent18" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -25, -2, -2 )
+
+[node name="waterfallCurrent19" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -24, -2, -2 )
+
+[node name="waterfallCurrent20" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -23, -2, -2 )
+
+[node name="waterfallCurrent29" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -22, -3, -2 )
+
+[node name="waterfallCurrent30" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -21, -3, -2 )
+
+[node name="waterfallCurrent31" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -20, -3, -2 )
+
+[node name="waterfallCurrent32" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -19, -3, -2 )
+
+[node name="waterfallCurrent33" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -18, -3, -2 )
+
+[node name="waterfallCurrent34" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -17, -3, -2 )
+
+[node name="waterfallCurrent35" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -16, -3, -2 )
+
+[node name="waterfallCurrent36" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -15, -3, -2 )
+
+[node name="waterfallCurrent37" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -14, -3, -2 )
+
+[node name="waterfallCurrent38" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -13, -3, -1 )
+
+[node name="waterfallCurrent39" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -27, -3, -2 )
+
+[node name="waterfallCurrent40" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -26, -3, -2 )
+
+[node name="waterfallCurrent41" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -25, -3, -2 )
+
+[node name="waterfallCurrent42" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -24, -3, -2 )
+
+[node name="waterfallCurrent43" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -23, -3, -2 )
+
+[node name="rocks" type="Spatial" parent="Viewport/level/whale"]
+
+[node name="rock42" parent="Viewport/level/whale/rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 10, -1 )
+
+[node name="rock43" parent="Viewport/level/whale/rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 9, -1 )
+
+[node name="rock44" parent="Viewport/level/whale/rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 8, -1 )
+
+[node name="rock45" parent="Viewport/level/whale/rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 8, -1 )
+
+[node name="rock46" parent="Viewport/level/whale/rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 8, -1 )
+
+[node name="rock47" parent="Viewport/level/whale/rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 7, -1 )
+
+[node name="rock48" parent="Viewport/level/whale/rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 7, -1 )
+
+[node name="boundaries" type="Spatial" parent="Viewport/level/whale"]
+
+[node name="boundary" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1832,7 +3012,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary2" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary2" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1842,7 +3022,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary3" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary3" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1852,7 +3032,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary4" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary4" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1862,7 +3042,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary13" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary13" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1872,7 +3052,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary14" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary14" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1882,7 +3062,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary15" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary15" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1892,7 +3072,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary16" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary16" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1902,7 +3082,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary17" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary17" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1912,7 +3092,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary18" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary18" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1922,7 +3102,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary19" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary19" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1932,7 +3112,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary20" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary20" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1942,7 +3122,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary21" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary21" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1952,7 +3132,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary22" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary22" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1962,7 +3142,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary23" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary23" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1972,7 +3152,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary24" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary24" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 9, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1982,7 +3162,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary178" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary178" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -1992,7 +3172,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary179" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary179" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2002,7 +3182,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary180" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary180" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2012,7 +3192,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary181" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary181" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2022,7 +3202,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary182" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary182" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2032,7 +3212,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary183" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary183" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2042,7 +3222,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary184" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary184" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2052,7 +3232,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary185" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary185" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2062,7 +3242,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary186" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary186" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2072,7 +3252,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary187" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary187" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2082,7 +3262,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary188" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary188" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2092,7 +3272,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary189" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary189" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2102,7 +3282,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary190" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary190" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2112,7 +3292,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary191" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary191" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2122,7 +3302,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary192" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary192" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2132,7 +3312,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary193" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary193" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2142,7 +3322,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary194" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary194" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2152,7 +3332,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary195" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary195" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2162,7 +3342,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary196" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary196" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 9, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2172,7 +3352,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary197" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary197" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2182,7 +3362,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary198" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary198" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2192,7 +3372,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary199" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary199" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2202,7 +3382,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary200" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary200" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2212,7 +3392,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary201" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary201" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2222,7 +3402,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary202" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary202" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 3, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2232,7 +3412,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary203" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary203" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 1, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2242,7 +3422,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary204" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary204" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -1, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2252,7 +3432,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary205" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary205" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2262,7 +3442,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary206" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary206" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -2, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2272,7 +3452,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary207" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary207" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -3, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2282,7 +3462,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary208" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary208" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17, -3, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2292,7 +3472,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary25" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary25" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 1, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2302,57 +3482,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary26" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 2, 1 )
-offset = Vector2( 1, 0 )
-opacity = 0.0
-pixel_size = 0.0625
-texture = ExtResource( 28 )
-hframes = 8
-vframes = 16
-frame = 8
-
-[node name="boundary27" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 2, 1 )
-offset = Vector2( 1, 0 )
-opacity = 0.0
-pixel_size = 0.0625
-texture = ExtResource( 28 )
-hframes = 8
-vframes = 16
-frame = 8
-
-[node name="boundary28" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 3, 1 )
-offset = Vector2( 1, 0 )
-opacity = 0.0
-pixel_size = 0.0625
-texture = ExtResource( 28 )
-hframes = 8
-vframes = 16
-frame = 8
-
-[node name="boundary29" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 4, 1 )
-offset = Vector2( 1, 0 )
-opacity = 0.0
-pixel_size = 0.0625
-texture = ExtResource( 28 )
-hframes = 8
-vframes = 16
-frame = 8
-
-[node name="boundary173" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 5, 1 )
-offset = Vector2( 1, 0 )
-opacity = 0.0
-pixel_size = 0.0625
-texture = ExtResource( 28 )
-hframes = 8
-vframes = 16
-frame = 8
-
-[node name="boundary174" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary174" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2362,7 +3492,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary175" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary175" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2372,7 +3502,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary176" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary176" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2382,7 +3512,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary177" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary177" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2392,7 +3522,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary30" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary30" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2402,7 +3532,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary172" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary172" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2412,7 +3542,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary31" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary31" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2422,7 +3552,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary32" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary32" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2432,7 +3562,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary33" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary33" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2442,7 +3572,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary34" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary34" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2452,7 +3582,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary35" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary35" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2462,7 +3592,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary36" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary36" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2472,7 +3602,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary37" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary37" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2482,7 +3612,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary38" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary38" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2492,7 +3622,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary39" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary39" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2502,7 +3632,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary40" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary40" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2512,7 +3642,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary41" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary41" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2522,7 +3652,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary42" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary42" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2532,7 +3662,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary43" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary43" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2542,7 +3672,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary44" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary44" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -27, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2552,7 +3682,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary45" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary45" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -27, -5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2562,7 +3692,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary46" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary46" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26, -5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2572,7 +3702,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary47" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary47" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, -5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2582,7 +3712,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary48" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary48" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, -5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2592,7 +3722,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary49" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary49" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, -6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2602,7 +3732,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary50" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary50" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23, -6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2612,7 +3742,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary51" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary51" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22, -6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2622,7 +3752,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary52" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary52" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2632,7 +3762,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary53" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary53" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2642,7 +3772,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary54" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary54" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2652,7 +3782,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary55" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary55" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2662,7 +3792,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary56" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary56" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2672,7 +3802,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary57" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary57" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2682,7 +3812,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary58" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary58" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2692,7 +3822,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary59" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary59" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2702,7 +3832,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary60" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary60" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2712,7 +3842,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary61" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary61" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2722,7 +3852,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary62" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary62" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2732,7 +3862,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary63" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary63" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2742,7 +3872,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary64" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary64" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2752,7 +3882,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary65" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary65" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2762,7 +3892,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary66" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary66" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2772,7 +3902,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary67" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary67" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2782,7 +3912,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary68" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary68" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2792,7 +3922,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary69" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary69" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2802,7 +3932,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary70" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary70" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2812,7 +3942,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary71" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary71" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2822,7 +3952,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary72" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary72" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2832,7 +3962,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary73" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary73" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2842,7 +3972,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary74" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary74" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2852,7 +3982,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary75" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary75" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2862,7 +3992,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary76" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary76" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2872,7 +4002,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary77" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary77" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2882,7 +4012,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary78" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary78" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2892,7 +4022,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary79" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary79" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, -8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2902,7 +4032,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary80" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary80" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2912,7 +4042,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary209" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary209" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2922,7 +4052,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary210" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary210" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2932,7 +4062,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary211" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary211" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2942,7 +4072,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary212" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary212" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2952,7 +4082,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary213" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary213" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2962,7 +4092,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary214" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary214" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2972,7 +4102,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary215" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary215" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2982,7 +4112,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary216" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary216" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -2992,7 +4122,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary217" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary217" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3002,7 +4132,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary218" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary218" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3012,7 +4142,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary219" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary219" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3022,7 +4152,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary220" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary220" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3032,7 +4162,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary221" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary221" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3042,7 +4172,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary222" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary222" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3052,7 +4182,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary223" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary223" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3062,7 +4192,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary224" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary224" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3072,7 +4202,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary225" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary225" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3082,7 +4212,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary226" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary226" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3092,7 +4222,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary227" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary227" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3102,7 +4232,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary228" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary228" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3112,7 +4242,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary234" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary234" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3122,7 +4252,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary81" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary81" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, -6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3132,7 +4262,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary82" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary82" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, -6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3142,7 +4272,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary83" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary83" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3152,7 +4282,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary84" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary84" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, -5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3162,7 +4292,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary85" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary85" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12, -5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3172,7 +4302,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary86" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary86" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3182,7 +4312,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary87" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary87" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3192,7 +4322,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary89" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary89" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3202,7 +4332,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary90" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary90" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3212,7 +4342,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary91" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary91" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3222,7 +4352,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary92" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary92" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19, -5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3232,7 +4362,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary93" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary93" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3242,7 +4372,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary94" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary94" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3252,7 +4382,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary95" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary95" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3262,7 +4392,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary146" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary146" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3272,7 +4402,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary152" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary152" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3282,7 +4412,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary96" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary96" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3292,7 +4422,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary97" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary97" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3302,7 +4432,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary98" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary98" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 22, -3, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3312,7 +4442,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary99" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary99" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3322,7 +4452,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary100" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary100" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -2, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3332,7 +4462,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary101" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary101" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -1, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3342,7 +4472,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary102" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary102" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3352,7 +4482,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary103" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary103" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17, 2, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3362,7 +4492,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary104" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary104" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 3, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3372,7 +4502,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary105" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary105" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3382,7 +4512,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary106" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary106" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3392,7 +4522,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary107" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary107" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3402,7 +4532,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary108" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary108" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3412,7 +4542,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary109" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary109" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3422,7 +4552,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary110" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary110" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3432,7 +4562,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary111" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary111" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3442,7 +4572,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary112" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary112" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 9, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3452,7 +4582,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary113" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary113" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 9, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3462,7 +4592,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary114" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary114" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 9, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3472,7 +4602,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary115" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary115" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3482,7 +4612,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary116" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary116" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3492,7 +4622,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary117" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary117" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3502,7 +4632,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary118" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary118" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3512,7 +4642,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary119" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary119" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3522,7 +4652,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary120" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary120" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3532,7 +4662,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary121" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary121" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3542,7 +4672,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary122" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary122" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3552,7 +4682,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary123" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary123" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3562,7 +4692,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary124" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary124" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3572,7 +4702,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary125" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary125" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3582,7 +4712,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary126" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary126" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3592,7 +4722,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary127" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary127" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3602,7 +4732,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary128" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary128" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3612,7 +4742,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary129" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary129" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3622,7 +4752,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary130" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary130" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3632,7 +4762,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary131" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary131" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3642,7 +4772,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary132" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary132" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3652,7 +4782,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary171" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary171" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3662,7 +4792,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary133" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary133" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3672,7 +4802,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary134" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary134" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3682,7 +4812,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary135" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary135" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14, 11, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3692,7 +4822,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary136" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary136" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 10, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3702,7 +4832,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary137" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary137" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 9, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3712,7 +4842,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary138" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary138" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17, 9, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3722,7 +4852,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary139" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary139" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3732,7 +4862,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary140" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary140" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -19, 8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3742,7 +4872,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary141" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary141" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 8, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3752,7 +4882,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary142" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary142" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -21, 7, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3762,7 +4892,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary143" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary143" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3772,7 +4902,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary144" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary144" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -23, 6, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3782,7 +4912,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary88" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary88" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, -4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3792,7 +4922,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary5" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary5" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 1, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3802,7 +4932,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary6" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary6" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -30, 0, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3812,7 +4942,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary7" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary7" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 2, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3822,7 +4952,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary8" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary8" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3832,7 +4962,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary9" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary9" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -28, 3, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3842,7 +4972,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary10" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary10" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3852,7 +4982,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary11" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary11" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -27, 4, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3862,7 +4992,7 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="boundary12" type="Sprite3D" parent="Viewport/level/whale" groups=["solid_group"]]
+[node name="boundary12" type="Sprite3D" parent="Viewport/level/whale/boundaries" groups=["solid_group"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26, 5, 1 )
 offset = Vector2( 1, 0 )
 opacity = 0.0
@@ -3872,755 +5002,830 @@ hframes = 8
 vframes = 16
 frame = 8
 
-[node name="blowholeRock" parent="Viewport/level/whale" instance=ExtResource( 2 )]
-transform = Transform( 1.5, 0, 0, 0, 1, 0, 0, 0, 1, -9, 11, 0 )
+[node name="Backgrounds" type="Spatial" parent="Viewport/level"]
 
-[node name="level_overworld" type="Spatial" parent="Viewport/level"]
-
-[node name="Backgrounds" type="Spatial" parent="Viewport/level/level_overworld"]
-
-[node name="bg" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -90 )
-material_override = SubResource( 25 )
+material_override = SubResource( 109 )
 opacity = 0.25
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg9" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds/bg"]
+[node name="bgUnderlay" type="Sprite3D" parent="Viewport/level/Backgrounds/bg"]
 opacity = 0.13
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg9" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20.45, 0, -90 )
-material_override = SubResource( 25 )
+[node name="bg9" type="Sprite3D" parent="Viewport/level/Backgrounds"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20.4, 0, -90 )
+material_override = SubResource( 109 )
 opacity = 0.25
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg9" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds/bg9"]
+[node name="bgUnderlay" type="Sprite3D" parent="Viewport/level/Backgrounds/bg9"]
 opacity = 0.13
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg3" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg3" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, -90 )
 modulate = Color( 0.25098, 0.207843, 0.65098, 1 )
 opacity = 0.36
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg10" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg10" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -20, -90 )
 modulate = Color( 0.25098, 0.207843, 0.65098, 1 )
 opacity = 0.36
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg4" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg4" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -40, -90 )
 modulate = Color( 0.266667, 0.266667, 0.313726, 1 )
 opacity = 0.75
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg11" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg11" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -40, -90 )
 modulate = Color( 0.266667, 0.266667, 0.313726, 1 )
 opacity = 0.75
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg13" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg13" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -20, -90 )
 modulate = Color( 0.25098, 0.207843, 0.65098, 1 )
 opacity = 0.36
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg14" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg14" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -40, -90 )
 modulate = Color( 0.266667, 0.266667, 0.313726, 1 )
 opacity = 0.75
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg6" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg6" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 3, 0, 0, 0, 1, 0, 0, 0, 1, 19.557, -60, -90 )
 modulate = Color( 0.188235, 0.188235, 0.286275, 1 )
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg2" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg2" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 60.5438, -60, -90 )
 modulate = Color( 1, 0.588235, 0.588235, 1 )
 opacity = 0.5
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg5" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg5" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 60.5438, -40, -90 )
 modulate = Color( 1, 0.588235, 0.588235, 1 )
 opacity = 0.5
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg7" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg7" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 60.5438, -20, -90 )
 modulate = Color( 1, 0.588235, 0.588235, 1 )
 opacity = 0.5
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="bg8" type="Sprite3D" parent="Viewport/level/level_overworld/Backgrounds"]
+[node name="bg8" type="Sprite3D" parent="Viewport/level/Backgrounds"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 60.5438, 0, -90 )
 modulate = Color( 1, 0.588235, 0.588235, 1 )
 opacity = 0.5
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="Crabs" type="Spatial" parent="Viewport/level/level_overworld"]
+[node name="Kelp" type="Spatial" parent="Viewport/level"]
 
-[node name="crab" parent="Viewport/level/level_overworld/Crabs" instance=ExtResource( 10 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, -1 )
-
-[node name="Kelp" type="Spatial" parent="Viewport/level/level_overworld"]
-
-[node name="kelp" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -70, 0 )
 
-[node name="kelp2" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp2" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.503055, -70.4609, 0 )
 
-[node name="kelp21" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp21" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -70, 0 )
 
-[node name="kelp22" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp22" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.496945, -70.4609, 0 )
 
-[node name="kelp23" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp23" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -70, 0 )
 
-[node name="kelp24" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp24" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.49694, -70.4609, 0 )
 
-[node name="kelp3" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp3" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -70, 0 )
 
-[node name="kelp4" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp4" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.50306, -70.4609, 0 )
 
-[node name="kelp5" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp5" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -70, 0 )
 
-[node name="kelp6" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp6" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.50306, -70.4609, 0 )
 
-[node name="kelp7" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp7" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -70, 0 )
 
-[node name="kelp8" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp8" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.50306, -70.4609, 0 )
 
-[node name="kelp9" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp9" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -70, 0 )
 
-[node name="kelp10" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp10" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.50306, -70.4609, 0 )
 
-[node name="kelp11" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp11" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -70, 0 )
 
-[node name="kelp12" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp12" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.50306, -70.4609, 0 )
 
-[node name="kelp13" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp13" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -70, 0 )
 
-[node name="kelp14" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp14" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.50306, -70.4609, 0 )
 
-[node name="kelp15" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp15" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -70, 0 )
 
-[node name="kelp16" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp16" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.50306, -70.4609, 0 )
 
-[node name="kelp17" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp17" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -70, 0 )
 
-[node name="kelp18" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp18" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.50306, -70.4609, 0 )
 
-[node name="kelp19" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp19" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -70, 0 )
 
-[node name="kelp20" parent="Viewport/level/level_overworld/Kelp" instance=ExtResource( 9 )]
+[node name="kelp20" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.50306, -70.4609, 0 )
 
-[node name="Rocks" type="Spatial" parent="Viewport/level/level_overworld"]
+[node name="Rocks" type="Spatial" parent="Viewport/level"]
 
-[node name="rock" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -1 )
 
-[node name="rock42" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -4, 0 )
-
-[node name="rock43" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -5, 0 )
-
-[node name="rock44" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -6, 0 )
-
-[node name="rock45" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -6, 0 )
-
-[node name="rock46" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27, -6, 0 )
-
-[node name="rock47" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -7, 0 )
-
-[node name="rock48" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27, -7, 0 )
-
-[node name="rock10" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock10" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 4, -1 )
 
-[node name="rock22" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock22" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 5, -1 )
 
-[node name="rock36" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock36" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 4, -1 )
 
-[node name="rock37" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock37" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 4, -1 )
 
-[node name="rock38" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock38" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 9, -1 )
 
-[node name="rock39" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock39" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, -1 )
 
-[node name="rock40" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock40" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 2, -1 )
 
-[node name="rock41" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock41" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 3, -1 )
 
-[node name="rock11" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock11" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 4, -1 )
 
-[node name="rock12" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock12" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 3, -1 )
 
-[node name="rock13" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock13" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, -1 )
 
-[node name="rock14" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock14" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 4, -1 )
 
-[node name="rock15" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock15" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 4, -1 )
 
-[node name="rock23" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock23" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3, -1 )
 
-[node name="rock24" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock24" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3, -1 )
 
-[node name="rock29" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock29" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2, -1 )
 
-[node name="rock30" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock30" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -1, -1 )
 
-[node name="rock31" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock31" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -1, -1 )
 
-[node name="rock32" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock32" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -1 )
 
-[node name="rock33" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock33" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -4, -1 )
 
-[node name="rock34" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock34" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -2, -1 )
 
-[node name="rock35" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock35" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -1, -1 )
 
-[node name="rock25" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock25" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -1 )
 
-[node name="rock16" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock16" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -1 )
 
-[node name="rock28" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock28" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -1 )
 
-[node name="rock17" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock17" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -1 )
 
-[node name="rock18" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock18" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -1, -1 )
 
-[node name="rock19" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock19" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -2, -1 )
 
-[node name="rock20" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock20" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -3, -1 )
 
-[node name="rock26" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock26" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -3, -1 )
 
-[node name="rock27" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock27" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -3, -1 )
 
-[node name="rock21" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock21" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -4, -1 )
 
-[node name="rock2" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock2" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, -1 )
 
-[node name="rock3" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock3" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -1, -1 )
 
-[node name="rock4" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock4" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, -1 )
 
-[node name="rock5" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock42" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -2, -1 )
+
+[node name="rock43" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -3, -1 )
+
+[node name="rock44" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -4, -1 )
+
+[node name="rock45" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -4, -1 )
+
+[node name="rock5" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2, -1 )
 
-[node name="rock6" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock6" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2, -1 )
 
-[node name="rock7" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock7" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 3, -1 )
 
-[node name="rock8" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock8" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, -1 )
 
-[node name="rock9" parent="Viewport/level/level_overworld/Rocks" instance=ExtResource( 2 )]
+[node name="rock9" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, -1 )
 
-[node name="HardestRocks" type="Spatial" parent="Viewport/level/level_overworld"]
+[node name="HardestRocks" type="Spatial" parent="Viewport/level"]
 
-[node name="hardestRock" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock" index="0"]
-frame = 7
-
-[node name="hardestRock2" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock2" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock2" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock2" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock2" index="3"]
 anims/RESET = SubResource( 28 )
 anims/stunned = SubResource( 29 )
 
-[node name="hardestRock3" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock3" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 2, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock3" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock3" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock3" index="3"]
 anims/RESET = SubResource( 30 )
 anims/stunned = SubResource( 31 )
 
-[node name="hardestRock4" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock4" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 3, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock4" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock4" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock4" index="3"]
 anims/RESET = SubResource( 32 )
 anims/stunned = SubResource( 33 )
 
-[node name="hardestRock5" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock5" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 4, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock5" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock5" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock5" index="3"]
 anims/RESET = SubResource( 34 )
 anims/stunned = SubResource( 35 )
 
-[node name="hardestRock6" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock6" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 5, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock6" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock6" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock6" index="3"]
 anims/RESET = SubResource( 36 )
 anims/stunned = SubResource( 37 )
 
-[node name="hardestRock7" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock7" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 6, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock7" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock7" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock7" index="3"]
 anims/RESET = SubResource( 38 )
 anims/stunned = SubResource( 39 )
 
-[node name="hardestRock8" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock8" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 7, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock8" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock8" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock8" index="3"]
 anims/RESET = SubResource( 40 )
 anims/stunned = SubResource( 41 )
 
-[node name="hardestRock9" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock9" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 8, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock9" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock9" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock9" index="3"]
 anims/RESET = SubResource( 42 )
 anims/stunned = SubResource( 43 )
 
-[node name="hardestRock10" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock10" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 9, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock10" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock10" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock10" index="3"]
 anims/RESET = SubResource( 44 )
 anims/stunned = SubResource( 45 )
 
-[node name="hardestRock11" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock11" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock11" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock11" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock11" index="3"]
 anims/RESET = SubResource( 46 )
 anims/stunned = SubResource( 47 )
 
-[node name="hardestRock12" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock12" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock12" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock12" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock12" index="3"]
 anims/RESET = SubResource( 48 )
 anims/stunned = SubResource( 49 )
 
-[node name="hardestRock13" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock13" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock13" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock13" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock13" index="3"]
 anims/RESET = SubResource( 50 )
 anims/stunned = SubResource( 51 )
 
-[node name="hardestRock14" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock14" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock14" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock14" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock14" index="3"]
 anims/RESET = SubResource( 52 )
 anims/stunned = SubResource( 53 )
 
-[node name="hardestRock15" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock15" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock15" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock15" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock15" index="3"]
 anims/RESET = SubResource( 54 )
 anims/stunned = SubResource( 55 )
 
-[node name="hardestRock26" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock26" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock26" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock26" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock26" index="3"]
 anims/RESET = SubResource( 77 )
 anims/stunned = SubResource( 78 )
 
-[node name="hardestRock27" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock27" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock27" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock27" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock27" index="3"]
 anims/RESET = SubResource( 79 )
 anims/stunned = SubResource( 80 )
 
-[node name="hardestRock28" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock28" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock28" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock28" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock28" index="3"]
 anims/RESET = SubResource( 81 )
 anims/stunned = SubResource( 82 )
 
-[node name="hardestRock29" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock29" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock29" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock29" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock29" index="3"]
 anims/RESET = SubResource( 83 )
 anims/stunned = SubResource( 84 )
 
-[node name="hardestRock30" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock30" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock30" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock30" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock30" index="3"]
 anims/RESET = SubResource( 85 )
 anims/stunned = SubResource( 86 )
 
-[node name="hardestRock31" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock31" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock31" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock31" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock31" index="3"]
 anims/RESET = SubResource( 87 )
 anims/stunned = SubResource( 88 )
 
-[node name="hardestRock32" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock32" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock32" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock32" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock32" index="3"]
 anims/RESET = SubResource( 89 )
 anims/stunned = SubResource( 90 )
 
-[node name="hardestRock33" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock33" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock33" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock33" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock33" index="3"]
 anims/RESET = SubResource( 91 )
 anims/stunned = SubResource( 92 )
 
-[node name="hardestRock34" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock34" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock34" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock34" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock34" index="3"]
 anims/RESET = SubResource( 93 )
 anims/stunned = SubResource( 94 )
 
-[node name="hardestRock35" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock42" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock42" index="3"]
+anims/RESET = SubResource( 112 )
+anims/stunned = SubResource( 113 )
+
+[node name="hardestRock43" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock43" index="3"]
+anims/RESET = SubResource( 114 )
+anims/stunned = SubResource( 115 )
+
+[node name="hardestRock44" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock44" index="3"]
+anims/RESET = SubResource( 116 )
+anims/stunned = SubResource( 117 )
+
+[node name="hardestRock45" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 12, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock45" index="3"]
+anims/RESET = SubResource( 118 )
+anims/stunned = SubResource( 119 )
+
+[node name="hardestRock46" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock46" index="3"]
+anims/RESET = SubResource( 120 )
+anims/stunned = SubResource( 121 )
+
+[node name="hardestRock47" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock47" index="3"]
+anims/RESET = SubResource( 122 )
+anims/stunned = SubResource( 123 )
+
+[node name="hardestRock48" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock48" index="3"]
+anims/RESET = SubResource( 124 )
+anims/stunned = SubResource( 125 )
+
+[node name="hardestRock49" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 12, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock49" index="3"]
+anims/RESET = SubResource( 126 )
+anims/stunned = SubResource( 127 )
+
+[node name="hardestRock50" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 12, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock50" index="3"]
+anims/RESET = SubResource( 128 )
+anims/stunned = SubResource( 129 )
+
+[node name="hardestRock51" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock51" index="3"]
+anims/RESET = SubResource( 130 )
+anims/stunned = SubResource( 131 )
+
+[node name="hardestRock52" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock52" index="3"]
+anims/RESET = SubResource( 132 )
+anims/stunned = SubResource( 133 )
+
+[node name="hardestRock53" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 12, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock53" index="3"]
+anims/RESET = SubResource( 134 )
+anims/stunned = SubResource( 135 )
+
+[node name="hardestRock54" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 13, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock54" index="3"]
+anims/RESET = SubResource( 136 )
+anims/stunned = SubResource( 137 )
+
+[node name="hardestRock55" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 13, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock55" index="3"]
+anims/RESET = SubResource( 138 )
+anims/stunned = SubResource( 139 )
+
+[node name="hardestRock56" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock56" index="3"]
+anims/RESET = SubResource( 140 )
+anims/stunned = SubResource( 141 )
+
+[node name="hardestRock57" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 12, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock57" index="3"]
+anims/RESET = SubResource( 142 )
+anims/stunned = SubResource( 143 )
+
+[node name="hardestRock58" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 13, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock58" index="3"]
+anims/RESET = SubResource( 144 )
+anims/stunned = SubResource( 145 )
+
+[node name="hardestRock59" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock59" index="3"]
+anims/RESET = SubResource( 146 )
+anims/stunned = SubResource( 147 )
+
+[node name="hardestRock60" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 12, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock60" index="3"]
+anims/RESET = SubResource( 148 )
+anims/stunned = SubResource( 149 )
+
+[node name="hardestRock61" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock61" index="3"]
+anims/RESET = SubResource( 150 )
+anims/stunned = SubResource( 151 )
+
+[node name="hardestRock62" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock62" index="3"]
+anims/RESET = SubResource( 152 )
+anims/stunned = SubResource( 153 )
+
+[node name="hardestRock63" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 12, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock63" index="3"]
+anims/RESET = SubResource( 154 )
+anims/stunned = SubResource( 155 )
+
+[node name="hardestRock64" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 12, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock64" index="3"]
+anims/RESET = SubResource( 156 )
+anims/stunned = SubResource( 157 )
+
+[node name="hardestRock65" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 13, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock65" index="3"]
+anims/RESET = SubResource( 158 )
+anims/stunned = SubResource( 159 )
+
+[node name="hardestRock66" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 13, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock66" index="3"]
+anims/RESET = SubResource( 160 )
+anims/stunned = SubResource( 161 )
+
+[node name="hardestRock35" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock35" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock35" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock35" index="3"]
 anims/RESET = SubResource( 95 )
 anims/stunned = SubResource( 96 )
 
-[node name="hardestRock36" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock36" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock36" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock36" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock36" index="3"]
 anims/RESET = SubResource( 97 )
 anims/stunned = SubResource( 98 )
 
-[node name="hardestRock37" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock37" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock37" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock37" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock37" index="3"]
 anims/RESET = SubResource( 99 )
 anims/stunned = SubResource( 100 )
 
-[node name="hardestRock38" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock38" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock38" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock38" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock38" index="3"]
 anims/RESET = SubResource( 101 )
 anims/stunned = SubResource( 102 )
 
-[node name="hardestRock39" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock39" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock39" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock39" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock39" index="3"]
 anims/RESET = SubResource( 103 )
 anims/stunned = SubResource( 104 )
 
-[node name="hardestRock40" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock40" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock40" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock40" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock40" index="3"]
 anims/RESET = SubResource( 105 )
 anims/stunned = SubResource( 106 )
 
-[node name="hardestRock41" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock41" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 10, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock41" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock41" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock41" index="3"]
 anims/RESET = SubResource( 107 )
 anims/stunned = SubResource( 108 )
 
-[node name="hardestRock16" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock16" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 9, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock16" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock16" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock16" index="3"]
 anims/RESET = SubResource( 56 )
 anims/stunned = SubResource( 57 )
 
-[node name="hardestRock17" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock17" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 8, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock17" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock17" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock17" index="3"]
 anims/RESET = SubResource( 58 )
 anims/stunned = SubResource( 59 )
 
-[node name="hardestRock18" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock18" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 7, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock18" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock18" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock18" index="3"]
 anims/RESET = SubResource( 60 )
 anims/stunned = SubResource( 61 )
 
-[node name="hardestRock19" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock19" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 4, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock19" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock19" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock19" index="3"]
 anims/RESET = SubResource( 62 )
 anims/stunned = SubResource( 63 )
 
-[node name="hardestRock20" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock20" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -1, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock20" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock20" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock20" index="3"]
 anims/RESET = SubResource( 64 )
 anims/stunned = SubResource( 65 )
 
-[node name="hardestRock21" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock21" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock21" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock21" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock21" index="3"]
 anims/RESET = SubResource( 66 )
 anims/stunned = SubResource( 67 )
 
-[node name="hardestRock22" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock22" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -2, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock22" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock22" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock22" index="3"]
 anims/RESET = SubResource( 68 )
 anims/stunned = SubResource( 69 )
 
-[node name="hardestRock23" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock23" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -2, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock23" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock23" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock23" index="3"]
 anims/RESET = SubResource( 70 )
 anims/stunned = SubResource( 71 )
 
-[node name="hardestRock24" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock24" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -3, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock24" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock24" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock24" index="3"]
 anims/RESET = SubResource( 72 )
 anims/stunned = SubResource( 73 )
 
-[node name="hardestRock25" parent="Viewport/level/level_overworld/HardestRocks" instance=ExtResource( 26 )]
+[node name="hardestRock25" parent="Viewport/level/HardestRocks" instance=ExtResource( 26 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -4, 0 )
 
-[node name="fishSprite" parent="Viewport/level/level_overworld/HardestRocks/hardestRock25" index="0"]
-frame = 7
-
-[node name="AnimationPlayer" parent="Viewport/level/level_overworld/HardestRocks/hardestRock25" index="3"]
+[node name="AnimationPlayer" parent="Viewport/level/HardestRocks/hardestRock25" index="3"]
 anims/RESET = SubResource( 74 )
 anims/stunned = SubResource( 75 )
 
-[node name="eggSprite" type="Sprite3D" parent="Viewport/level"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0 )
-material_override = SubResource( 76 )
-pixel_size = 0.0625
-texture = ExtResource( 57 )
-hframes = 4
-vframes = 4
-frame = 6
-script = ExtResource( 33 )
+[node name="waterfallSource" type="Spatial" parent="Viewport/level"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 0, 0 )
+script = ExtResource( 56 )
+
+[node name="waterfallCurrent" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, -1 )
+
+[node name="waterfallCurrent2" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1, 0, -1 )
+
+[node name="waterfallCurrent3" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 2, 0, -1 )
+
+[node name="waterfallCurrent4" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1 )
+flip_v = true
+
+[node name="waterfallCurrent5" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( 7.54979e-08, 1, 0, -1, 7.54979e-08, 0, 0, 0, 1, 3, 1, -1 )
+flip_h = true
+
+[node name="waterfallCurrent6" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( 7.54979e-08, 1, 0, -1, 7.54979e-08, 0, 0, 0, 1, 2, 1, -1 )
+flip_h = true
+
+[node name="waterfallCurrent7" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( 7.54979e-08, 1, 0, -1, 7.54979e-08, 0, 0, 0, 1, 1, 1, -1 )
+flip_h = true
+
+[node name="waterfallCurrent8" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( 7.54979e-08, 1, 0, -1, 7.54979e-08, 0, 0, 0, 1, 0, 1, -1 )
+flip_h = true
+
+[node name="waterfallCurrent9" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( 1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, -1, 1, -1 )
+flip_h = true
+
+[node name="waterfallCurrent13" parent="Viewport/level" instance=ExtResource( 58 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, -4, -1 )
+flip_v = true
+
+[node name="waterfallCurrent12" parent="Viewport/level" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 12, -5, -1 )
+
+[node name="waterfallCurrent10" parent="Viewport/level" instance=ExtResource( 58 )]
+transform = Transform( 7.54979e-08, 1, 0, -1, 7.54979e-08, 0, 0, 0, 1, 14, -4, -1 )
+flip_h = true
+
+[node name="waterfallCurrent11" parent="Viewport/level" instance=ExtResource( 58 )]
+transform = Transform( 1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, 11, -3, -1 )
+flip_h = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
 margin_right = 40.0
@@ -4684,6 +5889,7 @@ text = "if you so desire:
     * use arrow keys to move.."
 
 [node name="StatsBox" type="TextureRect" parent="CanvasLayer"]
+visible = false
 material = SubResource( 15 )
 margin_left = 530.0
 margin_top = 8.0
@@ -4764,44 +5970,71 @@ ME!!!!!
 
 bye bye"
 
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock2"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock3"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock4"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock5"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock6"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock7"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock8"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock9"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock10"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock11"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock12"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock13"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock14"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock15"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock26"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock27"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock28"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock29"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock30"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock31"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock32"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock33"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock34"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock35"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock36"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock37"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock38"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock39"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock40"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock41"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock16"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock17"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock18"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock19"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock20"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock21"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock22"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock23"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock24"]
-[editable path="Viewport/level/level_overworld/HardestRocks/hardestRock25"]
+[editable path="Viewport/level/NPCs/eacSeaTurtle"]
+[editable path="Viewport/level/NPCs/cuttleFish"]
+[editable path="Viewport/level/HardestRocks/hardestRock"]
+[editable path="Viewport/level/HardestRocks/hardestRock2"]
+[editable path="Viewport/level/HardestRocks/hardestRock3"]
+[editable path="Viewport/level/HardestRocks/hardestRock4"]
+[editable path="Viewport/level/HardestRocks/hardestRock5"]
+[editable path="Viewport/level/HardestRocks/hardestRock6"]
+[editable path="Viewport/level/HardestRocks/hardestRock7"]
+[editable path="Viewport/level/HardestRocks/hardestRock8"]
+[editable path="Viewport/level/HardestRocks/hardestRock9"]
+[editable path="Viewport/level/HardestRocks/hardestRock10"]
+[editable path="Viewport/level/HardestRocks/hardestRock11"]
+[editable path="Viewport/level/HardestRocks/hardestRock12"]
+[editable path="Viewport/level/HardestRocks/hardestRock13"]
+[editable path="Viewport/level/HardestRocks/hardestRock14"]
+[editable path="Viewport/level/HardestRocks/hardestRock15"]
+[editable path="Viewport/level/HardestRocks/hardestRock26"]
+[editable path="Viewport/level/HardestRocks/hardestRock27"]
+[editable path="Viewport/level/HardestRocks/hardestRock28"]
+[editable path="Viewport/level/HardestRocks/hardestRock29"]
+[editable path="Viewport/level/HardestRocks/hardestRock30"]
+[editable path="Viewport/level/HardestRocks/hardestRock31"]
+[editable path="Viewport/level/HardestRocks/hardestRock32"]
+[editable path="Viewport/level/HardestRocks/hardestRock33"]
+[editable path="Viewport/level/HardestRocks/hardestRock34"]
+[editable path="Viewport/level/HardestRocks/hardestRock42"]
+[editable path="Viewport/level/HardestRocks/hardestRock43"]
+[editable path="Viewport/level/HardestRocks/hardestRock44"]
+[editable path="Viewport/level/HardestRocks/hardestRock45"]
+[editable path="Viewport/level/HardestRocks/hardestRock46"]
+[editable path="Viewport/level/HardestRocks/hardestRock47"]
+[editable path="Viewport/level/HardestRocks/hardestRock48"]
+[editable path="Viewport/level/HardestRocks/hardestRock49"]
+[editable path="Viewport/level/HardestRocks/hardestRock50"]
+[editable path="Viewport/level/HardestRocks/hardestRock51"]
+[editable path="Viewport/level/HardestRocks/hardestRock52"]
+[editable path="Viewport/level/HardestRocks/hardestRock53"]
+[editable path="Viewport/level/HardestRocks/hardestRock54"]
+[editable path="Viewport/level/HardestRocks/hardestRock55"]
+[editable path="Viewport/level/HardestRocks/hardestRock56"]
+[editable path="Viewport/level/HardestRocks/hardestRock57"]
+[editable path="Viewport/level/HardestRocks/hardestRock58"]
+[editable path="Viewport/level/HardestRocks/hardestRock59"]
+[editable path="Viewport/level/HardestRocks/hardestRock60"]
+[editable path="Viewport/level/HardestRocks/hardestRock61"]
+[editable path="Viewport/level/HardestRocks/hardestRock62"]
+[editable path="Viewport/level/HardestRocks/hardestRock63"]
+[editable path="Viewport/level/HardestRocks/hardestRock64"]
+[editable path="Viewport/level/HardestRocks/hardestRock65"]
+[editable path="Viewport/level/HardestRocks/hardestRock66"]
+[editable path="Viewport/level/HardestRocks/hardestRock35"]
+[editable path="Viewport/level/HardestRocks/hardestRock36"]
+[editable path="Viewport/level/HardestRocks/hardestRock37"]
+[editable path="Viewport/level/HardestRocks/hardestRock38"]
+[editable path="Viewport/level/HardestRocks/hardestRock39"]
+[editable path="Viewport/level/HardestRocks/hardestRock40"]
+[editable path="Viewport/level/HardestRocks/hardestRock41"]
+[editable path="Viewport/level/HardestRocks/hardestRock16"]
+[editable path="Viewport/level/HardestRocks/hardestRock17"]
+[editable path="Viewport/level/HardestRocks/hardestRock18"]
+[editable path="Viewport/level/HardestRocks/hardestRock19"]
+[editable path="Viewport/level/HardestRocks/hardestRock20"]
+[editable path="Viewport/level/HardestRocks/hardestRock21"]
+[editable path="Viewport/level/HardestRocks/hardestRock22"]
+[editable path="Viewport/level/HardestRocks/hardestRock23"]
+[editable path="Viewport/level/HardestRocks/hardestRock24"]
+[editable path="Viewport/level/HardestRocks/hardestRock25"]

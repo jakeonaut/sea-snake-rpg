@@ -30,10 +30,13 @@ onready var chargeReadySound = get_node("Sounds/ChargeReadySound")
 onready var chargeSlowdown = get_node("Sounds/ChargeSlowdown")
 onready var skidStopSound = get_node("Sounds/SkidStopSound")
 onready var hatchedSound = get_node("Sounds/HatchedSound")
+onready var driftWaveSound = get_node("Sounds/DriftWaveSound")
 
 onready var csgCombinerPosition = get_node("CSGCombiner")
 onready var coverOfDarkness = get_node("CSGCombiner/CSGMesh")
 onready var playerLight = get_node("CSGCombiner/PlayerLight")
+
+var can_charge_attack = false
 
 var is_stunned = false
 var is_dead = false
@@ -53,10 +56,19 @@ func _ready():
     cameraTarget.global_transform.origin.z = 6
 
 func eatAnOrange():
-    level.how_many_oranges_ate += 1
+    global.memory["how_many_oranges_ate"] += 1
     should_grow = true
     chompSound.pitch_scale = rand_range(0.8, 1.2)
     chompSound.play()
+
+func eatARockFruit():
+    global.memory["how_many_rockfruit_ate"] += 1
+    chompSound.pitch_scale = rand_range(0.4, 0.6)
+    chompSound.play()
+    global.memory["can_charge_attack"] = true
+    level.textBox.visible = true
+    level.textBoxText.bbcode_text = "YOU ATE ROCK FRUIT:\npress [X] to charge attack"
+    level.hideTextBoxMoveCount = global.memory["move_counter"] + 10
 
 func eatALemon():
     level.how_many_lemons_ate += 1
@@ -136,11 +148,11 @@ func isHeadOverlapping(sprite):
     return sprite.global_transform.origin.x == headSprite.global_transform.origin.x and sprite.global_transform.origin.y == headSprite.global_transform.origin.y
 
 func owIGotHurt():
-    hp_stat -= 1
-    level.statsBox.visible = true
-    level.statsBoxText.bbcode_text = "HP: " + str(hp_stat) + "/" + str(total_hp_stat)
-    var ratio = total_hp_stat - hp_stat
-    level.statsBox.rect_scale = Vector2(1.0 + ratio / 2.0, 1.0 + ratio / 2.0)
+    hp_stat -= total_hp_stat # 1
+    # level.statsBox.visible = true
+    # level.statsBoxText.bbcode_text = "HP: " + str(hp_stat) + "/" + str(total_hp_stat)
+    # var ratio = total_hp_stat - hp_stat
+    # level.statsBox.rect_scale = Vector2(1.0 + ratio / 2.0, 1.0 + ratio / 2.0)
     if hp_stat <= 0:
         var is_lame = true
         level.createNewAwesomeText("u died...", headSprite.global_transform.origin + textPosOffset, is_lame)
@@ -151,17 +163,20 @@ func owIGotHurt():
         owSound.play()
         level.createNewAwesomeText("-1 HP", headSprite.global_transform.origin + textPosOffset)
 
+func giveHeadSpriteXEyes():
+    headSprite.updateBaseFrameWithStartFrame(headSprite.start_frame)
+    if headSprite.frame_coords.y >= 5:
+        headSprite.updateBaseFrame(headSprite.frame_coords.x, 6)
+    else:
+        headSprite.updateBaseFrame(headSprite.frame_coords.x, 4)
+
 func owIDied():
     owSound.pitch_scale = rand_range(0.4, 0.6)
     owSound.play()
     global.gameState = global.GameState.GAME_OVER
     is_dead = true
     death_timer = 0
-    headSprite.updateBaseFrameWithStartFrame(headSprite.start_frame)
-    if headSprite.frame_coords.y >= 5:
-        headSprite.updateBaseFrame(headSprite.frame_coords.x, 6)
-    else:
-        headSprite.updateBaseFrame(headSprite.frame_coords.x, 4)
+    giveHeadSpriteXEyes()
     level.death_counter += 1
     level.spawnBubbles(headSprite.global_transform.origin, 5)
 
@@ -170,11 +185,7 @@ func owIGotStunned():
     aniPlayer.stop()
     aniPlayer.clear_queue()
     aniPlayer.play("stunned")
-    headSprite.updateBaseFrameWithStartFrame(headSprite.start_frame)
-    if headSprite.frame_coords.y >= 5:
-        headSprite.updateBaseFrame(headSprite.frame_coords.x, 6)
-    else:
-        headSprite.updateBaseFrame(headSprite.frame_coords.x, 4)
+    giveHeadSpriteXEyes()
     level.spawnBubbles(headSprite.global_transform.origin, 3)
 
 func unstunned():
@@ -240,15 +251,17 @@ func initiateHatchAnimation():
 
 func finishHatchAnimation():
     facing = global.DirRight
+    playerMover.lastPressedMoveDir = global.DirRight
+    playerMover.lastPressedDirQueue = []
     headSprite.updateBaseFrame(0, 0)
     headSprite.max_frames = 2
     hatchedSound.pitch_scale = rand_range(0.6, 0.9)
     hatchedSound.play()
     global.gameState = global.GameState.NORMAL_GAMEPLAY
     hp_stat = total_hp_stat
-    level.statsBox.visible = true
-    level.statsBoxText.bbcode_text = "HP: " + str(hp_stat) + "/" + str(total_hp_stat)
-    level.statsBox.rect_scale = Vector2(1, 1)
+    # level.statsBox.visible = true
+    # level.statsBoxText.bbcode_text = "HP: " + str(hp_stat) + "/" + str(total_hp_stat)
+    # level.statsBox.rect_scale = Vector2(1, 1)
 
 func tryToBeCool():
     var headPos = Vector2(headSprite.global_transform.origin.x, headSprite.global_transform.origin.y)

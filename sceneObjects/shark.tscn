@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/Sprite.gd" type="Script" id=2]
+[ext_resource path="res://scripts/npcFish.gd" type="Script" id=3]
+[ext_resource path="res://images/npc_sheet_bigger.png" type="Texture" id=4]
+
+[sub_resource type="Animation" id=16]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[node name="sharkFish" type="Spatial" groups=["npc_group"]]
+script = ExtResource( 3 )
+
+[node name="fishSprite" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+pixel_size = 0.0625
+texture = ExtResource( 4 )
+hframes = 8
+vframes = 4
+frame = 4
+script = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 16 )
+anims/stunned = SubResource( 17 )

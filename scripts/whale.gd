@@ -4,14 +4,14 @@ onready var level = get_tree().get_root().get_node("Game/Viewport/level")
 
 onready var whaleSkinSprite = get_node("whaleSprite")
 # onready var whaleGutsSprite = get_node("whaleGutsSprite")
-onready var hideSkin = get_node("hideSkin")
-onready var hideSkin2 = get_node("hideSkin2")
-onready var hideSkin3 = get_node("hideSkin3")
-onready var hideSkin4 = get_node("hideSkin4")
-onready var showSkin = get_node("showSkin")
-onready var showSkin2 = get_node("showSkin2")
-onready var showSkin3 = get_node("showSkin3")
-onready var showSkin4 = get_node("showSkin4")
+onready var hideSkin = get_node("spriteTriggers/hideSkin")
+onready var hideSkin2 = get_node("spriteTriggers/hideSkin2")
+onready var hideSkin3 = get_node("spriteTriggers/hideSkin3")
+onready var hideSkin4 = get_node("spriteTriggers/hideSkin4")
+onready var showSkin = get_node("spriteTriggers/showSkin")
+onready var showSkin2 = get_node("spriteTriggers/showSkin2")
+onready var showSkin3 = get_node("spriteTriggers/showSkin3")
+onready var showSkin4 = get_node("spriteTriggers/showSkin4")
 
 func _ready():
     pass

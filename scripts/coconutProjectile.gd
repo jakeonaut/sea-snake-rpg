@@ -82,7 +82,7 @@ func _process(delta):
             level.textBox.visible = false
             level.textBoxTop.visible = true
             level.textBoxTopText.bbcode_text = "[wave]this puny weapon cannot harm me[/wave]"
-            level.move_counter_at_last_game_state = level.move_counter
+            level.move_counter_at_last_game_state = global.memory["move_counter"]
             for i in range(2):
                 level._spawnBubble(level.bigCrab.get_node("Sprite3D").global_transform.origin, i)
         else:
@@ -95,7 +95,7 @@ func _process(delta):
             level.textBoxTop.visible = true
             level.textBoxTopText.bbcode_text = "[wave]thank you puny creature.[/wave]"
             level.helpful_counter += 5
-            level.move_counter_at_last_game_state = level.move_counter
+            level.move_counter_at_last_game_state = global.memory["move_counter"]
             if level.willCoconutCrabsRunAway():
                 level.applauseSound.play()
             for i in range(2):
@@ -111,7 +111,7 @@ func _process(delta):
                 level.textBox.visible = false
                 level.textBoxTop.visible = true
                 level.textBoxTopText.bbcode_text = "[wave]i already got one bro[/wave]"
-                level.move_counter_at_last_game_state = level.move_counter
+                level.move_counter_at_last_game_state = global.memory["move_counter"]
                 for j in range(2):
                     level._spawnBubble(crab.get_node("Sprite3D").global_transform.origin, j)
             else:
@@ -125,7 +125,7 @@ func _process(delta):
                 level.textBoxTopText.bbcode_text = "[wave]hell yeah.[/wave]"
                 level.helpful_counter += 1
                 level.coconutCrabArray.push_back(crab.get_node("Sprite3D"))
-                level.move_counter_at_last_game_state = level.move_counter
+                level.move_counter_at_last_game_state = global.memory["move_counter"]
                 if level.willCoconutCrabsRunAway():
                     level.applauseSound.play()
                 for j in range(2):
@@ -138,7 +138,7 @@ func _process(delta):
             level.playErrorSound()
             weakRicochetSound.pitch_scale = rand_range(1.4, 1.6)
             weakRicochetSound.play()
-            level.move_counter_at_last_game_state = level.move_counter
+            level.move_counter_at_last_game_state = global.memory["move_counter"]
             for j in range(2):
                 level._spawnBubble(coral.global_transform.origin, j)
         # if isPlayerEating(crab.get_node("Sprite3D")):

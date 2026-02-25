@@ -3,7 +3,8 @@ extends Spatial
 var text3dRes = preload("res://sceneObjects/3DText.tscn")
 
 onready var player = get_node("player")
-onready var orange = get_node("orange")
+onready var orange = get_node("fruits/orange")
+onready var rockFruit = get_node("whale/rockFruit")
 onready var camera = get_node("Camera")
 
 onready var sillyFishSong = get_node("Music/SillyFishSong")
@@ -32,6 +33,7 @@ onready var whatsupSound = get_node("Sounds/WhatsupSound")
 onready var heyUpsetSound = get_node("Sounds/HeyUpsetSound")
 onready var deadParasiteSound = get_node("Sounds/DeadParasiteSound")
 onready var screamSound = get_node("Sounds/ScreamSound")
+onready var waterfallStartSound = get_node("Sounds/WaterfallStartSound")
 
 onready var textBox = get_tree().get_root().get_node("Game/CanvasLayer/TextBox")
 onready var textBoxText = get_tree().get_root().get_node("Game/CanvasLayer/TextBox/Text")
@@ -42,17 +44,14 @@ onready var statsBoxText = get_tree().get_root().get_node("Game/CanvasLayer/Stat
 onready var deathOverlay = get_tree().get_root().get_node("Game/CanvasLayer/DeathOverlay")
 onready var deathOverlayText = get_tree().get_root().get_node("Game/CanvasLayer/DeathOverlay/Text")
 
-var CAMERA_X_OFFSET = 6
-var CAMERA_Y_OFFSET = 5
 var minimum_camera_x = 0
-var currentCameraXBounds = Vector2(0, 0)
-var currentCameraYBounds = Vector2(0, 0)
+var currentCameraXBounds = Vector2(-4, 60)
+var currentCameraYBounds = Vector2(30, -60)
 var sin_counter = 0
 var helpful_counter = 0
 var bubbleRes = preload("res://sceneObjects/bubble.tscn")
 var heartBubbleRes = preload("res://sceneObjects/heartBubble.tscn")
 var death_counter = 0
-var move_counter = 0
 var combo_counter = 0
 var trick_counter = 0
 var max_combo = 0
@@ -61,7 +60,8 @@ var prevTextBoxTopVisible = false
 
 var causeOfDeathStr = "you died"
 
-var how_many_oranges_ate = 0
+# look into global.memory instead
+# var how_many_oranges_ate = 0
 var how_many_coconuts_ate = 0
 var how_many_lemons_ate = 0
 var how_many_heart_fruit_ate = 0
@@ -72,11 +72,14 @@ var parasite_damage_count_max = 10
 var parasite_oof_counter = 0
 var parasite_oof_counter_max = 3
 
+var hideTextBoxMoveCount = -1
+
 func _ready():
     textBox.visible = true
     textBoxText.bbcode_text = "[color=#ff8426]if you so desire:\n    * use[/color] [wave]arrow keys[/wave] [color=#ff8426]to move..[/color]"
     statsBox.visible = false
     set_process(true)
+    hideTextBoxMoveCount = 10
 
 var lemon_failsafe_counter = 0
 var lemon_failsafe_count_max = 7
@@ -92,17 +95,25 @@ func _process(delta):
         has_player_moved = player.playerMover.processMain(delta)
     updateGameCamera(delta)
     if has_player_moved:
-        move_counter += 1
+        global.memory["move_counter"] += 1
+        if hideTextBoxMoveCount >= 0 and global.memory["move_counter"] >= hideTextBoxMoveCount:
+            hideTextBoxMoveCount = -1
+            textBox.visible = false
         processNpcInteractions()
         if isPlayerEating(orange):
             player.eatAnOrange()
             for i in range(3):
                 _spawnBubble(player.headSprite.global_transform.origin, i + 1)    
-            if how_many_oranges_ate >= 2:
+            if global.memory["how_many_oranges_ate"] >= 2:
                 textBox.visible = false
             while doesIntersectWithAnyBodyPart(orange) or (orange.global_transform.origin.x == 0 and orange.global_transform.origin.y == 0):
                 orange.global_transform.origin.x = randi() % 7 - 3
                 orange.global_transform.origin.y = randi() % 7 - 3
+        if isPlayerEating(rockFruit):
+            player.eatARockFruit()
+            for i in range(3):
+                _spawnBubble(player.headSprite.global_transform.origin, i + 1)
+            rockFruit.visible = false
     elif global.gameState == global.GameState.GAME_OVER:
         player.processDeath(delta)
         textBoxTop.visible = false
@@ -231,14 +242,14 @@ func updateGameCamera(delta, x_bounds = null, y_bounds = null):
         camera.global_transform.origin = player.cameraTarget.global_transform.origin
     elif camera.size == size_to_use:
         camera.global_transform.origin = camera.global_transform.origin + (player.cameraTarget.global_transform.origin - camera.global_transform.origin) * (delta*5)
-        # if camera.global_transform.origin.x > currentCameraXBounds.y:
-        #     camera.global_transform.origin.x = currentCameraXBounds.y
-        # elif camera.global_transform.origin.x < currentCameraXBounds.x:
-        #     camera.global_transform.origin.x = currentCameraXBounds.x
-        # if camera.global_transform.origin.y < currentCameraYBounds.y:
-        #     camera.global_transform.origin.y = currentCameraYBounds.y
-        # elif camera.global_transform.origin.y > currentCameraYBounds.x:
-        #     camera.global_transform.origin.y = currentCameraYBounds.x
+        if camera.global_transform.origin.x > currentCameraXBounds.y:
+            camera.global_transform.origin.x = currentCameraXBounds.y
+        elif camera.global_transform.origin.x < currentCameraXBounds.x:
+            camera.global_transform.origin.x = currentCameraXBounds.x
+        if camera.global_transform.origin.y < currentCameraYBounds.y:
+            camera.global_transform.origin.y = currentCameraYBounds.y
+        elif camera.global_transform.origin.y > currentCameraYBounds.x:
+            camera.global_transform.origin.y = currentCameraYBounds.x
             
     var coverOfDarknessAlpha = 0
     var y = camera.global_transform.origin.y

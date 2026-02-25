@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/egg_palette.png-fba8a27e95c5826c51584c10c90c0bd3.stex"
+path="res://.import/base_palette.png-08b568bc3181c8ae463d073ea5ce29eb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/egg_palette.png"
-dest_files=[ "res://.import/egg_palette.png-fba8a27e95c5826c51584c10c90c0bd3.stex" ]
+source_file="res://palettes/base_palette.png"
+dest_files=[ "res://.import/base_palette.png-08b568bc3181c8ae463d073ea5ce29eb.stex" ]
 
 [params]
 

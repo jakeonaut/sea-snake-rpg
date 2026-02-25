@@ -60,10 +60,39 @@ func processMain(delta):
     return has_player_moved
 
 # ====================== INPUT HANDLING =======================
+var was_moved_by_waterfall = false
+var was_in_waterfall = false
 func processMoveInputs(delta):
     processLastDirPressedQueue()
     moveInputDir = Vector2(0, 0)
-    if myParent.is_charging:
+    was_moved_by_waterfall = false
+    if isInWaterfall():
+        charging_move_timer += (delta*11)
+        myParent.giveHeadSpriteXEyes()
+        lastPressedDirQueue = []
+        lastPressedMoveDir = getWaterfallDir()
+        if not was_in_waterfall:
+            charging_move_timer = charging_move_time_limit / 2
+        if not was_in_waterfall or not myParent.driftWaveSound.is_playing():
+            myParent.driftWaveSound.pitch_scale = rand_range(0.6, 0.8)
+            myParent.driftWaveSound.play()
+
+        if charging_move_timer >= charging_move_time_limit:
+            was_moved_by_waterfall = true
+            if global.isOppositeDirOf(myParent.facing, getWaterfallDir()):
+                restoreBodyPartPositions()
+                setSpriteAnimationSpeed(global.IDLE_FRAME_DELAY)
+                myParent.chargeStartSound.stop()
+                myParent.is_charging = false
+            else:
+                moveInputDir = getWaterfallDir()
+                chargeForwardStep()
+            charging_move_timer = 0
+            myParent.aniPlayer.stop()
+            myParent.aniPlayer.clear_queue()
+            myParent.aniPlayer.play("waterfallStunned")
+            global.memory["move_counter"] -= 1
+    elif myParent.is_charging:
         if Input.is_action_just_pressed("ui_cancel"):
             can_stop_the_charge = true
             myParent.skidStopSound.pitch_scale = rand_range(1.2, 1.5)
@@ -84,7 +113,7 @@ func processMoveInputs(delta):
             charging_move_timer = 0
     elif not is_charging_up_charge and len(lastPressedDirQueue) > 0:
         moveInputDir = lastPressedDirQueue.pop_back()
-    if not myParent.is_stunned:
+    if not myParent.is_stunned and global.memory["can_charge_attack"]:
         if Input.is_action_just_pressed("ui_select"):
             startChargeUp()
         elif Input.is_action_pressed("ui_select"):
@@ -93,6 +122,10 @@ func processMoveInputs(delta):
             # player.spitCoconutProjectile()
             tryChargeAhead()
             pass
+    else:
+        if Input.is_action_just_pressed("ui_select"):
+            level.playErrorSound()
+    was_in_waterfall = isInWaterfall()
 
 func processLastDirPressedQueue():
     var preventChargingTurnAround = (myParent.is_charging or is_charging_up_charge) and len(myParent.myBodyParts) > 1
@@ -162,10 +195,11 @@ func genericMove(moveDir):
     myParent.facing = moveDir
     headSprite.global_transform.origin.x += moveDir.x
     headSprite.global_transform.origin.y += moveDir.y
-    if myParent.myBodyParts.size() > 1:
-        headSprite.updateBaseFrame(2, 0)
-    else:
-        headSprite.updateBaseFrame(0, 0)
+    if not isInWaterfall() and not was_moved_by_waterfall:
+        if myParent.myBodyParts.size() > 1:
+            headSprite.updateBaseFrame(2, 0)
+        else:
+            headSprite.updateBaseFrame(0, 0)
     moveMyBodyParts(moveDir)
     if moveDir.x < 0: faceLeft(headSprite)
     elif moveDir.x > 0: faceRight(headSprite)
@@ -186,6 +220,10 @@ func postProcessMoveAttempt(moveDir):
             myParent.bumpSound.play()
             myParent.owIGotStunned()
         return false
+    elif isOutOfBounds():
+        level.playErrorSound()
+        restoreBodyPartPositions()
+        return false
     if len(prevBodyPartsStatesStack) > MAX_UNDO_SIZE:
         prevBodyPartsStatesStack.pop_front()
     return true
@@ -197,6 +235,24 @@ func tryEnterDoor(door):
         myParent.headSprite.global_transform.origin.y = door.partnerDoor.global_transform.origin.y
         return true
     return false
+
+func isInWaterfall():
+    return getWaterfallDir() != null
+
+func getWaterfallDir():
+    var waterfallCurrents = level.get_tree().get_nodes_in_group("waterfall_group")
+    for i in range(len(waterfallCurrents)):
+        var waterfall = waterfallCurrents[i]
+        if myParent.isHeadOverlapping(waterfall):
+            if is_equal_approx(waterfall.rotation_degrees.z, 90):
+                return global.DirRight
+            elif is_equal_approx(waterfall.rotation_degrees.z, 180) or waterfall.flip_v:
+                return global.DirUp
+            elif is_equal_approx(waterfall.rotation_degrees.z, -90) or is_equal_approx(waterfall.rotation_degrees.z, 270):
+                return global.DirLeft
+            else:
+                return global.DirDown
+    return null
 
 func hasCollidedWithAnything(moveDir):
     var doors = level.get_tree().get_nodes_in_group("door_group")
@@ -228,6 +284,8 @@ func hasCollidedWithAnything(moveDir):
             level.playErrorSound()
             if myParent.is_charging:
                 npc.getMiniStunned()
+            if npc.event != null:
+                npc.event.collideWith(myParent.is_charging)
             return true
     var rocks = level.get_tree().get_nodes_in_group("rock_group")
     for i in range(len(rocks)):
@@ -247,6 +305,8 @@ func hasCollidedWithAnything(moveDir):
             restoreBodyPartPositions()
             if not myParent.is_charging:
                 level.playErrorSound()
+            if solid.has_node("../event"):
+                solid.get_node("../event").collideWith(myParent.is_charging)
             return true
     return false
 
@@ -266,6 +326,8 @@ func grow(moveDir):
     newBodySprite.modulate.b = 1
     newBodySprite.scale = Vector3(1, 1, 1)
     newBodySprite.follow_player_frame_delay = true
+    newBodySprite.material_override = newBodySprite.material_override.duplicate(true)
+    newBodySprite.material_override.set_shader_param("target_palette", global.getRandomPalette())
     myParent.myBodyParts.push_back(newBodySprite)
     myParent.should_grow = false
     # growSound.pitch_scale = rand_range(0.8, 1.2)
@@ -409,6 +471,8 @@ func restoreBodyPartPositions(is_manual_reverse = false):
             bodyPart.animate(1)
         else:
             bodyPart.animation_counter = 0
+    if is_manual_reverse:
+        lastPressedMoveDir = headSprite.facing
     myParent.facing = headSprite.facing
     myParent.cameraTarget.global_transform.origin = headSprite.global_transform.origin
     myParent.cameraTarget.global_transform.origin.z = 6
@@ -507,3 +571,13 @@ func chargeForwardStep():
         else:
             myParent.chargeSlowdown.pitch_scale = rand_range(0.6, 0.8)
             myParent.chargeSlowdown.play()
+
+var CAMERA_X_OFFSET = 7
+var CAMERA_Y_OFFSET = 6
+func isOutOfBounds():
+    var lb = level.currentCameraXBounds.x - CAMERA_X_OFFSET
+    var rb = level.currentCameraXBounds.y + CAMERA_X_OFFSET
+    var tb = level.currentCameraYBounds.x + CAMERA_Y_OFFSET
+    var bb = level.currentCameraYBounds.y - CAMERA_Y_OFFSET
+    var headPos = myParent.headSprite.global_transform.origin
+    return headPos.x <= lb or headPos.x >= rb or headPos.y >= tb or headPos.y <= bb

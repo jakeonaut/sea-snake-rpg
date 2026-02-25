@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Octopus.wav-028d43d1e80ad2214b7a8d4997e14ec5.sample"
+
+[deps]
+
+source_file="res://sounds/Octopus.wav"
+dest_files=[ "res://.import/Octopus.wav-028d43d1e80ad2214b7a8d4997e14ec5.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

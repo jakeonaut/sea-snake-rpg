@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/crab_palette.png-82e4d52c45ff575b1d889a25fae1d9db.stex"
+path="res://.import/red_palette.png-12eaad0517647c20054498eded7dd72a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://images/crab_palette.png"
-dest_files=[ "res://.import/crab_palette.png-82e4d52c45ff575b1d889a25fae1d9db.stex" ]
+source_file="res://palettes/red_palette.png"
+dest_files=[ "res://.import/red_palette.png-12eaad0517647c20054498eded7dd72a.stex" ]
 
 [params]
 
@@ -23,7 +23,7 @@ flags/repeat=true
 flags/filter=false
 flags/mipmaps=true
 flags/anisotropic=false
-flags/srgb=0
+flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
