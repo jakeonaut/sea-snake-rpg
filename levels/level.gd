@@ -3,8 +3,6 @@ extends Spatial
 var text3dRes = preload("res://sceneObjects/3DText.tscn")
 
 onready var player = get_node("player")
-onready var orange = get_node("fruits/orange")
-onready var rockFruit = get_node("whale/rockFruit")
 onready var camera = get_node("Camera")
 
 onready var sillyFishSong = get_node("Music/SillyFishSong")
@@ -62,7 +60,6 @@ var causeOfDeathStr = "you died"
 
 # look into global.memory instead
 # var how_many_oranges_ate = 0
-var how_many_coconuts_ate = 0
 var how_many_lemons_ate = 0
 var how_many_heart_fruit_ate = 0
 var adventure_camera_size = 10
@@ -100,20 +97,7 @@ func _process(delta):
             hideTextBoxMoveCount = -1
             textBox.visible = false
         processNpcInteractions()
-        if isPlayerEating(orange):
-            player.eatAnOrange()
-            for i in range(3):
-                _spawnBubble(player.headSprite.global_transform.origin, i + 1)    
-            if global.memory["how_many_oranges_ate"] >= 2:
-                textBox.visible = false
-            while doesIntersectWithAnyBodyPart(orange) or (orange.global_transform.origin.x == 0 and orange.global_transform.origin.y == 0):
-                orange.global_transform.origin.x = randi() % 7 - 3
-                orange.global_transform.origin.y = randi() % 7 - 3
-        if isPlayerEating(rockFruit):
-            player.eatARockFruit()
-            for i in range(3):
-                _spawnBubble(player.headSprite.global_transform.origin, i + 1)
-            rockFruit.visible = false
+        processFruitInteractions()
     elif global.gameState == global.GameState.GAME_OVER:
         player.processDeath(delta)
         textBoxTop.visible = false
@@ -130,6 +114,7 @@ func _process(delta):
             textBoxTop.visible = false
             textBox.visible = false
             if last_speaker != null: last_speaker.get_ref().stopTalking()
+            last_speaker = null
             # global.gameState = global.GameState.NORMAL_GAMEPLAY
             global.gameState = global.GameState.RESTART_EGG_HATCHING_ANIMATION
             player.initiateHatchAnimation()
@@ -156,11 +141,9 @@ func processNpcInteractions():
             nearest_dist = dist
     if nearest_npc != null:
         if not nearest_npc.is_talking:
-            if last_speaker != null and last_speaker.get_ref() != null:
-                last_speaker.get_ref().stopTalking(true) # (did_someone_else_start_talking)
+            setNewLastSpeaker(nearest_npc)
             self.textBoxText.bbcode_text = nearest_npc.startTalking()
             self.textBox.visible = true
-            last_speaker = weakref(nearest_npc)
         elif last_speaker != null and last_speaker.get_ref() != null and last_speaker.get_ref() == nearest_npc:
             if nearest_dist > byebye_npc_dist:
                 self.textBox.visible = false
@@ -169,6 +152,48 @@ func processNpcInteractions():
             else:
                 nearest_npc.keepTalking()
         
+func setNewLastSpeaker(npc):
+    if last_speaker != null and last_speaker.get_ref() != null:
+        last_speaker.get_ref().stopTalking(true) # (did_someone_else_start_talking)
+    last_speaker = weakref(npc)
+
+func processFruitInteractions():
+    var oranges = get_tree().get_nodes_in_group("orange_group")
+    for i in range(len(oranges)):
+        var orange = oranges[i]
+        if isPlayerEating(orange):
+            player.eatAnOrange()
+            for j in range(3):
+                _spawnBubble(player.headSprite.global_transform.origin, j + 1)    
+            while doesIntersectWithAnyBodyPart(orange) or (orange.global_transform.origin.x == 0 and orange.global_transform.origin.y == 0):
+                orange.global_transform.origin.x = randi() % 7 - 3
+                orange.global_transform.origin.y = randi() % 7 - 3
+    var coconuts = get_tree().get_nodes_in_group("coconut_group")
+    for i in range(len(coconuts)):
+        var coconut = coconuts[i]
+        if isPlayerEating(coconut):
+            player.eatACoconut()
+            for j in range(3):
+                _spawnBubble(player.headSprite.global_transform.origin, j + 1)    
+            while doesIntersectWithAnyBodyPart(coconut) or (coconut.global_transform.origin.x == 0 and coconut.global_transform.origin.y == 0):
+                coconut.global_transform.origin.x = randi() % 7 - 3
+                coconut.global_transform.origin.y = randi() % 7 - 3
+    var rockFruits = get_tree().get_nodes_in_group("rockfruit_group")
+    for i in range(len(rockFruits)):
+        var rockFruit = rockFruits[i]
+        if isPlayerEating(rockFruit):
+            player.eatARockFruit()
+            for j in range(3):
+                _spawnBubble(player.headSprite.global_transform.origin, j + 1)
+            rockFruit.visible = false
+    var multiberries = get_tree().get_nodes_in_group("multiberry_group")
+    for i in range(len(multiberries)):
+        var multiberry = multiberries[i]
+        if isPlayerEating(multiberry):
+            player.eatAMultiberry()
+            for j in range(3):
+                _spawnBubble(player.headSprite.global_transform.origin, j + 1)
+            multiberry.visible = false
 
             
 func playErrorSound():

@@ -28,12 +28,18 @@ var memory = {}
 
 func _ready():
   memory["can_charge_attack"] = false
+  memory["can_camouflage"] = false
   memory["how_many_oranges_ate"] = 0
-  memory["how_many_rockfruit_ate"] = 0
+  memory["how_many_rockfruits_ate"] = 0
+  memory["how_many_coconuts_ate"] = 0
+  memory["how_many_multiberries_ate"] = 0
   memory["move_counter"] = 0
+  memory["is_cuttlefish_wearing_coconut"] = false
+  
 
 var base_palette = preload("res://palettes/base_palette.png")
 var orange_palette = preload("res://palettes/orange_palette.png")
+var yellow_palette = preload("res://palettes/yellow_palette.png")
 var white_palette = preload("res://palettes/white_palette.png")
 var crab_palette = preload("res://palettes/crab_palette.png")
 var egg_palette = preload("res://palettes/egg_palette.png")

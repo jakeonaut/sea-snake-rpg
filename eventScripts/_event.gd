@@ -15,9 +15,10 @@ func stopTrying(_did_someone_else_start_talking):
   pass
 
 # TODO(): Override me!!
-func collideWith(was_charging = false):
-  pass
+func collideWith(_was_charging = false):
+  return [""]
 
 # TODO(): Override me!!
 func getHitWithCoconut(_coconutDir):
-  pass
+  # [was_coconut_absorbed, unique_coconut_event_text]
+  return [false, ""]

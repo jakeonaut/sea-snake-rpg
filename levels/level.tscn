@@ -1,4 +1,4 @@
-[gd_scene load_steps=225 format=2]
+[gd_scene load_steps=323 format=2]
 
 [ext_resource path="res://sceneObjects/player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://sceneObjects/rock.tscn" type="PackedScene" id=2]
@@ -8,7 +8,7 @@
 [ext_resource path="res://images/bgbig.png" type="Texture" id=6]
 [ext_resource path="res://Comic Sans MS.ttf" type="DynamicFontData" id=7]
 [ext_resource path="res://images/bg.png" type="Texture" id=8]
-[ext_resource path="res://sceneObjects/kelp.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scripts/rock.gd" type="Script" id=9]
 [ext_resource path="res://sceneObjects/crab.tscn" type="PackedScene" id=10]
 [ext_resource path="res://sounds/wilhelm.wav" type="AudioStream" id=11]
 [ext_resource path="res://sounds/heyman.wav" type="AudioStream" id=12]
@@ -71,8 +71,1479 @@
 [ext_resource path="res://palettes/egg_palette.png" type="Texture" id=69]
 [ext_resource path="res://palettes/orange_palette.png" type="Texture" id=70]
 [ext_resource path="res://sceneObjects/coconut.tscn" type="PackedScene" id=71]
+[ext_resource path="res://sounds/worm.wav" type="AudioStream" id=72]
+[ext_resource path="res://sceneObjects/multiberry.tscn" type="PackedScene" id=73]
+[ext_resource path="res://images/environment_sheet.png" type="Texture" id=74]
+[ext_resource path="res://palettes/red_palette.png" type="Texture" id=75]
+[ext_resource path="res://palettes/white_palette.png" type="Texture" id=76]
+[ext_resource path="res://palettes/yellow_palette.png" type="Texture" id=77]
+[ext_resource path="res://eventScripts/gardenEelEntranceEvent.gd" type="Script" id=78]
+[ext_resource path="res://scripts/rock.gd" type="Script" id=79]
 
 [sub_resource type="Environment" id=1]
+
+[sub_resource type="ShaderMaterial" id=190]
+shader = ExtResource( 63 )
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/opacity = 0.75
+shader_param/outline_color = null
+shader_param/outline_width = 1.0
+shader_param/shake_power = 0.03
+shader_param/shake_block_size = 30.5
+shader_param/shake_color_rate = 0.01
+shader_param/no_palette_swap = false
+shader_param/enable_remove_skin_tone = false
+shader_param/enable_dither = false
+shader_param/enable_no_transparency = false
+shader_param/enable_black_unknown = false
+shader_param/palettesize = 16
+shader_param/resolution_scale = 1
+shader_param/offset = 0
+shader_param/black_offset = 0
+shader_param/enable_glitch = false
+shader_param/enable_color_glitch = true
+shader_param/disable_glitch_dither = false
+shader_param/enable_palette_cycle = false
+shader_param/palette_cycle_speed = 10.0
+shader_param/enable_glitch_3d = false
+shader_param/shake_power_3d = 0.5
+shader_param/shake_rate = 0.5
+shader_param/shake_speed = 5.0
+shader_param/shake_block_size_3d = 30.5
+shader_param/shake_color_rate_3d = 0.5
+shader_param/normal_offset = 0.0
+shader_param/time_influence = 0.0
+shader_param/y_div = 0.0
+shader_param/texture_albedo = ExtResource( 74 )
+shader_param/base_palette = ExtResource( 66 )
+shader_param/target_palette = ExtResource( 77 )
+
+[sub_resource type="ShaderMaterial" id=191]
+shader = ExtResource( 63 )
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/opacity = 0.75
+shader_param/outline_color = null
+shader_param/outline_width = 1.0
+shader_param/shake_power = 0.03
+shader_param/shake_block_size = 30.5
+shader_param/shake_color_rate = 0.01
+shader_param/no_palette_swap = false
+shader_param/enable_remove_skin_tone = false
+shader_param/enable_dither = false
+shader_param/enable_no_transparency = false
+shader_param/enable_black_unknown = false
+shader_param/palettesize = 16
+shader_param/resolution_scale = 1
+shader_param/offset = 0
+shader_param/black_offset = 0
+shader_param/enable_glitch = false
+shader_param/enable_color_glitch = true
+shader_param/disable_glitch_dither = false
+shader_param/enable_palette_cycle = false
+shader_param/palette_cycle_speed = 10.0
+shader_param/enable_glitch_3d = false
+shader_param/shake_power_3d = 0.5
+shader_param/shake_rate = 0.5
+shader_param/shake_speed = 5.0
+shader_param/shake_block_size_3d = 30.5
+shader_param/shake_color_rate_3d = 0.5
+shader_param/normal_offset = 0.0
+shader_param/time_influence = 0.0
+shader_param/y_div = 0.0
+shader_param/texture_albedo = ExtResource( 74 )
+shader_param/base_palette = ExtResource( 66 )
+shader_param/target_palette = ExtResource( 76 )
+
+[sub_resource type="ShaderMaterial" id=192]
+shader = ExtResource( 63 )
+shader_param/albedo = Color( 1, 1, 1, 1 )
+shader_param/opacity = 0.75
+shader_param/outline_color = null
+shader_param/outline_width = 1.0
+shader_param/shake_power = 0.03
+shader_param/shake_block_size = 30.5
+shader_param/shake_color_rate = 0.01
+shader_param/no_palette_swap = false
+shader_param/enable_remove_skin_tone = false
+shader_param/enable_dither = false
+shader_param/enable_no_transparency = false
+shader_param/enable_black_unknown = false
+shader_param/palettesize = 16
+shader_param/resolution_scale = 1
+shader_param/offset = 0
+shader_param/black_offset = 0
+shader_param/enable_glitch = false
+shader_param/enable_color_glitch = true
+shader_param/disable_glitch_dither = false
+shader_param/enable_palette_cycle = false
+shader_param/palette_cycle_speed = 10.0
+shader_param/enable_glitch_3d = false
+shader_param/shake_power_3d = 0.5
+shader_param/shake_rate = 0.5
+shader_param/shake_speed = 5.0
+shader_param/shake_block_size_3d = 30.5
+shader_param/shake_color_rate_3d = 0.5
+shader_param/normal_offset = 0.0
+shader_param/time_influence = 0.0
+shader_param/y_div = 0.0
+shader_param/texture_albedo = ExtResource( 74 )
+shader_param/base_palette = ExtResource( 66 )
+shader_param/target_palette = ExtResource( 75 )
+
+[sub_resource type="Animation" id=165]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=166]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=193]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=194]
+resource_name = "breakUp"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="Animation" id=167]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=168]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=169]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=170]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=171]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=172]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=173]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=174]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=175]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=176]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=177]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=178]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=179]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=180]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=195]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=196]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=197]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=198]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=199]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=200]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=201]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=202]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=203]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=204]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=205]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=206]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=207]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=208]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=209]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=210]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=181]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=182]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=183]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=184]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=185]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=186]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=211]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=212]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=213]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=214]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=215]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=216]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=217]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=218]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=219]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=220]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=221]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=222]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=223]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=224]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=225]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=226]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=227]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=228]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=229]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=230]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=231]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=232]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=233]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=234]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=235]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=236]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=237]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=238]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=239]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=240]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=241]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=242]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=243]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=244]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=245]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=246]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=247]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=248]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=249]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=250]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=251]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=252]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=253]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=254]
+resource_name = "stunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
 
 [sub_resource type="ShaderMaterial" id=162]
 shader = ExtResource( 63 )
@@ -166,6 +1637,65 @@ tracks/1/keys = {
 "values": [ 0.4, 1.6 ]
 }
 
+[sub_resource type="Animation" id=187]
+resource_name = "postCoconutMaskColor"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:material_override:shader_param/target_palette")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ ExtResource( 70 ) ]
+}
+
+[sub_resource type="Animation" id=188]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ true ]
+}
+
+[sub_resource type="Animation" id=189]
+resource_name = "breakUp"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
 [sub_resource type="Animation" id=110]
 length = 0.001
 tracks/0/type = "value"
@@ -183,7 +1713,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=111]
 resource_name = "stunned"
-length = 0.5
+length = 0.25
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:offset")
@@ -2459,6 +3989,48 @@ projection = 1
 current = true
 size = 8.0
 
+[node name="Kelp" type="Spatial" parent="Viewport/level"]
+
+[node name="kelpSprite" type="Sprite3D" parent="Viewport/level/Kelp" groups=["kelp_group"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -7, 2 )
+material_override = SubResource( 190 )
+pixel_size = 0.0625
+texture = ExtResource( 74 )
+hframes = 6
+vframes = 6
+frame = 12
+script = ExtResource( 9 )
+
+[node name="kelpSprite2" type="Sprite3D" parent="Viewport/level/Kelp" groups=["kelp_group"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -6, 2 )
+material_override = SubResource( 190 )
+pixel_size = 0.0625
+texture = ExtResource( 74 )
+hframes = 6
+vframes = 6
+frame = 12
+script = ExtResource( 9 )
+
+[node name="kelpSprite3" type="Sprite3D" parent="Viewport/level/Kelp" groups=["kelp_group"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7, 2 )
+material_override = SubResource( 191 )
+pixel_size = 0.0625
+texture = ExtResource( 74 )
+hframes = 6
+vframes = 6
+frame = 12
+script = ExtResource( 9 )
+
+[node name="kelpSprite4" type="Sprite3D" parent="Viewport/level/Kelp" groups=["kelp_group"]]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -8, 2 )
+material_override = SubResource( 192 )
+pixel_size = 0.0625
+texture = ExtResource( 74 )
+hframes = 6
+vframes = 6
+frame = 12
+script = ExtResource( 9 )
+
 [node name="fruits" type="Spatial" parent="Viewport/level"]
 
 [node name="orange" parent="Viewport/level/fruits" instance=ExtResource( 5 )]
@@ -2466,6 +4038,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -1 )
 
 [node name="coconut" parent="Viewport/level/fruits" instance=ExtResource( 71 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0 )
+
+[node name="todo_delete_rockfruit" parent="Viewport/level/fruits" instance=ExtResource( 55 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0 )
+
+[node name="multiberry" parent="Viewport/level/fruits" instance=ExtResource( 73 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -3, -3 )
 
 [node name="Sounds" type="Spatial" parent="Viewport/level"]
 
@@ -2589,10 +4167,417 @@ volume_db = -20.0
 stream = ExtResource( 50 )
 volume_db = -25.0
 
+[node name="GardenEels" type="Spatial" parent="Viewport/level"]
+
+[node name="gardenEel" parent="Viewport/level/GardenEels" instance=ExtResource( 54 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -8, 3 )
+bbcode_text = "werp. werp."
+stunned_text = "WERP!!!!!!"
+should_collide_with = false
+
+[node name="fishSprite" parent="Viewport/level/GardenEels/gardenEel" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.200001, 0, -2 )
+frame = 12
+
+[node name="talkSound" parent="Viewport/level/GardenEels/gardenEel" index="1"]
+stream = ExtResource( 72 )
+volume_db = -18.0
+pitch_scale = 2.0
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel" index="2"]
+anims/RESET = SubResource( 165 )
+anims/stunned = SubResource( 166 )
+
+[node name="myRock" parent="Viewport/level/GardenEels/gardenEel" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -1, -1 )
+frame = 14
+script = ExtResource( 79 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel/myRock" index="0"]
+anims/RESET = SubResource( 193 )
+anims/breakUp = SubResource( 194 )
+
+[node name="hardestRock67" parent="Viewport/level/GardenEels/gardenEel" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel/hardestRock67" index="3"]
+anims/RESET = SubResource( 167 )
+anims/stunned = SubResource( 168 )
+
+[node name="event" type="Node" parent="Viewport/level/GardenEels/gardenEel"]
+script = ExtResource( 78 )
+
+[node name="gardenEel2" parent="Viewport/level/GardenEels" instance=ExtResource( 54 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19, -8, 3 )
+stunned_text = "WERP!!!!!!"
+should_collide_with = false
+
+[node name="fishSprite" parent="Viewport/level/GardenEels/gardenEel2" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.200001, 0, -2 )
+frame = 12
+
+[node name="talkSound" parent="Viewport/level/GardenEels/gardenEel2" index="1"]
+stream = ExtResource( 72 )
+volume_db = -18.0
+pitch_scale = 2.0
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel2" index="2"]
+anims/RESET = SubResource( 169 )
+anims/stunned = SubResource( 170 )
+
+[node name="hardestRock67" parent="Viewport/level/GardenEels/gardenEel2" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel2/hardestRock67" index="3"]
+anims/RESET = SubResource( 171 )
+anims/stunned = SubResource( 172 )
+
+[node name="gardenEel3" parent="Viewport/level/GardenEels" instance=ExtResource( 54 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -8, 3 )
+stunned_text = "WERP!!!!!!"
+should_collide_with = false
+
+[node name="fishSprite" parent="Viewport/level/GardenEels/gardenEel3" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.200001, 0, -2 )
+frame = 12
+
+[node name="talkSound" parent="Viewport/level/GardenEels/gardenEel3" index="1"]
+stream = ExtResource( 72 )
+volume_db = -18.0
+pitch_scale = 2.0
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel3" index="2"]
+anims/RESET = SubResource( 173 )
+anims/stunned = SubResource( 174 )
+
+[node name="hardestRock67" parent="Viewport/level/GardenEels/gardenEel3" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel3/hardestRock67" index="3"]
+anims/RESET = SubResource( 175 )
+anims/stunned = SubResource( 176 )
+
+[node name="gardenEel4" parent="Viewport/level/GardenEels" instance=ExtResource( 54 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -9, 3 )
+stunned_text = "WERP!!!!!!"
+should_collide_with = false
+
+[node name="fishSprite" parent="Viewport/level/GardenEels/gardenEel4" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.200001, 0, -2 )
+frame = 12
+
+[node name="talkSound" parent="Viewport/level/GardenEels/gardenEel4" index="1"]
+stream = ExtResource( 72 )
+volume_db = -18.0
+pitch_scale = 2.0
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel4" index="2"]
+anims/RESET = SubResource( 177 )
+anims/stunned = SubResource( 178 )
+
+[node name="hardestRock67" parent="Viewport/level/GardenEels/gardenEel4" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel4/hardestRock67" index="3"]
+anims/RESET = SubResource( 179 )
+anims/stunned = SubResource( 180 )
+
+[node name="gardenEel6" parent="Viewport/level/GardenEels" instance=ExtResource( 54 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -13, 3 )
+script = ExtResource( 32 )
+stunned_text = "WERP!!!!!!"
+should_collide_with = false
+
+[node name="fishSprite" parent="Viewport/level/GardenEels/gardenEel6" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.200001, 0, -2 )
+frame = 12
+
+[node name="talkSound" parent="Viewport/level/GardenEels/gardenEel6" index="1"]
+stream = ExtResource( 72 )
+volume_db = -18.0
+pitch_scale = 2.0
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel6" index="2"]
+anims/RESET = SubResource( 195 )
+anims/stunned = SubResource( 196 )
+
+[node name="coconutMaskSprite" parent="Viewport/level/GardenEels/gardenEel6" index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0999999, 0 )
+
+[node name="hardestRock67" parent="Viewport/level/GardenEels/gardenEel6" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel6/hardestRock67" index="3"]
+anims/RESET = SubResource( 197 )
+anims/stunned = SubResource( 198 )
+
+[node name="gardenEel7" parent="Viewport/level/GardenEels" instance=ExtResource( 54 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 17, -11, 3 )
+script = ExtResource( 32 )
+stunned_text = "WERP!!!!!!"
+should_collide_with = false
+
+[node name="fishSprite" parent="Viewport/level/GardenEels/gardenEel7" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.200001, 0, -2 )
+frame = 12
+
+[node name="talkSound" parent="Viewport/level/GardenEels/gardenEel7" index="1"]
+stream = ExtResource( 72 )
+volume_db = -18.0
+pitch_scale = 2.0
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel7" index="2"]
+anims/RESET = SubResource( 199 )
+anims/stunned = SubResource( 200 )
+
+[node name="coconutMaskSprite" parent="Viewport/level/GardenEels/gardenEel7" index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0999999, 0 )
+
+[node name="hardestRock67" parent="Viewport/level/GardenEels/gardenEel7" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel7/hardestRock67" index="3"]
+anims/RESET = SubResource( 201 )
+anims/stunned = SubResource( 202 )
+
+[node name="gardenEel8" parent="Viewport/level/GardenEels" instance=ExtResource( 54 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27, -8, 3 )
+script = ExtResource( 32 )
+stunned_text = "WERP!!!!!!"
+should_collide_with = false
+
+[node name="fishSprite" parent="Viewport/level/GardenEels/gardenEel8" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.200001, 0, -2 )
+frame = 12
+
+[node name="talkSound" parent="Viewport/level/GardenEels/gardenEel8" index="1"]
+stream = ExtResource( 72 )
+volume_db = -18.0
+pitch_scale = 2.0
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel8" index="2"]
+anims/RESET = SubResource( 203 )
+anims/stunned = SubResource( 204 )
+
+[node name="coconutMaskSprite" parent="Viewport/level/GardenEels/gardenEel8" index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0999999, 0 )
+
+[node name="hardestRock67" parent="Viewport/level/GardenEels/gardenEel8" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel8/hardestRock67" index="3"]
+anims/RESET = SubResource( 205 )
+anims/stunned = SubResource( 206 )
+
+[node name="gardenEel5" parent="Viewport/level/GardenEels" instance=ExtResource( 54 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -8, 3 )
+script = ExtResource( 32 )
+stunned_text = "WERP!!!!!!"
+should_collide_with = false
+
+[node name="fishSprite" parent="Viewport/level/GardenEels/gardenEel5" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.200001, 0, -2 )
+frame = 12
+
+[node name="talkSound" parent="Viewport/level/GardenEels/gardenEel5" index="1"]
+stream = ExtResource( 72 )
+volume_db = -18.0
+pitch_scale = 2.0
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel5" index="2"]
+anims/RESET = SubResource( 207 )
+anims/stunned = SubResource( 208 )
+
+[node name="coconutMaskSprite" parent="Viewport/level/GardenEels/gardenEel5" index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0999999, 0 )
+
+[node name="hardestRock67" parent="Viewport/level/GardenEels/gardenEel5" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/gardenEel5/hardestRock67" index="3"]
+anims/RESET = SubResource( 209 )
+anims/stunned = SubResource( 210 )
+
+[node name="hardestRock68" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19, -10, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock68" index="3"]
+anims/RESET = SubResource( 181 )
+anims/stunned = SubResource( 182 )
+
+[node name="hardestRock69" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -10, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock69" index="3"]
+anims/RESET = SubResource( 183 )
+anims/stunned = SubResource( 184 )
+
+[node name="hardestRock70" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -10, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock70" index="3"]
+anims/RESET = SubResource( 185 )
+anims/stunned = SubResource( 186 )
+
+[node name="hardestRock71" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock71" index="3"]
+anims/RESET = SubResource( 211 )
+anims/stunned = SubResource( 212 )
+
+[node name="hardestRock72" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19, -11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock72" index="3"]
+anims/RESET = SubResource( 213 )
+anims/stunned = SubResource( 214 )
+
+[node name="hardestRock73" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock73" index="3"]
+anims/RESET = SubResource( 215 )
+anims/stunned = SubResource( 216 )
+
+[node name="hardestRock74" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock74" index="3"]
+anims/RESET = SubResource( 217 )
+anims/stunned = SubResource( 218 )
+
+[node name="hardestRock75" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock75" index="3"]
+anims/RESET = SubResource( 219 )
+anims/stunned = SubResource( 220 )
+
+[node name="hardestRock76" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -10, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock76" index="3"]
+anims/RESET = SubResource( 221 )
+anims/stunned = SubResource( 222 )
+
+[node name="hardestRock77" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19, -12, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock77" index="3"]
+anims/RESET = SubResource( 223 )
+anims/stunned = SubResource( 224 )
+
+[node name="hardestRock78" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -12, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock78" index="3"]
+anims/RESET = SubResource( 225 )
+anims/stunned = SubResource( 226 )
+
+[node name="hardestRock79" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -13, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock79" index="3"]
+anims/RESET = SubResource( 227 )
+anims/stunned = SubResource( 228 )
+
+[node name="hardestRock80" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 18, -14, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock80" index="3"]
+anims/RESET = SubResource( 229 )
+anims/stunned = SubResource( 230 )
+
+[node name="hardestRock81" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -13, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock81" index="3"]
+anims/RESET = SubResource( 231 )
+anims/stunned = SubResource( 232 )
+
+[node name="hardestRock82" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -14, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock82" index="3"]
+anims/RESET = SubResource( 233 )
+anims/stunned = SubResource( 234 )
+
+[node name="hardestRock83" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 20, -14, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock83" index="3"]
+anims/RESET = SubResource( 235 )
+anims/stunned = SubResource( 236 )
+
+[node name="hardestRock84" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, -11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock84" index="3"]
+anims/RESET = SubResource( 237 )
+anims/stunned = SubResource( 238 )
+
+[node name="hardestRock85" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 24, -10, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock85" index="3"]
+anims/RESET = SubResource( 239 )
+anims/stunned = SubResource( 240 )
+
+[node name="hardestRock86" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -10, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock86" index="3"]
+anims/RESET = SubResource( 241 )
+anims/stunned = SubResource( 242 )
+
+[node name="hardestRock87" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -13, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock87" index="3"]
+anims/RESET = SubResource( 243 )
+anims/stunned = SubResource( 244 )
+
+[node name="hardestRock88" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -9, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock88" index="3"]
+anims/RESET = SubResource( 245 )
+anims/stunned = SubResource( 246 )
+
+[node name="hardestRock89" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -9, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock89" index="3"]
+anims/RESET = SubResource( 247 )
+anims/stunned = SubResource( 248 )
+
+[node name="hardestRock90" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 26, -10, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock90" index="3"]
+anims/RESET = SubResource( 249 )
+anims/stunned = SubResource( 250 )
+
+[node name="hardestRock91" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27, -10, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock91" index="3"]
+anims/RESET = SubResource( 251 )
+anims/stunned = SubResource( 252 )
+
+[node name="hardestRock92" parent="Viewport/level/GardenEels" instance=ExtResource( 26 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 27, -11, 0 )
+
+[node name="AnimationPlayer" parent="Viewport/level/GardenEels/hardestRock92" index="3"]
+anims/RESET = SubResource( 253 )
+anims/stunned = SubResource( 254 )
+
 [node name="Crabs" type="Spatial" parent="Viewport/level"]
 
 [node name="crab" parent="Viewport/level/Crabs" instance=ExtResource( 10 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, -1 )
+bbcode_text = "koo-kee-koo-kee"
 
 [node name="NPCs" type="Spatial" parent="Viewport/level"]
 
@@ -2613,32 +4598,30 @@ volume_db = -15.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -3, 0 )
 
 [node name="fishSprite" parent="Viewport/level/NPCs/cuttleFish" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0999999, -1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, -1 )
 material_override = SubResource( 162 )
 frame = 8
 frame_delay = 1.6
 
-[node name="coconutMaskSprite" type="Sprite3D" parent="Viewport/level/NPCs/cuttleFish"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0999999, 0 )
-visible = false
-pixel_size = 0.0625
-texture = ExtResource( 15 )
-hframes = 8
-vframes = 4
-frame = 10
-script = ExtResource( 33 )
-frame_delay = 1.6
-
-[node name="talkSound" parent="Viewport/level/NPCs/cuttleFish" index="2"]
+[node name="talkSound" parent="Viewport/level/NPCs/cuttleFish" index="1"]
 stream = ExtResource( 65 )
 volume_db = -15.0
 
 [node name="PaletteAnimationPlayer" type="AnimationPlayer" parent="Viewport/level/NPCs/cuttleFish"]
 anims/RESET = SubResource( 163 )
 anims/paletteCycle = SubResource( 164 )
+anims/postCoconutMaskColor = SubResource( 187 )
 
 [node name="event" type="Node" parent="Viewport/level/NPCs/cuttleFish"]
 script = ExtResource( 64 )
+
+[node name="myRock" parent="Viewport/level/NPCs/cuttleFish" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1 )
+frame = 6
+
+[node name="AnimationPlayer" parent="Viewport/level/NPCs/cuttleFish/myRock" index="0"]
+anims/RESET = SubResource( 188 )
+anims/breakUp = SubResource( 189 )
 
 [node name="sharkFish" parent="Viewport/level" instance=ExtResource( 57 )]
 transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 1, 7, -15, 0 )
@@ -2964,6 +4947,12 @@ transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -13, -3
 
 [node name="waterfallCurrent39" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -27, -3, -2 )
+
+[node name="waterfallCurrent44" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -28, -2, -2 )
+
+[node name="waterfallCurrent45" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -28, -3, -2 )
 
 [node name="waterfallCurrent40" parent="Viewport/level/whale/waterfallSource3" instance=ExtResource( 58 )]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -26, -3, -2 )
@@ -5104,80 +7093,6 @@ opacity = 0.5
 pixel_size = 0.04
 texture = ExtResource( 6 )
 
-[node name="Kelp" type="Spatial" parent="Viewport/level"]
-
-[node name="kelp" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -70, 0 )
-
-[node name="kelp2" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.503055, -70.4609, 0 )
-
-[node name="kelp21" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -70, 0 )
-
-[node name="kelp22" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.496945, -70.4609, 0 )
-
-[node name="kelp23" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -70, 0 )
-
-[node name="kelp24" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.49694, -70.4609, 0 )
-
-[node name="kelp3" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, -70, 0 )
-
-[node name="kelp4" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.50306, -70.4609, 0 )
-
-[node name="kelp5" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -70, 0 )
-
-[node name="kelp6" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.50306, -70.4609, 0 )
-
-[node name="kelp7" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -70, 0 )
-
-[node name="kelp8" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.50306, -70.4609, 0 )
-
-[node name="kelp9" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -70, 0 )
-
-[node name="kelp10" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.50306, -70.4609, 0 )
-
-[node name="kelp11" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, -70, 0 )
-
-[node name="kelp12" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5.50306, -70.4609, 0 )
-
-[node name="kelp13" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, -70, 0 )
-
-[node name="kelp14" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.50306, -70.4609, 0 )
-
-[node name="kelp15" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -70, 0 )
-
-[node name="kelp16" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.50306, -70.4609, 0 )
-
-[node name="kelp17" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, -70, 0 )
-
-[node name="kelp18" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.50306, -70.4609, 0 )
-
-[node name="kelp19" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -70, 0 )
-
-[node name="kelp20" parent="Viewport/level/Kelp" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9.50306, -70.4609, 0 )
-
 [node name="Rocks" type="Spatial" parent="Viewport/level"]
 
 [node name="rock" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
@@ -5290,9 +7205,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, -2, -1 )
 
 [node name="rock42" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -2, -1 )
-
-[node name="rock43" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -3, -1 )
 
 [node name="rock44" parent="Viewport/level/Rocks" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, -4, -1 )
@@ -5812,19 +7724,19 @@ flip_h = true
 transform = Transform( 1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, -1, 1, -1 )
 flip_h = true
 
-[node name="waterfallCurrent13" parent="Viewport/level" instance=ExtResource( 58 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, -4, -1 )
+[node name="waterfallCurrent13" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -4, -1 )
 flip_v = true
 
-[node name="waterfallCurrent12" parent="Viewport/level" instance=ExtResource( 58 )]
-transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 12, -5, -1 )
+[node name="waterfallCurrent12" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 1, -5, -1 )
 
-[node name="waterfallCurrent10" parent="Viewport/level" instance=ExtResource( 58 )]
-transform = Transform( 7.54979e-08, 1, 0, -1, 7.54979e-08, 0, 0, 0, 1, 14, -4, -1 )
+[node name="waterfallCurrent10" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( 7.54979e-08, 1, 0, -1, 7.54979e-08, 0, 0, 0, 1, 3, -4, -1 )
 flip_h = true
 
-[node name="waterfallCurrent11" parent="Viewport/level" instance=ExtResource( 58 )]
-transform = Transform( 1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, 11, -3, -1 )
+[node name="waterfallCurrent11" parent="Viewport/level/waterfallSource" instance=ExtResource( 58 )]
+transform = Transform( 1, -1.74846e-07, 0, 1.74846e-07, 1, 0, 0, 0, 1, 0, -3, -1 )
 flip_h = true
 
 [node name="TextureRect" type="TextureRect" parent="."]
@@ -5970,8 +7882,52 @@ ME!!!!!
 
 bye bye"
 
+[editable path="Viewport/level/GardenEels/gardenEel"]
+[editable path="Viewport/level/GardenEels/gardenEel/myRock"]
+[editable path="Viewport/level/GardenEels/gardenEel/hardestRock67"]
+[editable path="Viewport/level/GardenEels/gardenEel2"]
+[editable path="Viewport/level/GardenEels/gardenEel2/hardestRock67"]
+[editable path="Viewport/level/GardenEels/gardenEel3"]
+[editable path="Viewport/level/GardenEels/gardenEel3/hardestRock67"]
+[editable path="Viewport/level/GardenEels/gardenEel4"]
+[editable path="Viewport/level/GardenEels/gardenEel4/hardestRock67"]
+[editable path="Viewport/level/GardenEels/gardenEel6"]
+[editable path="Viewport/level/GardenEels/gardenEel6/hardestRock67"]
+[editable path="Viewport/level/GardenEels/gardenEel7"]
+[editable path="Viewport/level/GardenEels/gardenEel7/hardestRock67"]
+[editable path="Viewport/level/GardenEels/gardenEel8"]
+[editable path="Viewport/level/GardenEels/gardenEel8/hardestRock67"]
+[editable path="Viewport/level/GardenEels/gardenEel5"]
+[editable path="Viewport/level/GardenEels/gardenEel5/hardestRock67"]
+[editable path="Viewport/level/GardenEels/hardestRock68"]
+[editable path="Viewport/level/GardenEels/hardestRock69"]
+[editable path="Viewport/level/GardenEels/hardestRock70"]
+[editable path="Viewport/level/GardenEels/hardestRock71"]
+[editable path="Viewport/level/GardenEels/hardestRock72"]
+[editable path="Viewport/level/GardenEels/hardestRock73"]
+[editable path="Viewport/level/GardenEels/hardestRock74"]
+[editable path="Viewport/level/GardenEels/hardestRock75"]
+[editable path="Viewport/level/GardenEels/hardestRock76"]
+[editable path="Viewport/level/GardenEels/hardestRock77"]
+[editable path="Viewport/level/GardenEels/hardestRock78"]
+[editable path="Viewport/level/GardenEels/hardestRock79"]
+[editable path="Viewport/level/GardenEels/hardestRock80"]
+[editable path="Viewport/level/GardenEels/hardestRock81"]
+[editable path="Viewport/level/GardenEels/hardestRock82"]
+[editable path="Viewport/level/GardenEels/hardestRock83"]
+[editable path="Viewport/level/GardenEels/hardestRock84"]
+[editable path="Viewport/level/GardenEels/hardestRock85"]
+[editable path="Viewport/level/GardenEels/hardestRock86"]
+[editable path="Viewport/level/GardenEels/hardestRock87"]
+[editable path="Viewport/level/GardenEels/hardestRock88"]
+[editable path="Viewport/level/GardenEels/hardestRock89"]
+[editable path="Viewport/level/GardenEels/hardestRock90"]
+[editable path="Viewport/level/GardenEels/hardestRock91"]
+[editable path="Viewport/level/GardenEels/hardestRock92"]
+[editable path="Viewport/level/Crabs/crab"]
 [editable path="Viewport/level/NPCs/eacSeaTurtle"]
 [editable path="Viewport/level/NPCs/cuttleFish"]
+[editable path="Viewport/level/NPCs/cuttleFish/myRock"]
 [editable path="Viewport/level/HardestRocks/hardestRock"]
 [editable path="Viewport/level/HardestRocks/hardestRock2"]
 [editable path="Viewport/level/HardestRocks/hardestRock3"]

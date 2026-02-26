@@ -2,6 +2,8 @@ extends "res://eventScripts/_event.gd"
 
 onready var coolSound = get_node("CoolSound")
 onready var rockingChair = get_node("../fishSprite/rockingChair")
+onready var rockingChairAniPlayer = get_node("../fishSprite/rockingChair/AnimationPlayer")
+onready var rockingChairSprite = get_node("../fishSprite/rockingChair/Sprite3D")
 
 var initial_trick_counter = 0
 func startTrying():
@@ -16,12 +18,15 @@ func keepTrying():
         level.textBoxText.bbcode_text = "[wave]ah, very cool dearie.\nhm.. let me try![/wave]"
 
         yield(get_tree().create_timer(0.5), "timeout")
+        var tempPos = rockingChairSprite.global_transform.origin
         myParent.mySprite.remove_child(rockingChair)
         level.add_child(rockingChair)
-        rockingChair.get_node("AnimationPlayer").stop()
-        rockingChair.get_node("AnimationPlayer").clear_queue()
-        rockingChair.get_node("AnimationPlayer").play("RESET")
-        rockingChair.global_transform.origin = myParent.mySprite.global_transform.origin
+        rockingChairSprite.global_transform.origin = tempPos
+        rockingChairSprite.global_transform.origin.x += 0.5
+        rockingChairAniPlayer.stop()
+        rockingChairAniPlayer.clear_queue()
+        rockingChairAniPlayer.play("RESET")
+        
         myParent.mySprite.frame_delay = global.FAST_FRAME_DELAY
 
         yield(get_tree().create_timer(0.5), "timeout")

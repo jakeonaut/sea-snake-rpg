@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://scripts/Sprite.gd" type="Script" id=1]
 [ext_resource path="res://images/player_sheet.png" type="Texture" id=2]
@@ -366,7 +366,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id=9]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("headSprite:modulate")
+tracks/0/path = NodePath("headSprite:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -375,10 +375,10 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
+"values": [ Vector3( 1, 1, 1 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("headSprite:scale")
+tracks/1/path = NodePath("headSprite:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -387,10 +387,10 @@ tracks/1/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 1, 1, 1 ) ]
+"values": [ true ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("headSprite:visible")
+tracks/2/path = NodePath("eggSprite:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -399,10 +399,10 @@ tracks/2/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ true ]
+"values": [ false ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("eggSprite:visible")
+tracks/3/path = NodePath("eggSprite:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -411,10 +411,10 @@ tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ false ]
+"values": [ Vector3( 1, 1, 1 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("eggSprite:scale")
+tracks/4/path = NodePath("eggSprite:translation")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -423,10 +423,10 @@ tracks/4/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 1, 1, 1 ) ]
+"values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("eggSprite:translation")
+tracks/5/path = NodePath("headSprite:offset")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
@@ -435,10 +435,10 @@ tracks/5/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
+"values": [ Vector2( 0, 0 ) ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("headSprite:offset")
+tracks/6/path = NodePath("eggSprite:rotation_degrees")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -447,10 +447,10 @@ tracks/6/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ) ]
+"values": [ Vector3( 0, 0, 0 ) ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("eggSprite:opacity")
+tracks/7/path = NodePath("eggSprite:frame_delay")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
@@ -459,10 +459,10 @@ tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 1.0 ]
+"values": [ 0.4 ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("eggSprite:modulate")
+tracks/8/path = NodePath("eggSprite:offset")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
@@ -471,10 +471,10 @@ tracks/8/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
+"values": [ Vector2( 0, 80 ) ]
 }
 tracks/9/type = "value"
-tracks/9/path = NodePath("headSprite:opacity")
+tracks/9/path = NodePath("headSprite:frame")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/imported = false
@@ -483,10 +483,10 @@ tracks/9/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 1.0 ]
+"values": [ 0 ]
 }
 tracks/10/type = "value"
-tracks/10/path = NodePath("eggSprite:rotation_degrees")
+tracks/10/path = NodePath("headSprite:frame_delay")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/imported = false
@@ -495,10 +495,10 @@ tracks/10/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector3( 0, 0, 0 ) ]
+"values": [ 0.4 ]
 }
 tracks/11/type = "value"
-tracks/11/path = NodePath("eggSprite:frame_delay")
+tracks/11/path = NodePath("eggSprite:should_animate")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/imported = false
@@ -507,10 +507,10 @@ tracks/11/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0.4 ]
+"values": [ false ]
 }
 tracks/12/type = "value"
-tracks/12/path = NodePath("eggSprite:offset")
+tracks/12/path = NodePath("eggSprite:frame")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/imported = false
@@ -519,10 +519,10 @@ tracks/12/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Vector2( 0, 80 ) ]
+"values": [ 6 ]
 }
 tracks/13/type = "value"
-tracks/13/path = NodePath("headSprite:frame")
+tracks/13/path = NodePath("Sounds/DriftWaveSound:pitch_scale")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/imported = false
@@ -531,10 +531,10 @@ tracks/13/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0 ]
+"values": [ 0.5 ]
 }
 tracks/14/type = "value"
-tracks/14/path = NodePath("headSprite:frame_delay")
+tracks/14/path = NodePath("Sounds/DriftWaveSound:playing")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/imported = false
@@ -543,10 +543,10 @@ tracks/14/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0.4 ]
+"values": [ false ]
 }
 tracks/15/type = "value"
-tracks/15/path = NodePath("eggSprite:should_animate")
+tracks/15/path = NodePath("Sounds/HatchedSound:playing")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/imported = false
@@ -558,7 +558,7 @@ tracks/15/keys = {
 "values": [ false ]
 }
 tracks/16/type = "value"
-tracks/16/path = NodePath("eggSprite:frame")
+tracks/16/path = NodePath("headSprite:should_animate")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/imported = false
@@ -567,10 +567,10 @@ tracks/16/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 6 ]
+"values": [ true ]
 }
 tracks/17/type = "value"
-tracks/17/path = NodePath("Sounds/DriftWaveSound:pitch_scale")
+tracks/17/path = NodePath("headSprite:pixel_size")
 tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/imported = false
@@ -579,10 +579,10 @@ tracks/17/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0.5 ]
+"values": [ 0.0625 ]
 }
 tracks/18/type = "value"
-tracks/18/path = NodePath("Sounds/DriftWaveSound:playing")
+tracks/18/path = NodePath("headSprite:material_override:shader_param/normal_offset")
 tracks/18/interp = 1
 tracks/18/loop_wrap = true
 tracks/18/imported = false
@@ -591,10 +591,10 @@ tracks/18/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ false ]
+"values": [ 0.0 ]
 }
 tracks/19/type = "value"
-tracks/19/path = NodePath("Sounds/HatchedSound:playing")
+tracks/19/path = NodePath("headSprite:material_override:shader_param/time_influence")
 tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/imported = false
@@ -603,10 +603,10 @@ tracks/19/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ false ]
+"values": [ 0.0 ]
 }
 tracks/20/type = "value"
-tracks/20/path = NodePath("headSprite:should_animate")
+tracks/20/path = NodePath("headSprite:material_override:shader_param/y_div")
 tracks/20/interp = 1
 tracks/20/loop_wrap = true
 tracks/20/imported = false
@@ -615,10 +615,10 @@ tracks/20/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ true ]
+"values": [ 0.0 ]
 }
 tracks/21/type = "value"
-tracks/21/path = NodePath("headSprite:pixel_size")
+tracks/21/path = NodePath("eggSprite:material_override:shader_param/opacity")
 tracks/21/interp = 1
 tracks/21/loop_wrap = true
 tracks/21/imported = false
@@ -627,10 +627,10 @@ tracks/21/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0.0625 ]
+"values": [ 1.0 ]
 }
 tracks/22/type = "value"
-tracks/22/path = NodePath("headSprite:material_override:shader_param/normal_offset")
+tracks/22/path = NodePath("eggSprite:material_override:shader_param/albedo")
 tracks/22/interp = 1
 tracks/22/loop_wrap = true
 tracks/22/imported = false
@@ -639,10 +639,10 @@ tracks/22/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0.0 ]
+"values": [ Color( 1, 1, 1, 1 ) ]
 }
 tracks/23/type = "value"
-tracks/23/path = NodePath("headSprite:material_override:shader_param/time_influence")
+tracks/23/path = NodePath("headSprite:material_override:shader_param/opacity")
 tracks/23/interp = 1
 tracks/23/loop_wrap = true
 tracks/23/imported = false
@@ -651,10 +651,10 @@ tracks/23/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0.0 ]
+"values": [ 1.0 ]
 }
 tracks/24/type = "value"
-tracks/24/path = NodePath("headSprite:material_override:shader_param/y_div")
+tracks/24/path = NodePath("headSprite:material_override:shader_param/albedo")
 tracks/24/interp = 1
 tracks/24/loop_wrap = true
 tracks/24/imported = false
@@ -663,14 +663,14 @@ tracks/24/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 0.0 ]
+"values": [ Color( 1, 1, 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=11]
 resource_name = "ateWhaleFall"
 tracks/0/type = "value"
-tracks/0/path = NodePath("headSprite:modulate")
-tracks/0/interp = 1
+tracks/0/path = NodePath("headSprite:scale")
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -678,11 +678,11 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 0.376471, 0.376471, 0.376471, 1 ), Color( 1, 1, 1, 1 ) ]
+"values": [ Vector3( 1, 1, 1 ), Vector3( 1.2, 1.2, 1 ), Vector3( 1, 1, 1 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("headSprite:scale")
-tracks/1/interp = 2
+tracks/1/path = NodePath("headSprite:material_override:shader_param/albedo")
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
@@ -690,7 +690,7 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector3( 1, 1, 1 ), Vector3( 1.2, 1.2, 1 ), Vector3( 1, 1, 1 ) ]
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.376471, 0.376471, 0.376471, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
 [sub_resource type="Animation" id=14]
@@ -844,7 +844,7 @@ tracks/9/keys = {
 } ]
 }
 tracks/10/type = "value"
-tracks/10/path = NodePath("eggSprite:opacity")
+tracks/10/path = NodePath("eggSprite:material_override:shader_param/albedo")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/imported = false
@@ -853,10 +853,10 @@ tracks/10/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ 1.0 ]
+"values": [ Color( 1, 1, 1, 1 ) ]
 }
 tracks/11/type = "value"
-tracks/11/path = NodePath("eggSprite:modulate")
+tracks/11/path = NodePath("eggSprite:material_override:shader_param/opacity")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/imported = false
@@ -865,7 +865,7 @@ tracks/11/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ) ]
+"values": [ 1.0 ]
 }
 
 [sub_resource type="Animation" id=12]
@@ -933,108 +933,72 @@ tracks/4/keys = {
 "values": [ Vector3( 0.75, 0.75, 1 ), Vector3( 0.9, 0.9, 1 ), Vector3( 1.3, 1.3, 1 ), Vector3( 1, 1, 1 ) ]
 }
 tracks/5/type = "value"
-tracks/5/path = NodePath("eggSprite:opacity")
-tracks/5/interp = 2
+tracks/5/path = NodePath("headSprite:modulate")
+tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/imported = false
 tracks/5/enabled = true
 tracks/5/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ 1.0, 1.0, 1.0, 0.0 ]
-}
-tracks/6/type = "value"
-tracks/6/path = NodePath("eggSprite:modulate")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/keys = {
-"times": PoolRealArray( 0, 0.1, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 0.423529, 0.662745, 1, 1 ) ]
-}
-tracks/7/type = "value"
-tracks/7/path = NodePath("headSprite:opacity")
-tracks/7/interp = 2
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.4 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ 1.0, 1.0, 0.0, 1.0 ]
-}
-tracks/8/type = "value"
-tracks/8/path = NodePath("headSprite:modulate")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
-tracks/9/type = "value"
-tracks/9/path = NodePath("eggSprite:frame_delay")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/keys = {
+tracks/6/type = "value"
+tracks/6/path = NodePath("eggSprite:frame_delay")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ 0.2 ]
 }
-tracks/10/type = "value"
-tracks/10/path = NodePath("eggSprite:offset")
-tracks/10/interp = 1
-tracks/10/loop_wrap = true
-tracks/10/imported = false
-tracks/10/enabled = true
-tracks/10/keys = {
+tracks/7/type = "value"
+tracks/7/path = NodePath("eggSprite:offset")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector2( 0, 0 ) ]
 }
-tracks/11/type = "value"
-tracks/11/path = NodePath("headSprite:frame")
-tracks/11/interp = 1
-tracks/11/loop_wrap = true
-tracks/11/imported = false
-tracks/11/enabled = true
-tracks/11/keys = {
+tracks/8/type = "value"
+tracks/8/path = NodePath("headSprite:frame")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
 "times": PoolRealArray( 0.25 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ 0 ]
 }
-tracks/12/type = "value"
-tracks/12/path = NodePath("headSprite:frame_delay")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/keys = {
+tracks/9/type = "value"
+tracks/9/path = NodePath("headSprite:frame_delay")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
 "times": PoolRealArray( 0.25, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ 0.2, 0.4 ]
 }
-tracks/13/type = "method"
-tracks/13/path = NodePath(".")
-tracks/13/interp = 1
-tracks/13/loop_wrap = true
-tracks/13/imported = false
-tracks/13/enabled = true
-tracks/13/keys = {
+tracks/10/type = "method"
+tracks/10/path = NodePath(".")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
 "times": PoolRealArray( 0.1, 0.2, 0.25, 0.3, 0.35 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "values": [ {
@@ -1054,48 +1018,84 @@ tracks/13/keys = {
 "method": "spawnEggBubble"
 } ]
 }
-tracks/14/type = "value"
-tracks/14/path = NodePath("eggSprite:frame")
-tracks/14/interp = 1
-tracks/14/loop_wrap = true
-tracks/14/imported = false
-tracks/14/enabled = true
-tracks/14/keys = {
+tracks/11/type = "value"
+tracks/11/path = NodePath("eggSprite:frame")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
 "times": PoolRealArray( 0, 0.05, 0.15, 0.3 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 8, 8, 6, 7 ]
 }
-tracks/15/type = "value"
-tracks/15/path = NodePath("headSprite:should_animate")
-tracks/15/interp = 1
-tracks/15/loop_wrap = true
-tracks/15/imported = false
-tracks/15/enabled = true
-tracks/15/keys = {
+tracks/12/type = "value"
+tracks/12/path = NodePath("headSprite:should_animate")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
 "times": PoolRealArray( 0.25 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
 "values": [ true ]
 }
-tracks/16/type = "value"
-tracks/16/path = NodePath("headSprite:pixel_size")
-tracks/16/interp = 2
-tracks/16/loop_wrap = true
-tracks/16/imported = false
-tracks/16/enabled = true
-tracks/16/keys = {
+tracks/13/type = "value"
+tracks/13/path = NodePath("headSprite:pixel_size")
+tracks/13/interp = 2
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
 "times": PoolRealArray( 0.25, 0.3, 0.4, 0.45 ),
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ 0.1, 0.08, 0.0625, 0.0625 ]
 }
+tracks/14/type = "value"
+tracks/14/path = NodePath("eggSprite:material_override:shader_param/opacity")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 1.0, 1.0, 1.0, 0.0 ]
+}
+tracks/15/type = "value"
+tracks/15/path = NodePath("eggSprite:material_override:shader_param/albedo")
+tracks/15/interp = 1
+tracks/15/loop_wrap = true
+tracks/15/imported = false
+tracks/15/enabled = true
+tracks/15/keys = {
+"times": PoolRealArray( 0, 0.1, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 0.423529, 0.662745, 1, 1 ) ]
+}
+tracks/16/type = "value"
+tracks/16/path = NodePath("headSprite:material_override:shader_param/opacity")
+tracks/16/interp = 1
+tracks/16/loop_wrap = true
+tracks/16/imported = false
+tracks/16/enabled = true
+tracks/16/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 1.0, 1.0, 0.0, 1.0 ]
+}
 
 [sub_resource type="Animation" id=10]
 resource_name = "hurtByParasite"
 tracks/0/type = "value"
-tracks/0/path = NodePath("headSprite:modulate")
-tracks/0/interp = 1
+tracks/0/path = NodePath("headSprite:scale")
+tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1103,16 +1103,32 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 0, 1, 0.054902, 1 ), Color( 1, 1, 1, 1 ) ]
+"values": [ Vector3( 1, 1, 1 ), Vector3( 1.2, 1.2, 1 ), Vector3( 1, 1, 1 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("headSprite:scale")
-tracks/1/interp = 2
+tracks/1/path = NodePath("headSprite:material_override:shader_param/albedo")
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
 "times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0, 1, 0.054902, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=19]
+resource_name = "spitCoconut"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("headSprite:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
 "values": [ Vector3( 1, 1, 1 ), Vector3( 1.2, 1.2, 1 ), Vector3( 1, 1, 1 ) ]
@@ -1316,6 +1332,7 @@ anims/ateWhaleFall = SubResource( 11 )
 anims/eggFloatDown = SubResource( 14 )
 anims/growFromEgg = SubResource( 12 )
 anims/hurtByParasite = SubResource( 10 )
+anims/spitCoconut = SubResource( 19 )
 anims/stunned = SubResource( 13 )
 anims/waterfallStunned = SubResource( 18 )
 

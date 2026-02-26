@@ -62,12 +62,21 @@ func eatAnOrange():
     chompSound.play()
 
 func eatARockFruit():
-    global.memory["how_many_rockfruit_ate"] += 1
+    global.memory["how_many_rockfruits_ate"] += 1
     chompSound.pitch_scale = rand_range(0.4, 0.6)
     chompSound.play()
     global.memory["can_charge_attack"] = true
     level.textBox.visible = true
     level.textBoxText.bbcode_text = "YOU ATE ROCK FRUIT:\npress [X] to charge attack"
+    level.hideTextBoxMoveCount = global.memory["move_counter"] + 10
+
+func eatAMultiberry():
+    global.memory["how_many_multiberries_ate"] += 1
+    chompSound.pitch_scale = rand_range(0.8, 1.2)
+    chompSound.play()
+    global.memory["can_camouflage"] = true
+    level.textBox.visible = true
+    level.textBoxText.bbcode_text = "YOU ATE MULTIBERRY:\npress [Z] when over colorful kelp"
     level.hideTextBoxMoveCount = global.memory["move_counter"] + 10
 
 func eatALemon():
@@ -83,8 +92,8 @@ func eatACoconut():
     var could_i_eat_the_coconut = false
     for i in range(len(myBodyParts)):
         var bodyPart = myBodyParts[i]
-        if bodyPart.texture != playerCoconutSheetRes:
-            bodyPart.texture = playerCoconutSheetRes
+        if bodyPart.material_override.get_shader_param("texture_albedo") != playerCoconutSheetRes:
+            bodyPart.material_override.set_shader_param("texture_albedo", playerCoconutSheetRes)
             could_i_eat_the_coconut = true
             break
     if not could_i_eat_the_coconut:
@@ -95,50 +104,63 @@ func eatACoconut():
         level.prevTextBoxVisible = level.textBox.visible
         level.prevTextBoxTopVisible = level.textBoxTop.visible
         owIDied()
-        level.died_to_coconut_overconsumption = true
+        # level.died_to_coconut_overconsumption = true
         level.causeOfDeathStr = "ate too many coconuts"
     else:
-        level.how_many_coconuts_ate += 1
+        level.coconutChompSound.pitch_scale = rand_range(0.9, 1.1)
+        level.coconutChompSound.play()
+        global.memory["how_many_coconuts_ate"] += 1
     return could_i_eat_the_coconut
+
+func hasCoconutInMouth():
+    for i in range(len(myBodyParts), 0, -1):
+        var bodyPart = myBodyParts[i - 1]
+        if bodyPart.material_override.get_shader_param("texture_albedo") == playerCoconutSheetRes:
+            return true
+    return false
 
 func spitCoconutProjectile():
     var has_coconut_in_mouth = false
     for i in range(len(myBodyParts), 0, -1):
         var bodyPart = myBodyParts[i - 1]
-        if bodyPart.texture == playerCoconutSheetRes:
-            bodyPart.texture = playerSheetRes
+        if bodyPart.material_override.get_shader_param("texture_albedo") == playerCoconutSheetRes:
+            bodyPart.material_override.set_shader_param("texture_albedo", playerSheetRes)
             has_coconut_in_mouth = true
             break
     if not has_coconut_in_mouth:
         level.playErrorSound()
         return
+    aniPlayer.stop()
+    aniPlayer.play("spitCoconut")
     var newCoconutProjectile = coconutProjectileRes.instance()
     level.add_child(newCoconutProjectile)
     newCoconutProjectile.global_transform.origin = headSprite.global_transform.origin
-    newCoconutProjectile.facing = facing
+    var coconutDir = playerMover.lastPressedMoveDir
+    newCoconutProjectile.facing = coconutDir
+    newCoconutProjectile.moveVel = coconutDir
     var coconutAniPlayer = newCoconutProjectile.get_node("AnimationPlayer")
-    if facing == global.DirRight:
-        newCoconutProjectile.global_transform.origin += Vector3(1, 0, 0)
+    if coconutDir == global.DirRight:
+        newCoconutProjectile.global_transform.origin += Vector3(0.5, 0, 0)
         coconutAniPlayer.stop()
         coconutAniPlayer.clear_queue()
         coconutAniPlayer.play("tumbleRight")
-    elif facing == global.DirLeft:
-        newCoconutProjectile.global_transform.origin += Vector3(-1, 0, 0)
+    elif coconutDir == global.DirLeft:
+        newCoconutProjectile.global_transform.origin += Vector3(-0.5, 0, 0)
         coconutAniPlayer.stop()
         coconutAniPlayer.clear_queue()
         coconutAniPlayer.play("tumbleLeft")
-    elif facing == global.DirUp:
-        newCoconutProjectile.global_transform.origin += Vector3(0, 1, 0)
+    elif coconutDir == global.DirUp:
+        newCoconutProjectile.global_transform.origin += Vector3(0, 0.5, 0)
         coconutAniPlayer.stop()
         coconutAniPlayer.clear_queue()
         coconutAniPlayer.play("tumbleRight")
-    elif facing == global.DirDown:
-        newCoconutProjectile.global_transform.origin += Vector3(0, -1, 0)
+    elif coconutDir == global.DirDown:
+        newCoconutProjectile.global_transform.origin += Vector3(0, -0.5, 0)
         coconutAniPlayer.stop()
         coconutAniPlayer.clear_queue()
         coconutAniPlayer.play("tumbleRight")
-    level.spitSound.pitch_scale = rand_range(0.8, 1.2)
-    level.spitSound.play()
+    spitSound.pitch_scale = rand_range(0.8, 1.2)
+    spitSound.play()
     yield(get_tree().create_timer(0.1), "timeout")
     level.swooshSound.play()
 
@@ -239,6 +261,7 @@ func initiateHatchAnimation():
     myBodyParts = [headSprite]
     playerMover.prevBodyPartsStatesStack = []
     headSprite.updateBaseFrame(0, 0)
+    headSprite.material_override.set_shader_param("texture_albedo", playerSheetRes)
     headSprite.max_frames = 2
     facing = global.DirRight
     playerMover.faceRight(headSprite)

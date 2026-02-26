@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://images/npc_sheet.png" type="Texture" id=1]
 [ext_resource path="res://scripts/Sprite.gd" type="Script" id=2]
@@ -60,9 +60,26 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
+[sub_resource type="Animation" id=17]
+resource_name = "coconutStunned"
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("fishSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ Vector2( 1, 0 ), Vector2( 0, -1 ), Vector2( -1, 1 ), Vector2( 0, -1 ), Vector2( 0, 0 ) ]
+}
+
 [sub_resource type="Animation" id=2]
 resource_name = "stunned"
-length = 0.4
+length = 0.25
 step = 0.05
 tracks/0/type = "value"
 tracks/0/path = NodePath("fishSprite:offset")
@@ -100,4 +117,5 @@ volume_db = -15.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 1 )
+anims/coconutStunned = SubResource( 17 )
 anims/stunned = SubResource( 2 )

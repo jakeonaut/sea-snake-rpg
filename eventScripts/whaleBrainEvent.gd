@@ -13,6 +13,8 @@ func collideWith(was_charging = false):
     aniPlayer.clear_queue()
     aniPlayer.play("stunned")
 
+    # need to do this here because whaleBrain is not an NPC.
+    # npcs will normally handle their own level.textBox setting
     level.textBox.visible = true
     level.textBoxText.bbcode_text = collisionText
     level.hideTextBoxMoveCount = global.memory["move_counter"] + 4
@@ -20,3 +22,6 @@ func collideWith(was_charging = false):
     var indexToRandomize = randi() % len(collisionText)
     var whichLetterIndexToRandomizeTo = randi() % len(characters)
     collisionText[indexToRandomize] = characters[whichLetterIndexToRandomizeTo]
+    # technically a no-op here to return collisionText cuz this is being
+    # called directly from playerMover rather than from within npc.collideWith
+    return collisionText

@@ -25,7 +25,10 @@ var prevBodyPartsStatesStack = []
 func processMain(delta):
     var has_player_moved = false
     if not myParent.is_charging and Input.is_action_just_pressed("ui_cancel"):
-        if not myParent.is_stunned and restoreBodyPartPositions(true):
+        if global.memory["can_camouflage"] and tryCamouflageBodyPartsWithColorfulKelp():
+            level.bubbleReverseSound.pitch_scale = rand_range(0.6, 1.0)
+            level.bubbleReverseSound.play()
+        elif not myParent.is_stunned and restoreBodyPartPositions(true):
             level.combo_counter -= 1
             level.bubbleReverseSound.pitch_scale = rand_range(0.4, 0.8)
             level.bubbleReverseSound.play()
@@ -80,12 +83,13 @@ func processMoveInputs(delta):
         if charging_move_timer >= charging_move_time_limit:
             was_moved_by_waterfall = true
             if global.isOppositeDirOf(myParent.facing, getWaterfallDir()):
-                restoreBodyPartPositions()
+                restoreBodyPartPositions(true)
                 setSpriteAnimationSpeed(global.IDLE_FRAME_DELAY)
                 myParent.chargeStartSound.stop()
                 myParent.is_charging = false
             else:
                 moveInputDir = getWaterfallDir()
+                charge_count += 1
                 chargeForwardStep()
             charging_move_timer = 0
             myParent.aniPlayer.stop()
@@ -113,15 +117,20 @@ func processMoveInputs(delta):
             charging_move_timer = 0
     elif not is_charging_up_charge and len(lastPressedDirQueue) > 0:
         moveInputDir = lastPressedDirQueue.pop_back()
-    if not myParent.is_stunned and global.memory["can_charge_attack"]:
-        if Input.is_action_just_pressed("ui_select"):
-            startChargeUp()
-        elif Input.is_action_pressed("ui_select"):
-            chargeUp()
-        elif Input.is_action_just_released("ui_select"):
-            # player.spitCoconutProjectile()
-            tryChargeAhead()
-            pass
+    if not myParent.is_stunned:
+        if myParent.hasCoconutInMouth():
+            if Input.is_action_just_pressed("ui_select"):
+                myParent.spitCoconutProjectile()
+        elif global.memory["can_charge_attack"]:
+            if Input.is_action_just_pressed("ui_select"):
+                startChargeUp()
+            elif is_charging_up_charge and Input.is_action_pressed("ui_select"):
+                chargeUp()
+            elif is_charging_up_charge and Input.is_action_just_released("ui_select"):
+                tryChargeAhead()
+        else:
+            if Input.is_action_just_pressed("ui_select"):
+                level.playErrorSound()
     else:
         if Input.is_action_just_pressed("ui_select"):
             level.playErrorSound()
@@ -279,13 +288,10 @@ func hasCollidedWithAnything(moveDir):
     var npcs = level.get_tree().get_nodes_in_group("npc_group")
     for i in range(len(npcs)):
         var npc = npcs[i]
-        if myParent.isHeadOverlapping(npc):
+        if npc.should_collide_with and myParent.isHeadOverlapping(npc):
             restoreBodyPartPositions()
             level.playErrorSound()
-            if myParent.is_charging:
-                npc.getMiniStunned()
-            if npc.event != null:
-                npc.event.collideWith(myParent.is_charging)
+            npc.collideWith(myParent.is_charging)
             return true
     var rocks = level.get_tree().get_nodes_in_group("rock_group")
     for i in range(len(rocks)):
@@ -327,7 +333,8 @@ func grow(moveDir):
     newBodySprite.scale = Vector3(1, 1, 1)
     newBodySprite.follow_player_frame_delay = true
     newBodySprite.material_override = newBodySprite.material_override.duplicate(true)
-    newBodySprite.material_override.set_shader_param("target_palette", global.getRandomPalette())
+    newBodySprite.material_override.set_shader_param("texture_albedo", myParent.playerSheetRes)
+    # newBodySprite.material_override.set_shader_param("target_palette", global.getRandomPalette())
     myParent.myBodyParts.push_back(newBodySprite)
     myParent.should_grow = false
     # growSound.pitch_scale = rand_range(0.8, 1.2)
@@ -540,7 +547,6 @@ func chargeUp():
         # chargeReadySound.play()
 func tryChargeAhead():
     if is_charge_charged:
-        is_charging_up_charge = false
         myParent.chargeStartSound.pitch_scale = rand_range(1.2, 1.6)
         myParent.chargeStartSound.play()
         myParent.is_charging = true
@@ -548,6 +554,7 @@ func tryChargeAhead():
     else:
         myParent.chargeUpSound.stop()
         setSpriteAnimationSpeed(global.IDLE_FRAME_DELAY)
+    is_charging_up_charge = false
     is_charge_charged = false
     charge_count = 0
 
@@ -581,3 +588,19 @@ func isOutOfBounds():
     var bb = level.currentCameraYBounds.y - CAMERA_Y_OFFSET
     var headPos = myParent.headSprite.global_transform.origin
     return headPos.x <= lb or headPos.x >= rb or headPos.y >= tb or headPos.y <= bb
+
+func tryCamouflageBodyPartsWithColorfulKelp():
+    var didColorAnyBodyParts = false
+    var kelps = level.get_tree().get_nodes_in_group("kelp_group")
+    var bodyPartsToTryToColor = myParent.myBodyParts.duplicate()
+    for i in range(len(kelps)):
+        var kelp = kelps[i]
+        var kelpPos = kelp.global_transform.origin
+        for j in range(len(bodyPartsToTryToColor) - 1, -1, -1):
+            var bodyPart = bodyPartsToTryToColor[j]
+            var bodyPartPos = bodyPart.global_transform.origin
+            if kelpPos.x == bodyPartPos.x and kelpPos.y == bodyPartPos.y:
+                didColorAnyBodyParts = true
+                bodyPart.material_override.set_shader_param("target_palette", kelp.material_override.get_shader_param("target_palette"))
+                bodyPartsToTryToColor.remove(j)
+    return didColorAnyBodyParts

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://images/rockFruit.png" type="Texture" id=1]
+[ext_resource path="res://images/multiberry.png" type="Texture" id=1]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -57,7 +57,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, 1 ), Vector2( 0, 0 ) ]
 }
 
-[node name="rockFruit" type="Spatial" groups=["rockfruit_group"]]
+[node name="multiberry" type="Spatial" groups=["multiberry_group"]]
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
